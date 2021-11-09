@@ -1,0 +1,2317 @@
+{
+    "get": "fixtures",
+    "parameters": {
+        "live": "all"
+    },
+    "errors": [],
+    "results": 21,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "fixture": {
+                "id": 710429,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:15:00+00:00",
+                "timestamp": 1634901300,
+                "periods": {
+                    "first": 1634901300,
+                    "second": null
+                },
+                "venue": {
+                    "id": 3239,
+                    "name": "Stadion Manahan",
+                    "city": "Surakarta"
+                },
+                "status": {
+                    "long": "First Half",
+                    "short": "1H",
+                    "elapsed": 42
+                }
+            },
+            "league": {
+                "id": 274,
+                "name": "Super League",
+                "country": "Indonesia",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/274.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/id.svg",
+                "season": 2021,
+                "round": "Regular Season - 8"
+            },
+            "teams": {
+                "home": {
+                    "id": 2445,
+                    "name": "Persib Bandung",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/2445.png",
+                    "winner": false
+                },
+                "away": {
+                    "id": 3882,
+                    "name": "PSS Sleman",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/3882.png",
+                    "winner": true
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 31,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 3882,
+                        "name": "PSS Sleman",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/3882.png"
+                    },
+                    "player": {
+                        "id": 29549,
+                        "name": "I. Jaya"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Card",
+                    "detail": "Yellow Card",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 34,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 3882,
+                        "name": "PSS Sleman",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/3882.png"
+                    },
+                    "player": {
+                        "id": 33809,
+                        "name": "N. Kojic"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 751542,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:30:00+00:00",
+                "timestamp": 1634902200,
+                "periods": {
+                    "first": 1634902200,
+                    "second": null
+                },
+                "venue": {
+                    "id": 2393,
+                    "name": "G\u00fcm\u00fc\u015fhane \u015eehir Stad\u0131",
+                    "city": "G\u00fcm\u00fc\u015fhane"
+                },
+                "status": {
+                    "long": "First Half",
+                    "short": "1H",
+                    "elapsed": 28
+                }
+            },
+            "league": {
+                "id": 554,
+                "name": "3. Lig - Group 3",
+                "country": "Turkey",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/554.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/tr.svg",
+                "season": 2021,
+                "round": "Group 3 - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 3591,
+                    "name": "G\u00fcm\u00fc\u015fhanespor",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/3591.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 6511,
+                    "name": "Belediye Derincespor",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6511.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": []
+        },
+        {
+            "fixture": {
+                "id": 751546,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:30:00+00:00",
+                "timestamp": 1634902200,
+                "periods": {
+                    "first": 1634902200,
+                    "second": null
+                },
+                "venue": {
+                    "id": 4804,
+                    "name": "Yenimahalle Hasan Do\u011fan Stadyumu",
+                    "city": "Ankara"
+                },
+                "status": {
+                    "long": "First Half",
+                    "short": "1H",
+                    "elapsed": 28
+                }
+            },
+            "league": {
+                "id": 554,
+                "name": "3. Lig - Group 3",
+                "country": "Turkey",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/554.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/tr.svg",
+                "season": 2021,
+                "round": "Group 3 - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 7428,
+                    "name": "\u00c7ankaya FK",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/7428.png",
+                    "winner": false
+                },
+                "away": {
+                    "id": 6535,
+                    "name": "Modafen",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6535.png",
+                    "winner": true
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 2
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 2
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 21,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6535,
+                        "name": "Modafen",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6535.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": "C. Atasoy"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Penalty",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 25,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6535,
+                        "name": "Modafen",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6535.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": "Y. E. Kefeli"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 788663,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:15:00+00:00",
+                "timestamp": 1634901300,
+                "periods": {
+                    "first": 1634901300,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": null,
+                    "city": null
+                },
+                "status": {
+                    "long": "First Half",
+                    "short": "1H",
+                    "elapsed": 41
+                }
+            },
+            "league": {
+                "id": 496,
+                "name": "Liga Alef",
+                "country": "Israel",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/496.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/il.svg",
+                "season": 2021,
+                "round": "South - 7"
+            },
+            "teams": {
+                "home": {
+                    "id": 6184,
+                    "name": "Maccabi Ashdod",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6184.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 6201,
+                    "name": "Nordia Jerusalem",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6201.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 2,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 2,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 27,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6184,
+                        "name": "Maccabi Ashdod",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6184.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": "B. Suissa"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 29,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6184,
+                        "name": "Maccabi Ashdod",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6184.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 788965,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:30:00+00:00",
+                "timestamp": 1634902200,
+                "periods": {
+                    "first": 1634902200,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": null,
+                    "city": null
+                },
+                "status": {
+                    "long": "First Half",
+                    "short": "1H",
+                    "elapsed": 27
+                }
+            },
+            "league": {
+                "id": 496,
+                "name": "Liga Alef",
+                "country": "Israel",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/496.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/il.svg",
+                "season": 2021,
+                "round": "North - 7"
+            },
+            "teams": {
+                "home": {
+                    "id": 6210,
+                    "name": "Tira",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6210.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 6151,
+                    "name": "Hapoel Bnei Zalafa",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6151.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": []
+        },
+        {
+            "fixture": {
+                "id": 788967,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:30:00+00:00",
+                "timestamp": 1634902200,
+                "periods": {
+                    "first": 1634902200,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": null,
+                    "city": null
+                },
+                "status": {
+                    "long": "First Half",
+                    "short": "1H",
+                    "elapsed": 28
+                }
+            },
+            "league": {
+                "id": 496,
+                "name": "Liga Alef",
+                "country": "Israel",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/496.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/il.svg",
+                "season": 2021,
+                "round": "North - 7"
+            },
+            "teams": {
+                "home": {
+                    "id": 4502,
+                    "name": "Ironi Nesher",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/4502.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 6336,
+                    "name": "Tzeirei Kafr Kanna",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6336.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 1,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 3,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6336,
+                        "name": "Tzeirei Kafr Kanna",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6336.png"
+                    },
+                    "player": {
+                        "id": 110925,
+                        "name": "S. Armeli"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 19,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 4502,
+                        "name": "Ironi Nesher",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/4502.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 741588,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T10:30:00+00:00",
+                "timestamp": 1634898600,
+                "periods": {
+                    "first": 1634898600,
+                    "second": 1634902200
+                },
+                "venue": {
+                    "id": 3224,
+                    "name": "Stadion Surkhon",
+                    "city": "Termez"
+                },
+                "status": {
+                    "long": "Second Half",
+                    "short": "2H",
+                    "elapsed": 72
+                }
+            },
+            "league": {
+                "id": 369,
+                "name": "Super League",
+                "country": "Uzbekistan",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/369.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/uz.svg",
+                "season": 2021,
+                "round": "Regular Season - 23"
+            },
+            "teams": {
+                "home": {
+                    "id": 4225,
+                    "name": "Surkhon",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/4225.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 4221,
+                    "name": "Qizilqum",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/4221.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 46,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 4221,
+                        "name": "Qizilqum",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/4221.png"
+                    },
+                    "player": {
+                        "id": 73793,
+                        "name": "B. Sadullaev"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": "J. Khasanov"
+                    },
+                    "type": "subst",
+                    "detail": "Substitution 1",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 55,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 4225,
+                        "name": "Surkhon",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/4225.png"
+                    },
+                    "player": {
+                        "id": 103619,
+                        "name": "J. Kholturaev"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 70,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 4221,
+                        "name": "Qizilqum",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/4221.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Card",
+                    "detail": "Yellow Card",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 788658,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T10:45:00+00:00",
+                "timestamp": 1634899500,
+                "periods": {
+                    "first": 1634899500,
+                    "second": 1634903100
+                },
+                "venue": {
+                    "id": null,
+                    "name": null,
+                    "city": null
+                },
+                "status": {
+                    "long": "Second Half",
+                    "short": "2H",
+                    "elapsed": 55
+                }
+            },
+            "league": {
+                "id": 496,
+                "name": "Liga Alef",
+                "country": "Israel",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/496.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/il.svg",
+                "season": 2021,
+                "round": "South - 7"
+            },
+            "teams": {
+                "home": {
+                    "id": 6142,
+                    "name": "Dimona",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6142.png",
+                    "winner": false
+                },
+                "away": {
+                    "id": 6192,
+                    "name": "Maccabi Kabilio Jaffa",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6192.png",
+                    "winner": true
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 41,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6192,
+                        "name": "Maccabi Kabilio Jaffa",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6192.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": "B. Rozilyo"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 788662,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T10:50:00+00:00",
+                "timestamp": 1634899800,
+                "periods": {
+                    "first": 1634899800,
+                    "second": 1634903400
+                },
+                "venue": {
+                    "id": null,
+                    "name": null,
+                    "city": null
+                },
+                "status": {
+                    "long": "Second Half",
+                    "short": "2H",
+                    "elapsed": 50
+                }
+            },
+            "league": {
+                "id": 496,
+                "name": "Liga Alef",
+                "country": "Israel",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/496.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/il.svg",
+                "season": 2021,
+                "round": "South - 7"
+            },
+            "teams": {
+                "home": {
+                    "id": 6171,
+                    "name": "Holon Yermiyahu",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6171.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 6178,
+                    "name": "Ironi Kuseife",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6178.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 4,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 4,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 12,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6171,
+                        "name": "Holon Yermiyahu",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6171.png"
+                    },
+                    "player": {
+                        "id": 111379,
+                        "name": "O. Raly"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 26,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6171,
+                        "name": "Holon Yermiyahu",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6171.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": "G. Assulin"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 34,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6178,
+                        "name": "Ironi Kuseife",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6178.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 37,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6171,
+                        "name": "Holon Yermiyahu",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6171.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": "A. Radai"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 45,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6171,
+                        "name": "Holon Yermiyahu",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6171.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": "G. Assulin"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 683916,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": null,
+                    "city": null
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 562,
+                "name": "Reserve League",
+                "country": "Belarus",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/562.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/by.svg",
+                "season": 2021,
+                "round": "Regular Season - 27"
+            },
+            "teams": {
+                "home": {
+                    "id": 11645,
+                    "name": "Dinamo Brest Res.",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/11645.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 11650,
+                    "name": "Isloch Res.",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/11650.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 1,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 17,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 11645,
+                        "name": "Dinamo Brest Res.",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/11645.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 740684,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": "Stadion Oktyabr'",
+                    "city": "Moskva"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 238,
+                "name": "Youth Championship",
+                "country": "Russia",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/238.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/ru.svg",
+                "season": 2021,
+                "round": "Regular Season - 13"
+            },
+            "teams": {
+                "home": {
+                    "id": 7951,
+                    "name": "CSKA Moskva U19",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/7951.png",
+                    "winner": false
+                },
+                "away": {
+                    "id": 16594,
+                    "name": "Dinamo Moskva U19",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/16594.png",
+                    "winner": true
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 35,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 16594,
+                        "name": "Dinamo Moskva U19",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/16594.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 740685,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": 11920,
+                    "name": "Futbol'noe pole 4 Akademiya Spartak im. F. Cherenkova",
+                    "city": "Moskva"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 238,
+                "name": "Youth Championship",
+                "country": "Russia",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/238.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/ru.svg",
+                "season": 2021,
+                "round": "Regular Season - 13"
+            },
+            "teams": {
+                "home": {
+                    "id": 7996,
+                    "name": "Spartak Moskva U19",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/7996.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 15175,
+                    "name": "Akademiya Konoplev U20",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/15175.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 2,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 2,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 7,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 7996,
+                        "name": "Spartak Moskva U19",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/7996.png"
+                    },
+                    "player": {
+                        "id": 269581,
+                        "name": "I. Detenyshev"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 30,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 7996,
+                        "name": "Spartak Moskva U19",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/7996.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": "D. Kurosev"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 44,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 15175,
+                        "name": "Akademiya Konoplev U20",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/15175.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 740690,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": "Stadion im. Sultana Bilimkhanova",
+                    "city": "Groznyi"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 238,
+                "name": "Youth Championship",
+                "country": "Russia",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/238.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/ru.svg",
+                "season": 2021,
+                "round": "Regular Season - 13"
+            },
+            "teams": {
+                "home": {
+                    "id": 9217,
+                    "name": "Akhmat Grozny U20",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/9217.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 16595,
+                    "name": "Rostov U19",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/16595.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 2,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 2,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 12,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 16595,
+                        "name": "Rostov U19",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/16595.png"
+                    },
+                    "player": {
+                        "id": 162727,
+                        "name": "M. Turishchev"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 25,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 9217,
+                        "name": "Akhmat Grozny U20",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/9217.png"
+                    },
+                    "player": {
+                        "id": 286546,
+                        "name": "I. Alsultanov"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 37,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 9217,
+                        "name": "Akhmat Grozny U20",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/9217.png"
+                    },
+                    "player": {
+                        "id": 329267,
+                        "name": "T. Ibishev"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 742739,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": 4655,
+                    "name": "Charentsavan City Stadium",
+                    "city": "Charentsavan"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 342,
+                "name": "Premier League",
+                "country": "Armenia",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/342.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/am.svg",
+                "season": 2021,
+                "round": "Regular Season - 10"
+            },
+            "teams": {
+                "home": {
+                    "id": 6286,
+                    "name": "Van",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6286.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 6284,
+                    "name": "Sevan",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6284.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 17,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6284,
+                        "name": "Sevan",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6284.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Card",
+                    "detail": "Yellow Card",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 21,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6286,
+                        "name": "Van",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6286.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Card",
+                    "detail": "Yellow Card",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 23,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6286,
+                        "name": "Van",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6286.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Card",
+                    "detail": "Yellow Card",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 749001,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": "H\u0159i\u0161t\u011b Ba\u017eantnice",
+                    "city": "Karvin\u00e1"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 668,
+                "name": "1. Liga U19",
+                "country": "Czech-Republic",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/668.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/cz.svg",
+                "season": 2021,
+                "round": "Regular Season - 13"
+            },
+            "teams": {
+                "home": {
+                    "id": 14832,
+                    "name": "Karvin\u00e1 U19",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/14832.png",
+                    "winner": false
+                },
+                "away": {
+                    "id": 14830,
+                    "name": "Ban\u00edk Ostrava U19",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/14830.png",
+                    "winner": true
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 2
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 2
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 1,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 14830,
+                        "name": "Ban\u00edk Ostrava U19",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/14830.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 3,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 14830,
+                        "name": "Ban\u00edk Ostrava U19",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/14830.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 751215,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": "Elaz\u0131\u011f Do\u011fukent Stadyumu",
+                    "city": "Elaz\u0131\u011f"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 553,
+                "name": "3. Lig - Group 2",
+                "country": "Turkey",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/553.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/tr.svg",
+                "season": 2021,
+                "round": "Group 2 - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 7400,
+                    "name": "Elaz\u0131\u011f Belediyespor FK",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/7400.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 7426,
+                    "name": "Yeni Orduspor",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/7426.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": []
+        },
+        {
+            "fixture": {
+                "id": 775007,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": "Stadionul CPTF",
+                    "city": "Chi\u015fin\u0103u"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 394,
+                "name": "Divizia Na\u021bional\u0103",
+                "country": "Moldova",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/394.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/md.svg",
+                "season": 2021,
+                "round": "Regular Season - 15"
+            },
+            "teams": {
+                "home": {
+                    "id": 4633,
+                    "name": "Zimbru",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/4633.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 4631,
+                    "name": "Dinamo-Auto",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/4631.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 1,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 9,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 4633,
+                        "name": "Zimbru",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/4633.png"
+                    },
+                    "player": {
+                        "id": 56068,
+                        "name": "E. Cociuc"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Penalty",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 44,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 4631,
+                        "name": "Dinamo-Auto",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/4631.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 45,
+                        "extra": 1
+                    },
+                    "team": {
+                        "id": 4631,
+                        "name": "Dinamo-Auto",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/4631.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Card",
+                    "detail": "Yellow Card",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 788656,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": null,
+                    "city": null
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 496,
+                "name": "Liga Alef",
+                "country": "Israel",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/496.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/il.svg",
+                "season": 2021,
+                "round": "South - 7"
+            },
+            "teams": {
+                "home": {
+                    "id": 4498,
+                    "name": "Hapoel Marmorek",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/4498.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 6147,
+                    "name": "Hapoel Bik'at HaYarden",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6147.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 1,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 9,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 4498,
+                        "name": "Hapoel Marmorek",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/4498.png"
+                    },
+                    "player": {
+                        "id": 75833,
+                        "name": "D. Nicolaievsky"
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 788963,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": null,
+                    "city": null
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 496,
+                "name": "Liga Alef",
+                "country": "Israel",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/496.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/il.svg",
+                "season": 2021,
+                "round": "North - 7"
+            },
+            "teams": {
+                "home": {
+                    "id": 6203,
+                    "name": "Robi Shapira",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6203.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 6199,
+                    "name": "Maccabi Tzur Shalom",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6199.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 1,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 42,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6203,
+                        "name": "Robi Shapira",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6203.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 790895,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": 11631,
+                    "name": "Yessentuki Arena",
+                    "city": "Yessentuki"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 651,
+                "name": "FNL 2 - Group 1",
+                "country": "Russia",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/651.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/ru.svg",
+                "season": 2021,
+                "round": "Group 1 - 15"
+            },
+            "teams": {
+                "home": {
+                    "id": 14115,
+                    "name": "Essentuki",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/14115.png",
+                    "winner": false
+                },
+                "away": {
+                    "id": 6796,
+                    "name": "Dinamo Stavropol",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/6796.png",
+                    "winner": true
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 45,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 6796,
+                        "name": "Dinamo Stavropol",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/6796.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Goal",
+                    "detail": "Normal Goal",
+                    "comments": null
+                }
+            ]
+        },
+        {
+            "fixture": {
+                "id": 799385,
+                "referee": null,
+                "timezone": "UTC",
+                "date": "2021-10-22T11:00:00+00:00",
+                "timestamp": 1634900400,
+                "periods": {
+                    "first": 1634900400,
+                    "second": null
+                },
+                "venue": {
+                    "id": null,
+                    "name": "Astana Arena",
+                    "city": "Nur-Sultan"
+                },
+                "status": {
+                    "long": "Halftime",
+                    "short": "HT",
+                    "elapsed": 45
+                }
+            },
+            "league": {
+                "id": 880,
+                "name": "World Cup - Women - Qualification Europe",
+                "country": "World",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/880.png",
+                "flag": null,
+                "season": 2021,
+                "round": "Group Stage - 8"
+            },
+            "teams": {
+                "home": {
+                    "id": 1747,
+                    "name": "Kazakhstan W",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/1747.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 1765,
+                    "name": "Greece W",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/1765.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 0,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": null,
+                    "away": null
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            },
+            "events": [
+                {
+                    "time": {
+                        "elapsed": 40,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 1747,
+                        "name": "Kazakhstan W",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/1747.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Card",
+                    "detail": "Yellow Card",
+                    "comments": null
+                },
+                {
+                    "time": {
+                        "elapsed": 40,
+                        "extra": null
+                    },
+                    "team": {
+                        "id": 1765,
+                        "name": "Greece W",
+                        "logo": "https:\/\/media.api-sports.io\/football\/teams\/1765.png"
+                    },
+                    "player": {
+                        "id": null,
+                        "name": null
+                    },
+                    "assist": {
+                        "id": null,
+                        "name": null
+                    },
+                    "type": "Card",
+                    "detail": "Yellow Card",
+                    "comments": null
+                }
+            ]
+        }
+    ]
+}

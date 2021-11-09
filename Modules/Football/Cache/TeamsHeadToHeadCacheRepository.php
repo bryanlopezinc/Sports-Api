@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Module\Football\Cache;
+
+use App\Utils\TimeToLive;
+use Module\Football\ValueObjects\TeamId;
+use Illuminate\Contracts\Cache\Repository;
+use Module\Football\ValueObjects\TeamsHeadToHead;
+use Module\Football\Contracts\Cache\TeamsHeadToHeadCacheInterface;
+
+final class TeamsHeadToHeadCacheRepository implements TeamsHeadToHeadCacheInterface
+{
+    public function __construct(private Repository $repository)
+    {
+    }
+
+    public function has(TeamId $teamOne, TeamId $teamTwo): bool
+    {
+        return $this->repository->has($this->prepareKey($teamOne, $teamTwo));
+    }
+
+    private function prepareKey(TeamId $teamOne, TeamId $teamTwo): string
+    {
+        //Ids are always stored in the format high:low
+        // to ensure that results are same regardless of the order
+        // the team ids are parsed.
+        $key = collect([$teamOne->toInt(), $teamTwo->toInt()])->sortDesc()->implode(':');
+
+        return new CachePrefix($this) . $key;
+    }
+
+    public function put(TeamsHeadToHead $headToHead, TimeToLive $timeToLive): bool
+    {
+        return $this->repository->put(
+            $this->prepareKey($headToHead->getTeamOneId(), $headToHead->getTeamTwoId()),
+            $headToHead,
+            $timeToLive->ttl()
+        );
+    }
+
+    public function get(TeamId $teamOne, TeamId $teamTwo): TeamsHeadToHead
+    {
+        return $this->repository->get($this->prepareKey($teamOne, $teamTwo), fn () => throw new \App\Exceptions\ItemNotInCacheException);
+    }
+}

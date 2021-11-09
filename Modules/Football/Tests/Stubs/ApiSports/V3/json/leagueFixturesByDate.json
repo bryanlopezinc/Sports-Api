@@ -1,0 +1,424 @@
+{
+    "get": "fixtures",
+    "parameters": {
+        "date": "2021-10-23",
+        "league": "39",
+        "season": "2021"
+    },
+    "errors": [],
+    "results": 6,
+    "paging": {
+        "current": 1,
+        "total": 1
+    },
+    "response": [
+        {
+            "fixture": {
+                "id": 710638,
+                "referee": "Kevin Friend, England",
+                "timezone": "UTC",
+                "date": "2021-10-23T16:30:00+00:00",
+                "timestamp": 1635006600,
+                "periods": {
+                    "first": 1635006600,
+                    "second": 1635010200
+                },
+                "venue": {
+                    "id": 508,
+                    "name": "The American Express Community Stadium",
+                    "city": "Falmer, East Sussex"
+                },
+                "status": {
+                    "long": "Match Finished",
+                    "short": "FT",
+                    "elapsed": 90
+                }
+            },
+            "league": {
+                "id": 39,
+                "name": "Premier League",
+                "country": "England",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/39.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/gb.svg",
+                "season": 2021,
+                "round": "Regular Season - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 51,
+                    "name": "Brighton",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/51.png",
+                    "winner": false
+                },
+                "away": {
+                    "id": 50,
+                    "name": "Manchester City",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/50.png",
+                    "winner": true
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 4
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 3
+                },
+                "fulltime": {
+                    "home": 1,
+                    "away": 4
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            }
+        },
+        {
+            "fixture": {
+                "id": 710639,
+                "referee": "Andy Madley, England",
+                "timezone": "UTC",
+                "date": "2021-10-23T11:30:00+00:00",
+                "timestamp": 1634988600,
+                "periods": {
+                    "first": 1634988600,
+                    "second": 1634992200
+                },
+                "venue": {
+                    "id": 519,
+                    "name": "Stamford Bridge",
+                    "city": "London"
+                },
+                "status": {
+                    "long": "Match Finished",
+                    "short": "FT",
+                    "elapsed": 90
+                }
+            },
+            "league": {
+                "id": 39,
+                "name": "Premier League",
+                "country": "England",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/39.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/gb.svg",
+                "season": 2021,
+                "round": "Regular Season - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 49,
+                    "name": "Chelsea",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/49.png",
+                    "winner": true
+                },
+                "away": {
+                    "id": 71,
+                    "name": "Norwich",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/71.png",
+                    "winner": false
+                }
+            },
+            "goals": {
+                "home": 7,
+                "away": 0
+            },
+            "score": {
+                "halftime": {
+                    "home": 3,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": 7,
+                    "away": 0
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            }
+        },
+        {
+            "fixture": {
+                "id": 710640,
+                "referee": "England Darren, England",
+                "timezone": "UTC",
+                "date": "2021-10-23T14:00:00+00:00",
+                "timestamp": 1634997600,
+                "periods": {
+                    "first": 1634997600,
+                    "second": 1635001200
+                },
+                "venue": {
+                    "id": 525,
+                    "name": "Selhurst Park",
+                    "city": "London"
+                },
+                "status": {
+                    "long": "Match Finished",
+                    "short": "FT",
+                    "elapsed": 90
+                }
+            },
+            "league": {
+                "id": 39,
+                "name": "Premier League",
+                "country": "England",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/39.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/gb.svg",
+                "season": 2021,
+                "round": "Regular Season - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 52,
+                    "name": "Crystal Palace",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/52.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 34,
+                    "name": "Newcastle",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/34.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 0
+                },
+                "fulltime": {
+                    "home": 1,
+                    "away": 1
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            }
+        },
+        {
+            "fixture": {
+                "id": 710641,
+                "referee": "Graham Scott, England",
+                "timezone": "UTC",
+                "date": "2021-10-23T14:00:00+00:00",
+                "timestamp": 1634997600,
+                "periods": {
+                    "first": 1634997600,
+                    "second": 1635001200
+                },
+                "venue": {
+                    "id": 8560,
+                    "name": "Goodison Park",
+                    "city": "Liverpool"
+                },
+                "status": {
+                    "long": "Match Finished",
+                    "short": "FT",
+                    "elapsed": 90
+                }
+            },
+            "league": {
+                "id": 39,
+                "name": "Premier League",
+                "country": "England",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/39.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/gb.svg",
+                "season": 2021,
+                "round": "Regular Season - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 45,
+                    "name": "Everton",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/45.png",
+                    "winner": false
+                },
+                "away": {
+                    "id": 38,
+                    "name": "Watford",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/38.png",
+                    "winner": true
+                }
+            },
+            "goals": {
+                "home": 2,
+                "away": 5
+            },
+            "score": {
+                "halftime": {
+                    "home": 1,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": 2,
+                    "away": 5
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            }
+        },
+        {
+            "fixture": {
+                "id": 710642,
+                "referee": "Robert Jones, England",
+                "timezone": "UTC",
+                "date": "2021-10-23T14:00:00+00:00",
+                "timestamp": 1634997600,
+                "periods": {
+                    "first": 1634997600,
+                    "second": 1635001200
+                },
+                "venue": {
+                    "id": 546,
+                    "name": "Elland Road",
+                    "city": "Leeds, West Yorkshire"
+                },
+                "status": {
+                    "long": "Match Finished",
+                    "short": "FT",
+                    "elapsed": 90
+                }
+            },
+            "league": {
+                "id": 39,
+                "name": "Premier League",
+                "country": "England",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/39.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/gb.svg",
+                "season": 2021,
+                "round": "Regular Season - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 63,
+                    "name": "Leeds",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/63.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 39,
+                    "name": "Wolves",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/39.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 1,
+                "away": 1
+            },
+            "score": {
+                "halftime": {
+                    "home": 0,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": 1,
+                    "away": 1
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            }
+        },
+        {
+            "fixture": {
+                "id": 710644,
+                "referee": "Chris Kavanagh, England",
+                "timezone": "UTC",
+                "date": "2021-10-23T14:00:00+00:00",
+                "timestamp": 1634997600,
+                "periods": {
+                    "first": 1634997600,
+                    "second": 1635001200
+                },
+                "venue": {
+                    "id": 585,
+                    "name": "St. Mary's Stadium",
+                    "city": "Southampton, Hampshire"
+                },
+                "status": {
+                    "long": "Match Finished",
+                    "short": "FT",
+                    "elapsed": 90
+                }
+            },
+            "league": {
+                "id": 39,
+                "name": "Premier League",
+                "country": "England",
+                "logo": "https:\/\/media.api-sports.io\/football\/leagues\/39.png",
+                "flag": "https:\/\/media.api-sports.io\/flags\/gb.svg",
+                "season": 2021,
+                "round": "Regular Season - 9"
+            },
+            "teams": {
+                "home": {
+                    "id": 41,
+                    "name": "Southampton",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/41.png",
+                    "winner": null
+                },
+                "away": {
+                    "id": 44,
+                    "name": "Burnley",
+                    "logo": "https:\/\/media.api-sports.io\/football\/teams\/44.png",
+                    "winner": null
+                }
+            },
+            "goals": {
+                "home": 2,
+                "away": 2
+            },
+            "score": {
+                "halftime": {
+                    "home": 1,
+                    "away": 1
+                },
+                "fulltime": {
+                    "home": 2,
+                    "away": 2
+                },
+                "extratime": {
+                    "home": null,
+                    "away": null
+                },
+                "penalty": {
+                    "home": null,
+                    "away": null
+                }
+            }
+        }
+    ]
+}

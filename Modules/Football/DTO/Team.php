@@ -1,0 +1,67 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Module\Football\DTO;
+
+use App\ValueObjects\Url;
+use App\ValueObjects\Country;
+use App\DTO\DataTransferObject;
+use Module\Football\ValueObjects\TeamId;
+use Module\Football\ValueObjects\TeamYearFounded;
+
+final class Team extends DataTransferObject
+{
+    protected TeamId $id;
+    protected Url $logo;
+    protected TeamYearFounded $founded;
+    protected Country $country;
+    protected Venue $venue;
+    protected string $name;
+    protected bool $national;
+    protected bool $has_year_founded_info;
+
+    public function getId(): TeamId
+    {
+        return $this->id;
+    }
+
+    public function getLogoUrl(): Url
+    {
+        return $this->logo;
+    }
+
+    public function getVenue(): Venue
+    {
+        return $this->venue;
+    }
+
+    /**
+     * The yearFounded is not always available for all fixtures.
+     * Ensure yearFounded is available by using the hasYearFoundedInfo method
+     */
+    public function getYearFounded(): TeamYearFounded
+    {
+        return $this->founded;
+    }
+
+    public function hasYearFoundedInfo(): bool
+    {
+        return $this->has_year_founded_info;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function isNationalTeam(): bool
+    {
+        return $this->national;
+    }
+
+    public function getCountry(): Country
+    {
+        return $this->country;
+    }
+}
