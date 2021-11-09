@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Football\Tests\Feature;
+namespace Module\Football\Tests\Unit\Clients\ApiSports\V3;
 
 use App\ValueObjects\Date;
 use Tests\TestCase;
