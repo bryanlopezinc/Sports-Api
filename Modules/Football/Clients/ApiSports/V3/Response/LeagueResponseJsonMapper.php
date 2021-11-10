@@ -96,6 +96,7 @@ final class LeagueResponseJsonMapper extends Response
         return $this->leagueCoverageBuilder
             ->setSupportsStatistics($response->get('fixtures.statistics_fixtures'))
             ->supportsLineUp($response->get('fixtures.lineups'))
+            ->supportsTopScorers($response->get('top_scorers'))
             ->supportsEvents($response->get('fixtures.events'))
             ->build();
     }

@@ -18,6 +18,11 @@ final class LeagueCoverageBuilder extends Builder
         return $this->set('coversEvents', $events);
     }
 
+    public function supportsTopScorers(bool $supportsTopScorers): self
+    {
+        return $this->set('coverTopScorers', $supportsTopScorers);
+    }
+
     public function supportsLineUp(bool $lineUp): self
     {
         $this->set('coverslineUp', $lineUp);

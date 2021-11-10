@@ -187,6 +187,7 @@ return [
         Module\Football\Providers\Cache\TeamsHeadToHeadCacheServiceProvider::class,
         Module\Football\Providers\Cache\FixturesStatisticsCacheServiceProvider::class,
         Module\Football\Providers\Cache\LeaguesFixturesByDateCacheServiceProvider::class,
+        Module\Football\Providers\Cache\LeaguesTopScorersCacheServiceProvider::class,
 
         //Football Repository service providers
         Module\Football\Providers\Repository\FetchFixtureEventsRepositoryServiceProvider::class,
@@ -201,6 +202,7 @@ return [
         Module\Football\Providers\Repository\FetchFixturesByDateRepositoryServiceProvider::class,
         Module\Football\Providers\Repository\FetchFixtureStatisticsRepositoryServiceProvider::class,
         Module\Football\Providers\Repository\FetchLeagueFixturesByDateRepositoryServiceProvider::class,
+        Module\Football\Providers\Repository\FetchLeaguesTopScorersRepositoryServiceProvider::class,
 
         Module\Football\Providers\RouteServiceProvider::class,
         Module\Football\Providers\ConfigServiceProvider::class,

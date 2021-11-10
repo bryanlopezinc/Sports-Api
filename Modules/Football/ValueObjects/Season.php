@@ -22,7 +22,7 @@ final class Season implements JsonSerializable
 
     public static function fromString(string $season): static
     {
-        return new static((int) $season);
+        return new self((int) $season);
     }
 
     protected function validate(): void

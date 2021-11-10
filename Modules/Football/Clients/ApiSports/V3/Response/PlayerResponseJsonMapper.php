@@ -35,7 +35,7 @@ final class PlayerResponseJsonMapper extends Response
             ->when($this->has('number'), fn (PlayerBuilder $b) => $b->setNumberOnShirt($this->get('number')))
             ->when($this->has('photo'), fn (PlayerBuilder $b) => $b->setPhotoUrl($this->get('photo')))
             ->when($this->has('nationality'), fn (PlayerBuilder $b) => $b->setNationality(new CountryNameNormalizerUsingSimilarText($this->get('nationality'))))
-            ->when($this->has('height'), fn (PlayerBuilder $b) => $b->setHeight($this->get('height')))
+            ->when($this->has('height'), fn (PlayerBuilder $b) => $b->setHeight(floatval($this->get('height'))))
             ->build();
     }
 }

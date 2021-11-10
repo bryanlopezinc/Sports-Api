@@ -38,6 +38,11 @@ return [
         'ttlWhenHasFixtureInProgress' => 10
     ],
 
+    'leaguesTopScorers' => [
+        'driver'        => env('CACHE_DRIVER'),
+        'defaultTtl'    => 180 //Default ttl (in minutes) a league top scorers should be cached
+    ],
+
     'fixtures' => [
         'driver'    => env('CACHE_DRIVER'),
         'ttl'       => [

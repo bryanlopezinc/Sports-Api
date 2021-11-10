@@ -23,6 +23,7 @@ final class CachePrefix
             LeaguesFixturesByDateCacheRepository::class => 's:L-FD:',
             LeaguesCacheRepository::class               => 's:L:',
             LeaguesSeasonsCacheRepository::class        => 's:L-S:',
+            LeaguesTopScorersCacheRepository::class     => 's:L-TS',
             LeagueStandingCacheRepository::class        => 's:L-SD:',
             TeamsCacheRepository::class                 => 's:T:',
             TeamSquadCacheRepository::class             => 's:T-SQ:',

@@ -46,7 +46,8 @@ abstract class BaseCollection implements Arrayable, Countable, IteratorAggregate
             if (!$this->isValid($item)) {
                 throw new InvalidCollectionItemException($index, static::class, $item);
             }
-        })->whenNotEmpty(fn () => $this->runClassAfterMakingValidatorAttributes());
+        })
+        ->whenNotEmpty(fn () => $this->runClassAfterMakingValidatorAttributes());
     }
 
     protected function setItems(mixed $items): void

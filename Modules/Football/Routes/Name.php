@@ -12,6 +12,7 @@ final class Name
     public const FETCH_TEAM_HEAD_TO_HEAD           = 'team.head2head';
     public const FETCH_LEAGUE                      = 'league.find';
     public const FETCH_LEAGUE_STANDING             = 'league.table';
+    public const FETCH_LEAGUE_TOP_SCORERS          = 'league.topScoreres';
     public const FETCH_FIXTURE                     = 'fixture.find';
     public const FETCH_FIXTURE_LINEUP              = 'fixture.lineup';
     public const FETCH_FIXTURE_STATS               = 'fixture.statistics';
