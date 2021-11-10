@@ -13,6 +13,9 @@ interface LeaguesTablesCacheInterface
 {
     public function has(LeagueId $leagueId, Season $season): bool;
 
+    /**
+     * @throws \Module\Football\Exceptions\Cache\CannotCacheEmptyLeagueTableException
+     */
     public function cache(LeagueTable $leagueTable, Season $season, TimeToLive $ttl): bool;
 
     /**

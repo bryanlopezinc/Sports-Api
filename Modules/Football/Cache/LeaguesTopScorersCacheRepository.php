@@ -11,7 +11,7 @@ use Module\Football\ValueObjects\LeagueId;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\LeagueTopScorersCollection;
 use Module\Football\Contracts\Cache\LeaguesTopScorersCacheInterface;
-use Module\Football\Cache\Exceptions\CannotCacheEmptyTopScorersException;
+use Module\Football\Exceptions\Cache\CannotCacheEmptyTopScorersException;
 
 final class LeaguesTopScorersCacheRepository implements LeaguesTopScorersCacheInterface
 {

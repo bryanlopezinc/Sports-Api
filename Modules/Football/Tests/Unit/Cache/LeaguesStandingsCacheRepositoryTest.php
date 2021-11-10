@@ -12,7 +12,7 @@ use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\LeagueTable;
 use Module\Football\Factories\LeagueStandingFactory;
 use Module\Football\Cache\LeagueStandingCacheRepository;
-use Module\Football\Cache\Exceptions\CannotCacheEmptyLeagueTableException;
+use Module\Football\Exceptions\Cache\CannotCacheEmptyLeagueTableException;
 
 class LeaguesStandingsCacheRepositoryTest extends TestCase
 {

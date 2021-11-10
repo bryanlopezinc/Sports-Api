@@ -10,7 +10,7 @@ use Illuminate\Contracts\Cache\Repository;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\PlayersCollection;
 use Module\Football\Contracts\Cache\TeamsSquadsCacheInterface;
-use Module\Football\Cache\Exceptions\CannotCacheEmptyTeamSquadException;
+use Module\Football\Exceptions\Cache\CannotCacheEmptyTeamSquadException;
 
 final class TeamSquadCacheRepository implements TeamsSquadsCacheInterface
 {

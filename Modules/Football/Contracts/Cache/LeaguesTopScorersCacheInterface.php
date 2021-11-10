@@ -14,7 +14,7 @@ interface LeaguesTopScorersCacheInterface
     public function has(LeagueId $leagueId, Season $season): bool;
 
     /**
-     * @throws \Module\Football\Cache\Exceptions\CannotCacheEmptyTopScorersException
+     * @throws \Module\Football\Exceptions\Cache\CannotCacheEmptyTopScorersException
      */
     public function cache(LeagueId $leagueId, Season $season, LeagueTopScorersCollection $collection, TimeToLive $ttl): bool;
 

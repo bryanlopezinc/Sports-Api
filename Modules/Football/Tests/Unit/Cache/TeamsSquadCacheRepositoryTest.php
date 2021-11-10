@@ -12,7 +12,7 @@ use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Factories\PlayerFactory;
 use Module\Football\Collections\PlayersCollection;
 use Module\Football\Cache\TeamSquadCacheRepository;
-use Module\Football\Cache\Exceptions\CannotCacheEmptyTeamSquadException;
+use Module\Football\Exceptions\Cache\CannotCacheEmptyTeamSquadException;
 
 class TeamsSquadCacheRepositoryTest extends TestCase
 {

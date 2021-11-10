@@ -8,7 +8,7 @@ use App\Utils\TimeToLive;
 use Module\Football\ValueObjects\TeamId;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\PlayersCollection;
-use Module\Football\Cache\Exceptions\CannotCacheEmptyTeamSquadException;
+use Module\Football\Exceptions\Cache\CannotCacheEmptyTeamSquadException;
 
 interface TeamsSquadsCacheInterface
 {

@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Module\Football\Cache;
 
 use App\Utils\TimeToLive;
-use Module\Football\DTO\LeagueStanding;
 use Module\Football\ValueObjects\Season;
 use Illuminate\Contracts\Cache\Repository;
 use Module\Football\ValueObjects\LeagueId;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\LeagueTable;
 use Module\Football\Contracts\Cache\LeaguesTablesCacheInterface;
-use Module\Football\Cache\Exceptions\CannotCacheEmptyLeagueTableException;
+use Module\Football\Exceptions\Cache\CannotCacheEmptyLeagueTableException;
 
 final class LeagueStandingCacheRepository implements LeaguesTablesCacheInterface
 {

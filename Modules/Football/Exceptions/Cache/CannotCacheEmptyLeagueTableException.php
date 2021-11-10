@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Football\Cache\Exceptions;
+namespace Module\Football\Exceptions\Cache;
 
 use Exception;
 
