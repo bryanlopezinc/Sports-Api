@@ -15,7 +15,7 @@ final class LeagueSeason extends DataTransferObject
     protected bool $isCurrentSeason;
     protected LeagueCoverage $coverage;
 
-    public function getCovergae(): LeagueCoverage
+    public function getCoverage(): LeagueCoverage
     {
         return $this->coverage;
     }

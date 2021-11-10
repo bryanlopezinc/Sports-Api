@@ -50,7 +50,7 @@ final class LeagueResource extends JsonResource
     private function topScorersLink(): MissingValue|JsonSerializable
     {
         /** @var LeagueCoverage|false */
-        $season = (new RescueInitializationException(false))->rescue(fn () => $this->league->getSeason()->getCovergae());
+        $season = (new RescueInitializationException(false))->rescue(fn () => $this->league->getSeason()->getCoverage());
 
         if ($season === false) {
             return new MissingValue;
@@ -74,11 +74,11 @@ final class LeagueResource extends JsonResource
             'end'               => $leagueSeason->getDuration()->endDate()->toCarbon()->toDateString(),
             'is_current_season' => $leagueSeason->isCurrentSeason(),
             'coverage'  => [
-                'line_up'           => $leagueSeason->getCovergae()->coverslineUp(),
-                'events'            => $leagueSeason->getCovergae()->coversEvents(),
-                'stats'             => $leagueSeason->getCovergae()->coversStatistics(),
-                'top_scorers'       => $leagueSeason->getCovergae()->coversTopScorers()
-            ],
+                'line_up'           => $leagueSeason->getCoverage()->coverslineUp(),
+                'events'            => $leagueSeason->getCoverage()->coversEvents(),
+                'stats'             => $leagueSeason->getCoverage()->coversStatistics(),
+                'top_scorers'       => $leagueSeason->getCoverage()->coversTopScorers()
+            ]
         ];
     }
 }

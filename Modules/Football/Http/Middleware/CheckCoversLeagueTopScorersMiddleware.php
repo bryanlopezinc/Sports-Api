@@ -25,7 +25,7 @@ final class CheckCoversLeagueTopScorersMiddleware
     {
         $league = $this->service->findByIdAndSeason(LeagueId::fromRequest($request), Season::fromString($request->input('season')));
 
-        if (!$league->getSeason()->getCovergae()->coversTopScorers()) {
+        if (!$league->getSeason()->getCoverage()->coversTopScorers()) {
             throw new HttpException;
         }
 

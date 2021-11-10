@@ -24,7 +24,7 @@ final class CheckCoversFixtureLineUpMiddleware
     {
         $fixture = $this->service->fetchFixture(FixtureId::fromRequest($request));
 
-        $coversLineUps = $fixture->league()->getSeason()->getCovergae()->coverslineUp();
+        $coversLineUps = $fixture->league()->getSeason()->getCoverage()->coverslineUp();
 
         if (!$coversLineUps) {
             throw new FixtureLineUpNotSupportedHttpException;

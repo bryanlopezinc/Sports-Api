@@ -35,7 +35,7 @@ final class FixtureResource extends JsonResource
 
         $rescuer = new RescueInitializationException(new MissingValue);
 
-        $coverage = fn () => $this->fixture->league()->getSeason()->getCovergae();
+        $coverage = fn () => $this->fixture->league()->getSeason()->getCoverage();
 
         return [
             'type'              => 'football_fixture',

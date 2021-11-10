@@ -24,7 +24,7 @@ final class CheckCoversFixtureStatisticsMiddleware
     {
         $fixture = $this->service->fetchFixture(FixtureId::fromRequest($request));
 
-        $coversLineUps = $fixture->league()->getSeason()->getCovergae()->coversStatistics();
+        $coversLineUps = $fixture->league()->getSeason()->getCoverage()->coversStatistics();
 
         if (!$coversLineUps) {
             throw new FixtureStatisticsNotSupportedForLeagueSeasonHttpException;

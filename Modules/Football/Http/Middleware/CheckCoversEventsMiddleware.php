@@ -24,7 +24,7 @@ final class CheckCoversEventsMiddleware
     {
         $fixture = $this->service->fetchFixture(FixtureId::fromRequest($request));
 
-        $coversEvents = $fixture->league()->getSeason()->getCovergae()->coversEvents();
+        $coversEvents = $fixture->league()->getSeason()->getCoverage()->coversEvents();
 
         if (!$coversEvents) {
             throw new FixtureEventsNotSupportedHttpException;
