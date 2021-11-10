@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\User\Tests\Feature;
 
 use Tests\TestCase;
+use App\Utils\Config;
 use Module\User\Routes\RouteName;
 use Illuminate\Testing\TestResponse;
 use Module\User\Factories\UserFactory;
@@ -39,7 +40,9 @@ class CreateUserTest extends TestCase
             ->assertCreated()
             ->assertJson(function (AssertableJson $assert) {
                 $assert->where('token_type', 'Bearer');
-                $assert->has('expires_in');
+                $assert->where('expires_in', function (int $expires) {
+                    return now()->addSeconds($expires)->isSameDay(now()->addDays(Config::get('user.tokens.accessTokenExpire')));
+                });
                 $assert->has('access_token');
                 $assert->has('refresh_token');
                 $assert->where('data.links.favourites', route(RouteName::AUTH_USER_FAVOURITES));

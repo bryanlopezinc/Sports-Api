@@ -207,10 +207,10 @@ return [
         Module\Football\Providers\RouteServiceProvider::class,
         Module\Football\Providers\ConfigServiceProvider::class,
 
+        Module\User\Providers\ConfigServiceProvider::class,
         Module\User\Providers\RouteServiceProvider::class,
         Module\User\Providers\ServiceProvider::class,
         Module\User\Providers\AuthServiceProvider::class,
-        Module\User\Providers\ConfigServiceProvider::class,
         Module\User\Providers\UserFavouritesRepositoryServiceProvider::class,
         Module\User\Providers\UserRepositoryServiceProvider::class,
         Module\User\Providers\UserFavouritesResourcesServiceProvider::class,
