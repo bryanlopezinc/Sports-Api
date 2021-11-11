@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Module\User\Http\Resources;
 
+use App\Utils\PaginationData;
 use Illuminate\Http\Request;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\League;
 use Module\User\UserFavouritesResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Arr;
 use Module\Football\Http\Resources\TeamResource;
 use Module\Football\Http\Resources\LeagueResource;
 
@@ -28,16 +31,14 @@ final class UserFavouritesResource extends JsonResource
         return [
             'type'          => 'user_favourites',
             'favourites'    => $this->transformFavourites(),
-            'links'         => [
-
-            ]
+            'links'         => $this->getPaginationLinks($request)
         ];
     }
 
     /**
      * @return array<mixed>
      */
-    public function transformFavourites(): array
+    private function transformFavourites(): array
     {
         return $this->collection
             ->favourites()
@@ -49,5 +50,27 @@ final class UserFavouritesResource extends JsonResource
                 };
             })
             ->all();
+    }
+
+    private function getPaginationLinks(Request $request)
+    {
+        $options = [
+            'path' => Paginator::resolveCurrentPath(),
+            'query' => Paginator::resolveQueryString()
+        ];
+
+        $perPage = $request->input('per_page', PaginationData::PER_PAGE);
+
+        $pagination = new Paginator($this->collection->favourites()->toLaravelCollection(), $perPage, options: $options);
+
+        $pagination->hasMorePagesWhen($this->collection->hasMorePages());
+
+        $links = $pagination->toArray();
+
+        $links['next_page_url'] = $this->when($links['next_page_url'] !== null, $links['next_page_url']);
+        $links['prev_page_url'] = $this->when($links['prev_page_url'] !== null, $links['prev_page_url']);
+        $links['has_more_pages'] = $this->collection->hasMorePages();
+
+        return Arr::except($links, ['data']);
     }
 }

@@ -17,7 +17,7 @@ final class UserFavouritesResponse
         return $this->favourites;
     }
 
-    private function hasMorePages(): bool
+    public function hasMorePages(): bool
     {
         return $this->hasMoreItems;
     }
