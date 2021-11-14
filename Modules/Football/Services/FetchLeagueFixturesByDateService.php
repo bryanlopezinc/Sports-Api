@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
+use App\Utils\Config;
 use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
 use Module\Football\ValueObjects\Season;
@@ -28,10 +29,6 @@ final class FetchLeagueFixturesByDateService
 
         $fixturesCollection = $this->repository->findBy($leagueId, $season, $date);
 
-        if ($fixturesCollection->isEmpty()) {
-            return $fixturesCollection;
-        }
-
         $this->cache->put($leagueId, $season, $date, $fixturesCollection, $this->determineTimeToLiveFrom($date, $fixturesCollection));
 
         return $fixturesCollection;
@@ -47,6 +44,10 @@ final class FetchLeagueFixturesByDateService
             return TimeToLive::minutes(1);
         }
 
-        return TimeToLive::minutes(5);
+        if (!$collection->hasUpcomingFixture()) {
+            return TimeToLive::minutes(minutesUntilTommorow());
+        }
+
+        return TimeToLive::minutes(Config::get('football.cache.leaguesFixturesByDate.defaultTtl'));
     }
 }

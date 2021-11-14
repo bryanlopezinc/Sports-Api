@@ -25,7 +25,8 @@ return [
     ],
 
     'leaguesFixturesByDate' => [
-        'driver'    => env('CACHE_DRIVER'),
+        'driver'        => env('CACHE_DRIVER'),
+        'defaultTtl'    => 30 //Default ttl (in minutes) a league fixtures by date should be cached
     ],
 
     'leaguesStandings' => [
