@@ -43,6 +43,11 @@ return [
         'defaultTtl'    => 180 //Default ttl (in minutes) a league top scorers should be cached
     ],
 
+    'leaguesTopAssists' => [
+        'driver'        => env('CACHE_DRIVER'),
+        'defaultTtl'    => 180 //Default ttl (in minutes) a league top assists should be cached
+    ],
+
     'fixtures' => [
         'driver'    => env('CACHE_DRIVER'),
         'ttl'       => [

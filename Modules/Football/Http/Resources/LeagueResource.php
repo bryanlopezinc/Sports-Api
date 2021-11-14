@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Http\Resources;
 
-use JsonSerializable;
 use Illuminate\Http\Request;
 use Module\Football\DTO\League;
 use Module\Football\DTO\LeagueSeason;
@@ -14,6 +13,7 @@ use App\Utils\RescueInitializationException;
 use Module\Football\Routes\FetchLeagueRoute;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\DTO\LeagueCoverage;
+use Module\Football\Routes\FetchLeagueTopAssistsRoute;
 use Module\Football\Routes\FetchLeagueTopScorersRoute;
 
 final class LeagueResource extends JsonResource
@@ -42,12 +42,13 @@ final class LeagueResource extends JsonResource
             ],
             'links'            => [
                 'self'          => new FetchLeagueRoute($this->league->getId()),
-                'top_scorers'   => $this->topScorersLink()
+                'top_scorers'   => $this->topScorersLink(),
+                'top_assists'   => $this->topAssistsLink()
             ]
         ];
     }
 
-    private function topScorersLink(): MissingValue|JsonSerializable
+    private function topScorersLink(): MissingValue|FetchLeagueTopScorersRoute
     {
         /** @var LeagueCoverage|false */
         $season = (new RescueInitializationException(false))->rescue(fn () => $this->league->getSeason()->getCoverage());
@@ -61,6 +62,22 @@ final class LeagueResource extends JsonResource
         }
 
         return new FetchLeagueTopScorersRoute($this->league->getId(), $this->league->getSeason()->getSeason());
+    }
+
+    private function topAssistsLink(): MissingValue|FetchLeagueTopAssistsRoute
+    {
+        /** @var LeagueCoverage|false */
+        $season = (new RescueInitializationException(false))->rescue(fn () => $this->league->getSeason()->getCoverage());
+
+        if ($season === false) {
+            return new MissingValue;
+        }
+
+        if (!$season->coversTopAssists()) {
+            return new MissingValue;
+        }
+
+        return new FetchLeagueTopAssistsRoute($this->league->getId(), $this->league->getSeason()->getSeason());
     }
 
     /**
@@ -77,7 +94,8 @@ final class LeagueResource extends JsonResource
                 'line_up'           => $leagueSeason->getCoverage()->coverslineUp(),
                 'events'            => $leagueSeason->getCoverage()->coversEvents(),
                 'stats'             => $leagueSeason->getCoverage()->coversStatistics(),
-                'top_scorers'       => $leagueSeason->getCoverage()->coversTopScorers()
+                'top_scorers'       => $leagueSeason->getCoverage()->coversTopScorers(),
+                'top_assists'       => $leagueSeason->getCoverage()->coversTopAssists()
             ]
         ];
     }

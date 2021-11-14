@@ -19,10 +19,14 @@ Route::prefix('football')->group(function () {
         Route::get('fixtures/date', Controllers\FetchLeagueFixturesByDateController::class)->name(Name::FETCH_LEAGUE_FIXTURE_BY_DATE);
         Route::get('find', Controllers\FetchLeagueController::class)->name(Name::FETCH_LEAGUE);
         Route::get('standing', Controllers\FetchLeagueStandingController::class)->name(Name::FETCH_LEAGUE_STANDING);
-        
+
         Route::get('top-scorers', Controllers\FetchLeagueTopScorersController::class)
             ->name(Name::FETCH_LEAGUE_TOP_SCORERS)
             ->middleware(Mw\CheckCoversLeagueTopScorersMiddleware::class);
+
+        Route::get('top-assists', Controllers\FetchLeagueTopAssistsController::class)
+            ->name(Name::FETCH_LEAGUE_TOP_ASSISTS)
+            ->middleware(Mw\CheckCoversLeagueTopAssistsMiddleware::class);
     });
 
     Route::prefix('fixtures')->group(function () {

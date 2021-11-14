@@ -12,10 +12,16 @@ final class LeagueCoverage extends DataTransferObject
     protected bool $coverslineUp;
     protected bool $coversEvents;
     protected bool $coverTopScorers;
+    protected bool $coversTopAssists;
 
     public function coversStatistics(): bool
     {
         return $this->statistics;
+    }
+
+    public function coversTopAssists(): bool
+    {
+        return $this->coversTopAssists;
     }
 
     public function coversTopScorers(): bool

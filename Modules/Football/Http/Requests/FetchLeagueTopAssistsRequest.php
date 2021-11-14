@@ -8,7 +8,7 @@ use App\Rules\ResourceIdRule;
 use App\Http\Requests\FormRequest;
 use Module\Football\Rules\SeasonRule;
 
-final class FetchLeagueTopScorersRequest extends FormRequest
+final class FetchLeagueTopAssistsRequest extends FormRequest
 {
     public function rules(): array
     {
