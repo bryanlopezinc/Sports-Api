@@ -9,6 +9,7 @@ use App\ValueObjects\Country;
 use App\DTO\DataTransferObject;
 use Module\Football\ValueObjects\CoachId;
 use Module\Football\ValueObjects\CoachAge;
+use Module\Football\ValueObjects\Name;
 
 final class Coach extends DataTransferObject
 {
@@ -18,7 +19,7 @@ final class Coach extends DataTransferObject
     protected bool $hasCurrentTeam;
     protected CoachId $id;
     protected Url $photo_url;
-    protected string $name;
+    protected Name $name;
 
     public function id(): CoachId
     {
@@ -30,7 +31,7 @@ final class Coach extends DataTransferObject
         return $this->age;
     }
 
-    public function name(): string
+    public function name(): Name
     {
         return $this->name;
     }

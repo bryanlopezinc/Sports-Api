@@ -10,6 +10,7 @@ use Module\Football\DTO\Team;
 use Module\Football\DTO\Coach;
 use Module\Football\ValueObjects\CoachAge;
 use Module\Football\ValueObjects\CoachId;
+use Module\Football\ValueObjects\Name;
 
 final class CoachBuilder extends Builder
 {
@@ -27,7 +28,7 @@ final class CoachBuilder extends Builder
 
     public function name(string $name): self
     {
-        return $this->set('name', $name);
+        return $this->set('name', new Name($name));
     }
 
     public function id(int $id): self

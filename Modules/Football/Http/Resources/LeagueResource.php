@@ -36,7 +36,7 @@ final class LeagueResource extends JsonResource
             'attributes'        => [
                 'id'                => $this->league->getId()->toInt(),
                 'logo_url'          => $this->league->getLogoUrl()->url(),
-                'name'              => $this->league->getName(),
+                'name'              => $this->league->getName()->value(),
                 'country'           => $rescuer->rescue(fn () => new CountryResource($this->league->getCountry())),
                 'season'            => $rescuer->rescue(fn () => $this->transformLeagueSeason($this->league->getSeason())),
             ],

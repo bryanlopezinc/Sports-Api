@@ -28,7 +28,7 @@ final class VenueResource extends JsonResource
         return [
             'type'          => 'football_venue',
             'attributes'    => [
-                'name'          => $this->venue->getName(),
+                'name'          => $this->venue->getName()->value(),
                 'city'          => $rescuer->rescue(fn () => $this->venue->getCityName()),
             ],
         ];

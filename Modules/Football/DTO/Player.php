@@ -13,6 +13,7 @@ use Module\Football\ValueObjects\PlayerId;
 use Module\Football\ValueObjects\PlayerAge;
 use Module\Football\ValueObjects\HeightValue;
 use Module\Football\ValueObjects\JerseyNumber;
+use Module\Football\ValueObjects\Name;
 use Module\Football\ValueObjects\PlayerPosition;
 
 final class Player extends DataTransferObject
@@ -23,7 +24,7 @@ final class Player extends DataTransferObject
     protected HeightValue $height_in_cm;
     protected Country $nationality;
     protected PlayerId $id;
-    protected string $name;
+    protected Name $name;
     protected PlayerPosition $position;
     protected PlayerPositionOnGrid $player_position_on_grid;
     protected JerseyNumber $numberOnShirt;
@@ -66,7 +67,7 @@ final class Player extends DataTransferObject
         return $this->age;
     }
 
-    public function name(): string
+    public function name(): Name
     {
         return $this->name;
     }

@@ -9,13 +9,14 @@ use App\ValueObjects\Country;
 use App\DTO\DataTransferObject;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\ValueObjects\LeagueType;
+use Module\Football\ValueObjects\Name;
 
 final class League extends DataTransferObject
 {
     protected LeagueId $id;
     protected Url $logo;
     protected Country $country;
-    protected string $name;
+    protected Name $name;
     protected LeagueType $type;
     protected LeagueSeason $season;
 
@@ -39,7 +40,7 @@ final class League extends DataTransferObject
         return $this->logo;
     }
 
-    public function getName(): string
+    public function getName(): Name
     {
         return $this->name;
     }

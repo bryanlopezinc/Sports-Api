@@ -7,6 +7,7 @@ namespace Module\Football\DTO;
 use App\ValueObjects\Url;
 use App\ValueObjects\Country;
 use App\DTO\DataTransferObject;
+use Module\Football\ValueObjects\Name;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\ValueObjects\TeamYearFounded;
 
@@ -17,7 +18,7 @@ final class Team extends DataTransferObject
     protected TeamYearFounded $founded;
     protected Country $country;
     protected Venue $venue;
-    protected string $name;
+    protected Name $name;
     protected bool $national;
     protected bool $has_year_founded_info;
 
@@ -50,7 +51,7 @@ final class Team extends DataTransferObject
         return $this->has_year_founded_info;
     }
 
-    public function getName(): string
+    public function getName(): Name
     {
         return $this->name;
     }

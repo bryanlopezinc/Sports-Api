@@ -11,6 +11,7 @@ use Module\Football\DTO\League;
 use Module\Football\DTO\LeagueSeason;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\ValueObjects\LeagueType;
+use Module\Football\ValueObjects\Name;
 
 final class LeagueBuilder extends Builder
 {
@@ -26,7 +27,7 @@ final class LeagueBuilder extends Builder
 
     public function setName(string $name): self
     {
-        return $this->set('name', $name);
+        return $this->set('name', new Name($name));
     }
 
     public function setCountry(string|Stringable $name): self

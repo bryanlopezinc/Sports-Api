@@ -8,7 +8,7 @@ use Module\Football\DTO\Team;
 use Module\Football\DTO\Venue;
 use Module\Football\DTO\League;
 use Module\Football\DTO\Fixture;
-use Module\Football\FixtureReferee;
+use Module\Football\FixtureReferee as Referee;
 use Module\Football\FixturePeriodGoals;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\ValueObjects\TimeZone;
@@ -114,10 +114,10 @@ final class FixtureBuilder extends Builder
     public function setReferee(?string $name): self
     {
         if ($name === null) {
-            return $this->set('referee', new FixtureReferee(FixtureReferee::NOT_KNOWN));
+            return $this->set('referee', new Referee(Referee::NOT_KNOWN));
         }
 
-        return $this->set('referee', new FixtureReferee($name));
+        return $this->set('referee', new Referee($name));
     }
 
     public function setTimeElapsed(?int $elapsed): self
