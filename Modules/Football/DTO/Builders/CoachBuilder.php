@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Football\DTO\Builders;
 
+use Stringable;
 use App\ValueObjects\Url;
 use App\ValueObjects\Date;
+use App\ValueObjects\Country;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\Coach;
-use Module\Football\ValueObjects\CoachAge;
-use Module\Football\ValueObjects\CoachId;
 use Module\Football\ValueObjects\Name;
+use Module\Football\ValueObjects\CoachId;
+use Module\Football\ValueObjects\CoachAge;
 
 final class CoachBuilder extends Builder
 {
@@ -29,6 +31,11 @@ final class CoachBuilder extends Builder
     public function name(string $name): self
     {
         return $this->set('name', new Name($name));
+    }
+
+    public function setCountry(string|Stringable $country): self
+    {
+        return $this->set('nationality', new Country((string)$country));
     }
 
     public function id(int $id): self

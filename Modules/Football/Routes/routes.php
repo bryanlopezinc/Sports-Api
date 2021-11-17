@@ -49,4 +49,8 @@ Route::prefix('football')->group(function () {
             ->name(Name::FETCH_FIXTURE_EVENTS)
             ->middleware(MW\CheckCoversEventsMiddleware::class);
     });
+
+    Route::prefix('coachs')->group(function () {
+        Route::get('find', Controllers\FetchCoachConttroller::class)->name(Name::FETCH_COACH);
+    });
 });

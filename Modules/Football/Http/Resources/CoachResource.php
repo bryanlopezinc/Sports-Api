@@ -6,10 +6,11 @@ namespace Module\Football\Http\Resources;
 
 use Illuminate\Http\Request;
 use Module\Football\DTO\Coach;
+use App\Http\Resources\CountryResource;
 use Illuminate\Http\Resources\MissingValue;
+use Module\Football\Routes\FetchCoachRoute;
 use App\Utils\RescueInitializationException;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\CountryResource;
 
 final class CoachResource extends JsonResource
 {
@@ -36,6 +37,9 @@ final class CoachResource extends JsonResource
                 'has_team'      => $rescuer->rescue(fn () => $this->coach->hasCurrentTeam()),
                 'age'           => $rescuer->rescue(fn () => $this->coach->age()->toInt()),
                 'nationality'   => $rescuer->rescue(fn () => new CountryResource($this->coach->nationality()))
+            ],
+            'links'     => [
+                'self'  => new FetchCoachRoute($this->coach->id())
             ]
         ];
     }

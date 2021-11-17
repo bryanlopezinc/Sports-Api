@@ -21,4 +21,5 @@ final class Name
     public const FETCH_LIVE_FIXTURES               = 'fixtures.live';
     public const FETCH_FIXTURES_BY_DATE            = 'fixtures.by_date';
     public const FETCH_FIXTURE_EVENTS              = 'fixture.events';
+    public const FETCH_COACH                       = 'coach.find';
 }

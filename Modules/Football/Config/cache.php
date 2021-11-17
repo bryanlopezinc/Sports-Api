@@ -29,6 +29,11 @@ return [
         'defaultTtl'    => 30 //Default ttl (in minutes) a league fixtures by date should be cached
     ],
 
+    'coaches' => [
+        'driver'        => env('CACHE_DRIVER'),
+        'defaultTtl'    => 7 //Default ttl (in days) a coach should be cached
+    ],
+
     'leaguesStandings' => [
         'driver'    => env('CACHE_DRIVER'),
 

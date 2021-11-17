@@ -29,6 +29,7 @@ final class CachePrefix
             TeamsCacheRepository::class                 => 's:T:',
             TeamSquadCacheRepository::class             => 's:T-SQ:',
             TeamsHeadToHeadCacheRepository::class       => 's:T-H2H:',
+            CoachesCacheRepository::class               => 's:CO:',
         };
     }
 
