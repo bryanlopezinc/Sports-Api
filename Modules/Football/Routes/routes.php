@@ -52,5 +52,6 @@ Route::prefix('football')->group(function () {
 
     Route::prefix('coachs')->group(function () {
         Route::get('find', Controllers\FetchCoachConttroller::class)->name(Name::FETCH_COACH);
+        Route::get('team_history', Controllers\FetchCoachCareerHistoryController::class)->name(Name::FETCH_COACH_CAREER_HISTORY);
     });
 });

@@ -11,6 +11,7 @@ use Illuminate\Http\Resources\MissingValue;
 use Module\Football\Routes\FetchCoachRoute;
 use App\Utils\RescueInitializationException;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Module\Football\Routes\FetchCoachCareerHistoryRoute;
 
 final class CoachResource extends JsonResource
 {
@@ -39,7 +40,8 @@ final class CoachResource extends JsonResource
                 'nationality'   => $rescuer->rescue(fn () => new CountryResource($this->coach->nationality()))
             ],
             'links'     => [
-                'self'  => new FetchCoachRoute($this->coach->id())
+                'self'      => new FetchCoachRoute($this->coach->id()),
+                'career'    => new FetchCoachCareerHistoryRoute($this->coach->id()),
             ]
         ];
     }

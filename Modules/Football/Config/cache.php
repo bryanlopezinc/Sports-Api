@@ -34,6 +34,11 @@ return [
         'defaultTtl'    => 7 //Default ttl (in days) a coach should be cached
     ],
 
+    'coachesCareers' => [
+        'driver'        => env('CACHE_DRIVER'),
+        'defaultTtl'    => 5 //Default ttl (in days) a coach career should be cached
+    ],
+
     'leaguesStandings' => [
         'driver'    => env('CACHE_DRIVER'),
 
