@@ -12,13 +12,14 @@ use Module\Football\Routes\FetchFixtureLineUpRoute;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureLineUpResponse;
+use Module\Football\Tests\Stubs\ApiSports\V3\FetchInjuriesResponse;
 
 class FetchFixtureLineUpTest extends TestCase
 {
     private function getTestRespone(int $id): TestResponse
     {
         return $this->getJson(
-           (string) new FetchFixtureLineUpRoute(new FixtureId($id))
+            (string) new FetchFixtureLineUpRoute(new FixtureId($id))
         );
     }
 
@@ -31,6 +32,7 @@ class FetchFixtureLineUpTest extends TestCase
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json())
             ->push(FetchFixtureLineUpResponse::json())
+            ->push(FetchInjuriesResponse::json())
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json());
 
@@ -48,6 +50,7 @@ class FetchFixtureLineUpTest extends TestCase
                             'starting_XI',
                             'subs',
                             'coach',
+                            'missing_players',
                         ],
                         'away'  => [
                             'team',
@@ -55,9 +58,30 @@ class FetchFixtureLineUpTest extends TestCase
                             'starting_XI',
                             'subs',
                             'coach',
+                            'missing_players',
                         ]
                     ]
                 ]
             ]);
+    }
+
+    public function test_line_up_not_available(): void
+    {
+        $json = json_encode([
+            "get"   => "fixtures/lineups",
+            "parameters"    => [
+                "fixture"   => "686314"
+            ],
+            "errors"    => [],
+            "results"   => 0,
+            'response'  => []
+        ]);
+
+        Http::fakeSequence()
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json())
+            ->whenEmpty(Http::response($json));
+
+        $this->getTestRespone(34)->assertStatus(204);
     }
 }

@@ -7,9 +7,12 @@ namespace Module\Football\DTO;
 use App\DTO\DataTransferObject;
 use Module\Football\ValueObjects\TeamFormation;
 use Module\Football\Collections\PlayersCollection;
+use Module\Football\Collections\TeamMissingPlayersCollection;
+use Module\Football\Attributes\FixtureLineUpValidators\EnsureContainsUniquePlayers;
 use Module\Football\Attributes\FixtureLineUpValidators\EnsureTeamStartingElevenEqualsEleven;
 
 #[EnsureTeamStartingElevenEqualsEleven]
+#[EnsureContainsUniquePlayers]
 final class TeamLineUp extends DataTransferObject
 {
     protected PlayersCollection $startXI;
@@ -17,6 +20,12 @@ final class TeamLineUp extends DataTransferObject
     protected PlayersCollection $substitutes;
     protected Team $team;
     protected Coach $coach;
+    protected TeamMissingPlayersCollection $missing_players;
+
+    public function getMissingPlayers(): TeamMissingPlayersCollection
+    {
+        return $this->missing_players;
+    }
 
     public function getStartingEleven(): PlayersCollection
     {

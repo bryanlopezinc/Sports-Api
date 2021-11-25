@@ -16,4 +16,9 @@ final class CoachId extends ResourceId
     {
         return new self(static::getIdFromRequest($request, $key));
     }
+
+    public function equals(CoachId $id): bool
+    {
+        return $this->equalsId($id);
+    }
 }

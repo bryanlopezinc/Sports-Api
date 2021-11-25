@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 use Module\Football\DTO\Player;
 use Module\Football\FixtureLineUp;
 use Module\Football\DTO\TeamLineUp;
+use Module\Football\TeamMissingPlayer;
 use Module\Football\ValueObjects\FixtureId;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\Collections\PlayersCollection;
+use Module\Football\Collections\TeamMissingPlayersCollection;
 
 final class FixtureLineUpResource extends JsonResource
 {
@@ -31,7 +33,7 @@ final class FixtureLineUpResource extends JsonResource
             'line_up'            => [
                 'home'           => $this->transformTeamLineUp($this->fixtureLineUp->homeTeam()),
                 'away'           => $this->transformTeamLineUp($this->fixtureLineUp->awayTeam()),
-            ]
+            ],
         ];
     }
 
@@ -45,8 +47,24 @@ final class FixtureLineUpResource extends JsonResource
             'formation'           => $teamLineUp->getFormation()->toString(),
             'starting_XI'         => $this->tranformPlayers($teamLineUp->getStartingEleven()),
             'subs'                => $this->tranformPlayers($teamLineUp->getSubstitutes()),
-            'coach'               => new CoachResource($teamLineUp->getCoach())
+            'coach'               => new CoachResource($teamLineUp->getCoach()),
+            'missing_players'     => $this->transformMissingPlayers($teamLineUp->getMissingPlayers()),
         ];
+    }
+
+    private function transformMissingPlayers(TeamMissingPlayersCollection $missingPayers): array
+    {
+        return $missingPayers
+            ->toLaravelCollection()
+            ->map(fn (TeamMissingPlayer $missingPlayer): array => [
+                'player'    => new PlayerResource($missingPlayer->player()),
+                'reason'    => match (true) {
+                    $missingPlayer->reasonForMissingFixture()->isDoubtful()  => 'doubtful',
+                    $missingPlayer->reasonForMissingFixture()->isInjured()   => 'injured',
+                    $missingPlayer->reasonForMissingFixture()->isSuspended() => 'suspended'
+                }
+            ])
+            ->all();
     }
 
     /**
@@ -56,9 +74,7 @@ final class FixtureLineUpResource extends JsonResource
     {
         return $collection
             ->toLaravelCollection()
-            ->map(function (Player $player) {
-                return new PlayerLineUpResource($player, $player->getPlayerPositionOnGridView());
-            })
+            ->map(fn (Player $player) => new PlayerLineUpResource($player, $player->getPlayerPositionOnGridView()))
             ->all();
     }
 }

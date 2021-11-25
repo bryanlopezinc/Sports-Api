@@ -9,6 +9,7 @@ use Module\Football\DTO\Coach;
 use Module\Football\DTO\TeamLineUp;
 use Module\Football\ValueObjects\TeamFormation;
 use Module\Football\Collections\PlayersCollection;
+use Module\Football\Collections\TeamMissingPlayersCollection;
 
 final class TeamLineUpBuilder extends Builder
 {
@@ -35,6 +36,11 @@ final class TeamLineUpBuilder extends Builder
     public function setCoach(Coach $coach): self
     {
         return $this->set('coach', $coach);
+    }
+
+    public function setMissingPlayers(TeamMissingPlayersCollection $collection): self
+    {
+        return $this->set('missing_players', $collection);
     }
 
     public function build(): TeamLineUp

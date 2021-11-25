@@ -10,6 +10,16 @@ final class FixtureLineUp
 {
     public function __construct(private TeamLineUp $homeTeam, private TeamLineUp $awayTeam)
     {
+        $this->ensureTeamsDontHaveSameCoach();
+    }
+
+    private function ensureTeamsDontHaveSameCoach(): void
+    {
+        $teamsHaveSameCoach = $this->homeTeam->getCoach()->id()->equals($this->awayTeam->getCoach()->id());
+
+        if ($teamsHaveSameCoach) {
+            throw new \LogicException('Teams Cannot have same Coach', 3000);
+        }
     }
 
     public function homeTeam(): TeamLineUp

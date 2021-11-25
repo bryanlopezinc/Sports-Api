@@ -14,7 +14,6 @@
         "guzzlehttp/guzzle": "^7.3",
         "laravel/framework": "^8.12",
         "laravel/passport": "^10.1",
-        "laravel/telescope": "^4.4",
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
@@ -24,6 +23,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "laravel/telescope": "^4.4",
         "nunomaduro/larastan": "^1.0",
         "phpunit/phpunit": "^9.3.3"
     },
@@ -34,7 +34,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "autoload": {

@@ -13,6 +13,7 @@ interface FetchFixtureLineUpRepositoryInterface
      * Only team attributes - id, name, logo are returned for each team in line up.
      * Only id, name and photoUrl attributes are returned for each coach.
      * Player name, id, jerseyNumber, position and position on grid are returned for each player.
+     * only Id, name and photo is returned for each missing player.
      *
      * @throws \App\Exceptions\Http\ResourceNotFoundHttpException;
      * @throws \Module\Football\Exceptions\Http\FixtureLineUpNotAvailableHttpException
