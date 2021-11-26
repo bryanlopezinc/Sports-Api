@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Module\Football\FixtureStatistic;
 
-final class BallPossesion extends AbstractStatistic
+final class BallPossession
 {
     public const MAX_VALUE = 100;
 
-    public function name(): string
+    public function __construct(private int $ballPossession)
     {
-        return self::BALL_POSSESION;
-    }
-
-    protected function validate(): void
-    {
-        if ($this->value > self::MAX_VALUE) {
+        if ($ballPossession > self::MAX_VALUE) {
             throw new \InvalidArgumentException(
                 'Ball Possession cannot be greater than ' . self::MAX_VALUE
             );
         }
+    }
+
+    public function value(): int
+    {
+        return $this->ballPossession;
     }
 }
