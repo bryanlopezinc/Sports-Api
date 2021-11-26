@@ -33,6 +33,10 @@ Route::prefix('football')->group(function () {
         Route::get('live', Controllers\FetchLiveFixturesController::class)->name(Name::FETCH_LIVE_FIXTURES);
         Route::get('date', Controllers\FetchFixturesByDateController::class)->name(Name::FETCH_FIXTURES_BY_DATE);
 
+        Route::get('players/statistics', Controllers\FetchFixturePlayersStatisticsController::class)
+            ->middleware(MW\EnsureCoversPlayerStatisticsMiddleware::class)
+            ->name(Name::FETCH_FIXTURES_PLAYERS_STAT);
+
         Route::get('find', Controllers\FetchFixtureController::class)
             ->name(Name::FETCH_FIXTURE)
             ->middleware(MW\SetFindFixtureResponseHeadersMiddleware::class);

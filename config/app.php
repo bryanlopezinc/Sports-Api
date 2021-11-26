@@ -191,6 +191,7 @@ return [
         Module\Football\Providers\Cache\LeaguesTopAsisstsCacheServiceProvider::class,
         Module\Football\Providers\Cache\CoachesCacheServiceProvider::class,
         Module\Football\Providers\Cache\CoachesCareersCacheServiceProvider::class,
+        Module\Football\Providers\Cache\FixturesPlayersStatisticsCacheServiceProvider::class,
 
         //Football Repository service providers
         Module\Football\Providers\Repository\FetchFixtureEventsRepositoryServiceProvider::class,
@@ -209,6 +210,7 @@ return [
         Module\Football\Providers\Repository\FetchLeagueTopAssistsRepositoryServiceProvider::class,
         Module\Football\Providers\Repository\FetchCoachRepositoryServiceProvider::class,
         Module\Football\Providers\Repository\FetchCoachCareerHistoryRepositoryServiceProvider::class,
+        Module\Football\Providers\Repository\FixturesPlayersRepositoryServiceProvider::class,
 
         Module\Football\Providers\RouteServiceProvider::class,
         Module\Football\Providers\ConfigServiceProvider::class,

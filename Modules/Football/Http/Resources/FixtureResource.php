@@ -16,6 +16,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\Collections\FixturesCollection;
 use Module\Football\Routes\FetchFixtureEventsRoute;
 use Module\Football\Routes\FetchFixtureLineUpRoute;
+use Module\Football\Routes\FetchFixturePlayersStatisticsRoute;
 use Module\Football\Routes\FetchFixtureStatisticsRoute;
 
 final class FixtureResource extends JsonResource
@@ -59,10 +60,11 @@ final class FixtureResource extends JsonResource
                 'period_goals'          => $this->getPeriodGoalsData(),
             ],
             'links'     => [
-                'self'      => (string) new FetchFixtureRoute($this->fixture->id()),
-                'events'    => $rescuer->rescue(fn () => $this->when($coverage()->coversEvents(), new FetchFixtureEventsRoute($this->fixture->id()))),
-                'line_up'   => $rescuer->rescue(fn () => $this->when($coverage()->coverslineUp(), new FetchFixtureLineUpRoute($this->fixture->id()))),
-                'stats'     => $rescuer->rescue(fn () => $this->when($coverage()->coversStatistics(), new FetchFixtureStatisticsRoute($this->fixture->id()))),
+                'self'          => (string) new FetchFixtureRoute($this->fixture->id()),
+                'events'        => $rescuer->rescue(fn () => $this->when($coverage()->coversEvents(), new FetchFixtureEventsRoute($this->fixture->id()))),
+                'line_up'       => $rescuer->rescue(fn () => $this->when($coverage()->coverslineUp(), new FetchFixtureLineUpRoute($this->fixture->id()))),
+                'stats'         => $rescuer->rescue(fn () => $this->when($coverage()->coversStatistics(), new FetchFixtureStatisticsRoute($this->fixture->id()))),
+                'players_stats' => $rescuer->rescue(fn () => $this->when($coverage()->coversPlayerStatistics(), new FetchFixturePlayersStatisticsRoute($this->fixture->id()))),
             ]
         ];
     }

@@ -99,6 +99,7 @@ final class LeagueResponseJsonMapper extends Response
             ->supportsTopScorers($response->get('top_scorers'))
             ->supportsEvents($response->get('fixtures.events'))
             ->supportsTopAssists($response->get('top_assists'))
+            ->supportsFixturePlayersStatistics($response->get('fixtures.statistics_players'))
             ->build();
     }
 }

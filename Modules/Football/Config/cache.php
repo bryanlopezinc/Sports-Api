@@ -104,6 +104,10 @@ return [
         'driver'    => env('CACHE_DRIVER'),
     ],
 
+    'fixturesPlayersStatistics' => [
+        'driver'    => env('CACHE_DRIVER'),
+    ],
+
     'fixturesOnDate' => [
         'driver'    => env('CACHE_DRIVER'),
     ],

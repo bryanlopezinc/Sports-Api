@@ -13,9 +13,14 @@ final class LeagueCoverageBuilder extends Builder
         return $this->set('statistics', $supportsStatistics);
     }
 
-    public function supportsEvents(bool $events): self
+    public function supportsEvents(bool $supportsEvents): self
     {
-        return $this->set('coversEvents', $events);
+        return $this->set('coversEvents', $supportsEvents);
+    }
+
+    public function supportsFixturePlayersStatistics(bool $supportsPlayerStats): self
+    {
+        return $this->set('coversPlayerStatistics', $supportsPlayerStats);
     }
 
     public function supportsTopScorers(bool $supportsTopScorers): self
@@ -28,9 +33,9 @@ final class LeagueCoverageBuilder extends Builder
         return $this->set('coversTopAssists', $supportsTopAssists);
     }
 
-    public function supportsLineUp(bool $lineUp): self
+    public function supportsLineUp(bool $supportslineUps): self
     {
-        $this->set('coverslineUp', $lineUp);
+        $this->set('coverslineUp', $supportslineUps);
 
         return $this;
     }

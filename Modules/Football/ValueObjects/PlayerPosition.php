@@ -46,4 +46,9 @@ final class PlayerPosition
     {
         return $this->postion === self::GOALIE;
     }
+
+    public function position(): int
+    {
+        return $this->postion;
+    }
 }

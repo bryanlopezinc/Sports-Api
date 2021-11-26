@@ -73,7 +73,7 @@ final class FixtureStatistics
     private function ensureValidBallPossesionSpread(): void
     {
         //Check if any team has ballPossesion statistic.
-        //Doeson't really matter is it is checked with team one or team two since stats must
+        //Doeson't really matter if it is checked with team one or team two since stats must
         //contain same types.
         if (!$this->teamOne->statistics()->hasBallPossesion()) {
             return;

@@ -21,11 +21,15 @@ final class NonNegativeNumber
     /**
      * Throw an exception if number is negative
      *
+     * @param int|array<int> $number
+     *
      * @throws \InvalidArgumentException
      */
-    public static function check(int $number): void
+    public static function check(int|array $number): void
     {
-        new self($number);
+        foreach ((array)$number as $value) {
+            new self($value);
+        }
     }
 
     public function number(): int

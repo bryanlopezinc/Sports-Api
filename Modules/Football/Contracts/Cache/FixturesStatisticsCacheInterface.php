@@ -10,7 +10,7 @@ use Module\Football\FixtureStatistic\FixtureStatistics;
 
 interface FixturesStatisticsCacheInterface
 {
-    public function cache(FixtureStatistics $fixtureStatistics, TimeToLive $ttlInSeconds): bool;
+    public function cache(FixtureStatistics $fixtureStatistics, TimeToLive $ttl): bool;
 
     public function exists(FixtureId $fixtureId): bool;
 

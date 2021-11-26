@@ -38,6 +38,13 @@ final class PlayerFactory extends Factory
             ->toArray();
     }
 
+    public function midfielder(): self
+    {
+        return $this->state(function (array $attributes) {
+            return (new PlayerBuilder($attributes))->setPosition(PlayerPosition::MIDFIELDER)->toArray();
+        });
+    }
+
     public function toDto(): Player
     {
         return $this->mapToDto();
