@@ -29,6 +29,34 @@ class FetchLeagueTest extends TestCase
         $this->getTestRespone(234)
             ->assertSuccessful()
             ->assertHeader('max-age')
-            ->assertJsonStructure();
+            ->assertJsonStructure(
+                [
+                    "type",
+                    "attributes" => [
+                        "id",
+                        "logo_url",
+                        "name",
+                        "country",
+                        "season" => [
+                            "season",
+                            "start",
+                            "end",
+                            "is_current_season",
+                            "coverage" =>  [
+                                "line_up",
+                                "events",
+                                "stats",
+                                "top_scorers",
+                                "top_assists",
+                            ]
+                        ]
+                    ],
+                    "links" =>  [
+                        "self",
+                        "top_scorers",
+                        "top_assists",
+                    ]
+                ]
+            );
     }
 }

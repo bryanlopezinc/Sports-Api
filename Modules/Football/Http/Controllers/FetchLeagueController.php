@@ -9,8 +9,8 @@ use Illuminate\Http\JsonResponse;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Services\FetchLeagueService;
-use Module\Football\Http\Resources\LeagueResource;
 use Module\Football\Http\Requests\FetchLeagueRequest;
+use Module\Football\Http\Resources\PartialLeagueResource;
 
 final class FetchLeagueController
 {
@@ -25,7 +25,7 @@ final class FetchLeagueController
         }
 
         return response()
-            ->json(new LeagueResource($league))
+            ->json(new PartialLeagueResource($league, 'filter'))
             ->header('max-age', Config::get('football.fetchLeagueResponseMaxAge'));
     }
 }
