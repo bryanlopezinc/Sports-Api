@@ -12,6 +12,9 @@ use Module\Football\Routes\FetchFixtureRoute;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 
+/**
+ * @group 112
+ */
 class FetchFixtureTest extends TestCase
 {
     private function getTestRespone(int $id): TestResponse
@@ -31,6 +34,59 @@ class FetchFixtureTest extends TestCase
 
         $this->getTestRespone(12)
             ->assertSuccessful()
-            ->assertHeader('max-age');
+            ->assertHeader('max-age')
+            ->assertJsonCount(3, 'data')
+            ->assertJsonCount(14, 'data.attributes')
+            ->assertJsonCount(2, 'data.attributes.referee')
+            ->assertJsonCount(2, 'data.attributes.score')
+            ->assertJsonCount(2, 'data.attributes.teams')
+            ->assertJsonCount(5, 'data.links')
+            ->assertJsonCount(4, 'data.attributes.period_goals.meta')
+            ->assertJsonStructure([
+                'data'  => [
+                    'type',
+                    'attributes' => [
+                        'id',
+                        'referee'   => [
+                            'name_is_availbale',
+                            'name',
+                        ],
+                        'date',
+                        'has_venue_info',
+                        'venue',
+                        'minutes_elapsed',
+                        'status',
+                        'league',
+                        'has_winner',
+                        'winner',
+                        'teams' => [
+                            'home',
+                            'away'
+                        ],
+                        'score_is_available',
+                        'score' => [
+                            'home',
+                            'away'
+                        ],
+                        'period_goals' => [
+                            'meta' => [
+                                'has_first_half_score',
+                                'has_full_time_score',
+                                'has_extra_time_score',
+                                'has_penalty_score'
+                            ],
+                            'first_half',
+                            'second_half',
+                        ],
+                    ],
+                    'links' => [
+                        'self',
+                        'events',
+                        'line_up',
+                        'stats',
+                        'players_stats',
+                    ]
+                ]
+            ]);
     }
 }

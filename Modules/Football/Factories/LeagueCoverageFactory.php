@@ -19,6 +19,7 @@ final class LeagueCoverageFactory extends Factory
             ->setSupportsStatistics(true)
             ->supportsTopScorers(true)
             ->supportsTopAssists(true)
+            ->supportsFixturePlayersStatistics(true)
             ->toArray();
     }
 
