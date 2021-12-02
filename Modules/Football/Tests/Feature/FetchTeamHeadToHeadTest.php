@@ -7,17 +7,20 @@ namespace Module\Football\Tests\Feature;
 use Tests\TestCase;
 use Module\Football\Routes\Name;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchTeamHeadToHeadResponse;
 
 class FetchTeamHeadToHeadTest extends TestCase
 {
-    private function getTestRespone(int $teamOne, int $teamTwo): TestResponse
+    private function getTestRespone(int $teamOne, int $teamTwo, array $query = []): TestResponse
     {
-        return $this->getJson(route(Name::FETCH_TEAM_HEAD_TO_HEAD, [
+        $parameters = array_merge([
             'team_id_1'     => $teamOne,
             'team_id_2'     => $teamTwo,
-        ]));
+        ], $query);
+
+        return $this->getJson(route(Name::FETCH_TEAM_HEAD_TO_HEAD, $parameters));
     }
 
     public function test_success_response(): void
@@ -27,5 +30,31 @@ class FetchTeamHeadToHeadTest extends TestCase
         Http::fake(fn () => Http::response(FetchTeamHeadToHeadResponse::json()));
 
         $this->getTestRespone(34, 33)->assertSuccessful();
+    }
+
+    public function test_will_return_partial_response_when_needed(): void
+    {
+        $this->withoutExceptionHandling();
+
+        Http::fake(fn () => Http::response(FetchTeamHeadToHeadResponse::json()));
+
+        $response = $this->getTestRespone(34, 33, ['fields' => 'date,status'])->assertSuccessful();
+
+        foreach ($response->decodeResponseJson()->json('data') as $data) {
+            $assert = new AssertableJsonString($data);
+
+            $assert->assertCount(2)
+                ->assertCount(2, 'attributes')
+                ->assertStructure([
+                    "type",
+                    "attributes" => [
+                        "date",
+                        "status" => [
+                            "info",
+                            "short"
+                        ]
+                    ]
+                ]);
+        }
     }
 }
