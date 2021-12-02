@@ -12,11 +12,12 @@ use Module\Football\Collections\LeagueSeasonsCollection;
 use Module\Football\DTO\{League, LeagueSeason, LeagueCoverage};
 use Module\Football\DTO\Builders\{LeagueSeasonBuilder, LeagueCoverageBuilder, LeagueBuilder};
 
-final class LeagueResponseJsonMapper extends Response
+final class LeagueResponseJsonMapper
 {
     private LeagueBuilder $builder;
     private LeagueCoverageBuilder $leagueCoverageBuilder;
     private LeagueSeasonBuilder $leagueSeasonBuilder;
+    private Response $response;
 
     /**
      * @param array<string, mixed> $response
@@ -27,8 +28,7 @@ final class LeagueResponseJsonMapper extends Response
         LeagueCoverageBuilder $leagueCoverageBuilder = null,
         LeagueSeasonBuilder $leagueSeasonBuilder = null,
     ) {
-        parent::__construct($response);
-
+        $this->response = new Response($response);
         $this->builder = $builder ?: new LeagueBuilder;
         $this->leagueSeasonBuilder = $leagueSeasonBuilder ?: new LeagueSeasonBuilder;
         $this->leagueCoverageBuilder = $leagueCoverageBuilder ?: new LeagueCoverageBuilder;
@@ -37,13 +37,13 @@ final class LeagueResponseJsonMapper extends Response
     public function tooDataTransferObject(Season $withSeason = null): League
     {
         return $this->builder
-            ->setId($this->get('league.id'))
-            ->setName($this->get('league.name'))
-            ->setLogoUrl($this->get('league.logo'))
-            ->when($this->has('seasons'), fn (LeagueBuilder $b) => $b->setSeason($this->getCorrespondingLeagueSeason($withSeason)))
-            ->when($this->has('country.name'), fn (LeagueBuilder $b) => $b->setCountry(new CountryNameNormalizerUsingSimilarText($this->get('country.name'))))
-            ->when($this->has('league.type'), function (LeagueBuilder $b) {
-                return $b->setType(match ($this->get('league.type')) {
+            ->setId($this->response->get('league.id'))
+            ->setName($this->response->get('league.name'))
+            ->setLogoUrl($this->response->get('league.logo'))
+            ->when($this->response->has('seasons'), fn (LeagueBuilder $b) => $b->setSeason($this->getCorrespondingLeagueSeason($withSeason)))
+            ->when($this->response->has('country.name'), fn (LeagueBuilder $b) => $b->setCountry(new CountryNameNormalizerUsingSimilarText($this->response->get('country.name'))))
+            ->when($this->response->has('league.type'), function (LeagueBuilder $b) {
+                return $b->setType(match ($this->response->get('league.type')) {
                     'League'    => LeagueType::LEAGUE,
                     'Cup'       => LeagueType::CUP
                 });
@@ -72,7 +72,7 @@ final class LeagueResponseJsonMapper extends Response
 
     private function mapLeagueSeasons(): LeagueSeasonsCollection
     {
-        return  collect($this->get('seasons'))
+        return  collect($this->response->get('seasons'))
             ->map(function (array $season): LeagueSeason {
                 $response = new Response($season);
 

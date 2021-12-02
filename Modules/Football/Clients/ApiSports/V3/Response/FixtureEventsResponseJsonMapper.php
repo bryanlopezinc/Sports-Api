@@ -16,17 +16,17 @@ use Module\Football\DTO\Builders\PlayerBuilder;
 use Module\Football\FixtureEvents\MissedPenaltyEvent;
 use Module\Football\Collections\FixtureEventsCollection;
 
-final class FixtureEventsResponseJsonMapper extends Response
+final class FixtureEventsResponseJsonMapper
 {
     /**
      * @param array<string, mixed> $data
      */
     public function __construct(
-        array $data,
+        private array $data,
         private ?TeamBuilder $teamBuilder = null,
         private ?PlayerBuilder $playerBuilder = null
     ) {
-        parent::__construct($data);
+        $this->response = new Response($data);
     }
 
     public function toCollection(): FixtureEventsCollection

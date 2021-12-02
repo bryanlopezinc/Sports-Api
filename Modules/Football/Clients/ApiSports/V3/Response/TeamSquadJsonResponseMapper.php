@@ -8,7 +8,7 @@ use Module\Football\DTO\Player;
 use Module\Football\DTO\Builders\PlayerBuilder;
 use Module\Football\ValueObjects\PlayerPosition;
 
-final class TeamSquadJsonResponseMapper extends Response
+final class TeamSquadJsonResponseMapper
 {
     private const PLAYER_POSITION_MAP = [
         'Goalkeeper'  => PlayerPosition::GOALIE,
@@ -20,9 +20,8 @@ final class TeamSquadJsonResponseMapper extends Response
     /**
      * @param array<string, mixed> $data
      */
-    public function __construct(array $data, private ?PlayerBuilder $builder = null)
+    public function __construct(private array $data, private ?PlayerBuilder $builder = null)
     {
-        parent::__construct($data);
     }
 
     public function tooDataTransferObject(): Player

@@ -8,17 +8,17 @@ use Module\Football\DTO\Team;
 use Module\Football\DTO\Builders\TeamBuilder;
 use Module\Football\Clients\ApiSports\V3\CountryNameNormalizers\CountryNameNormalizerUsingSimilarText;
 
-final class TeamJsonMapper extends Response
+final class TeamJsonMapper
 {
     private TeamBuilder $builder;
+    private Response $response;
 
     /**
      * @param array<string, mixed> $data
      */
     public function __construct(array $data, TeamBuilder $teamBuilder = null)
     {
-        parent::__construct($data);
-
+        $this->response = new Response($data);
         $this->builder = $teamBuilder ?: new TeamBuilder();
     }
 
@@ -27,24 +27,24 @@ final class TeamJsonMapper extends Response
         $this->setHasYearFounded();
 
         return $this->builder
-            ->setId($this->get('id'))
-            ->when($this->has('name'), fn (TeamBuilder $b) => $b->setName($this->get('name')))
-            ->when($this->has('national'), fn (TeamBuilder $b) => $b->setIsNational($this->get('national')))
-            ->when($this->has('logo'), fn (TeamBuilder $b) => $b->setLogoUrl($this->get('logo')))
-            ->when($this->has('country'), fn (TeamBuilder $b) => $b->setCountry(new CountryNameNormalizerUsingSimilarText($this->get('country'))))
+            ->setId($this->response->get('id'))
+            ->when($this->response->has('name'), fn (TeamBuilder $b) => $b->setName($this->response->get('name')))
+            ->when($this->response->has('national'), fn (TeamBuilder $b) => $b->setIsNational($this->response->get('national')))
+            ->when($this->response->has('logo'), fn (TeamBuilder $b) => $b->setLogoUrl($this->response->get('logo')))
+            ->when($this->response->has('country'), fn (TeamBuilder $b) => $b->setCountry(new CountryNameNormalizerUsingSimilarText($this->response->get('country'))))
             ->build();
     }
 
     private function setHasYearFounded(): void
     {
-        if (!$this->has('founded')) {
+        if (!$this->response->has('founded')) {
             return;
         }
 
-        $this->builder->setHasYearFounded($hasYearInfo = $this->get('founded') !== null);
+        $this->builder->setHasYearFounded($hasYearInfo = $this->response->get('founded') !== null);
 
         if ($hasYearInfo) {
-            $this->builder->setYearFounded($this->get('founded'));
+            $this->builder->setYearFounded($this->response->get('founded'));
         }
     }
 }

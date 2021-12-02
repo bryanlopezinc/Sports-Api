@@ -8,9 +8,10 @@ use Module\Football\Clients\ApiSports\V3\CountryNameNormalizers\CountryNameNorma
 use Module\Football\DTO\Player;
 use Module\Football\DTO\Builders\PlayerBuilder;
 
-final class PlayerResponseJsonMapper extends Response
+final class PlayerResponseJsonMapper
 {
     private PlayerBuilder $builder;
+    private Response $response;
 
     /**
      * @param array<string, mixed> $data
@@ -21,21 +22,20 @@ final class PlayerResponseJsonMapper extends Response
         private array $playerPositionMap = [],
         PlayerBuilder $playerBuilder = null
     ) {
-        parent::__construct($data);
-
+        $this->response = new Response($data);
         $this->builder = $playerBuilder ?: new PlayerBuilder();
     }
 
     public function toDataTransferObject(): Player
     {
         return $this->builder
-            ->setName($this->get('name'))
-            ->setId($this->get('id'))
-            ->when($this->has('position'), fn (PlayerBuilder $b) => $b->setPosition($this->playerPositionMap[$this->get('position')]))
-            ->when($this->has('number'), fn (PlayerBuilder $b) => $b->setNumberOnShirt($this->get('number')))
-            ->when($this->has('photo'), fn (PlayerBuilder $b) => $b->setPhotoUrl($this->get('photo')))
-            ->when($this->has('nationality'), fn (PlayerBuilder $b) => $b->setNationality(new CountryNameNormalizerUsingSimilarText($this->get('nationality'))))
-            ->when($this->has('height'), fn (PlayerBuilder $b) => $b->setHeight(floatval($this->get('height'))))
+            ->setName($this->response->get('name'))
+            ->setId($this->response->get('id'))
+            ->when($this->response->has('position'), fn (PlayerBuilder $b) => $b->setPosition($this->playerPositionMap[$this->response->get('position')]))
+            ->when($this->response->has('number'), fn (PlayerBuilder $b) => $b->setNumberOnShirt($this->response->get('number')))
+            ->when($this->response->has('photo'), fn (PlayerBuilder $b) => $b->setPhotoUrl($this->response->get('photo')))
+            ->when($this->response->has('nationality'), fn (PlayerBuilder $b) => $b->setNationality(new CountryNameNormalizerUsingSimilarText($this->response->get('nationality'))))
+            ->when($this->response->has('height'), fn (PlayerBuilder $b) => $b->setHeight(floatval($this->response->get('height'))))
             ->build();
     }
 }

@@ -12,10 +12,11 @@ use Module\Football\DTO\Builders\TeamBuilder;
 use Module\Football\DTO\Builders\StandingDataBuilder;
 use Module\Football\DTO\Builders\LeagueStandingBuilder;
 
-final class LeagueStandingResponseJsonMapper extends Response
+final class LeagueStandingResponseJsonMapper
 {
     private LeagueStandingBuilder $builder;
     private StandingDataBuilder $standingDataBuilder;
+    private Response $response;
 
     /**
      * @param array<string, mixed> $data
@@ -26,8 +27,8 @@ final class LeagueStandingResponseJsonMapper extends Response
         LeagueStandingBuilder $builder = null,
         StandingDataBuilder $standingDataBuilder = null
     ) {
-        parent::__construct($data);
 
+        $this->response = new Response($data);
         $this->builder = $builder ?: new LeagueStandingBuilder();
         $this->standingDataBuilder = $standingDataBuilder ?: new StandingDataBuilder();
     }
@@ -35,15 +36,15 @@ final class LeagueStandingResponseJsonMapper extends Response
     public function toDataTransferObject(): LeagueStanding
     {
         return $this->builder
-            ->setForm($this->convertTeamForm($this->get('form')))
-            ->setTeamRank($this->get('rank'))
-            ->setTeam($this->mapResponseIntoTeamDto($this->get('team')))
-            ->setTeamPoints($this->get('points'))
-            ->setGoalsDiff($this->get('goalsDiff'))
-            ->setPositionDescription($this->get('description'))
-            ->setStandingRecord($this->mapResponseIntoStandingDto($this->get('all')))
-            ->setHomeRecord($this->mapResponseIntoStandingDto($this->get('home')))
-            ->setAwayRecord($this->mapResponseIntoStandingDto($this->get('away')))
+            ->setForm($this->convertTeamForm($this->response->get('form')))
+            ->setTeamRank($this->response->get('rank'))
+            ->setTeam($this->mapResponseIntoTeamDto($this->response->get('team')))
+            ->setTeamPoints($this->response->get('points'))
+            ->setGoalsDiff($this->response->get('goalsDiff'))
+            ->setPositionDescription($this->response->get('description'))
+            ->setStandingRecord($this->mapResponseIntoStandingDto($this->response->get('all')))
+            ->setHomeRecord($this->mapResponseIntoStandingDto($this->response->get('home')))
+            ->setAwayRecord($this->mapResponseIntoStandingDto($this->response->get('away')))
             ->build();
     }
 

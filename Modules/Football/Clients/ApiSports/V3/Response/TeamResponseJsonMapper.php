@@ -8,10 +8,11 @@ use Module\Football\DTO\Team;
 use Module\Football\DTO\Builders\TeamBuilder;
 use Module\Football\DTO\Builders\VenueBuilder;
 
-final class TeamResponseJsonMapper extends Response
+final class TeamResponseJsonMapper
 {
     private TeamBuilder $builder;
     private VenueBuilder $venueBuilder;
+    private Response $response;
 
     /**
      * @param array<string, mixed> $response
@@ -21,8 +22,7 @@ final class TeamResponseJsonMapper extends Response
         TeamBuilder $teamBuilder = null,
         VenueBuilder $venueBuilder = null
     ) {
-        parent::__construct($response);
-
+        $this->response = new Response($response);
         $this->builder = $teamBuilder ?: new TeamBuilder();
         $this->venueBuilder = $venueBuilder ?: new VenueBuilder();
     }
@@ -30,11 +30,11 @@ final class TeamResponseJsonMapper extends Response
     public function toDataTransferObject(): Team
     {
         return $this->builder
-            ->fromTeam((new TeamJsonMapper($this->get('team'), $this->builder))->toDataTransferObject())
+            ->fromTeam((new TeamJsonMapper($this->response->get('team'), $this->builder))->toDataTransferObject())
             ->setVenue(
                 $this->venueBuilder
-                    ->setName($this->get('venue.name'))
-                    ->setCity($this->get('venue.city'))
+                    ->setName($this->response->get('venue.name'))
+                    ->setCity($this->response->get('venue.city'))
                     ->build()
             )->build();
     }

@@ -16,7 +16,7 @@ use Module\Football\ValueObjects\PlayerPosition;
 use Module\Football\Collections\PlayersCollection;
 use Module\Football\DTO\Builders\TeamLineUpBuilder;
 
-final class TeamLineUpResponseJsonMapper extends Response
+final class TeamLineUpResponseJsonMapper
 {
     private const PLAYER_POSITION_MAP = [
         'G' => PlayerPosition::GOALIE,
@@ -24,6 +24,8 @@ final class TeamLineUpResponseJsonMapper extends Response
         'M' => PlayerPosition::MIDFIELDER,
         'F' => PlayerPosition::ATTACKER
     ];
+
+    private Response $response;
 
     /**
      * @param array<string, mixed> $data
@@ -35,8 +37,7 @@ final class TeamLineUpResponseJsonMapper extends Response
         private ?TeamBuilder $teamBilder = null,
         private ?TeamLineUpBuilder $teamLineUpBuilder = null
     ) {
-        parent::__construct($data);
-
+        $this->response = new Response($data);
         $this->coachBuilder = $coachBuilder ?: new CoachBuilder();
         $this->playerBuilder = $playerBuilder ?: new PlayerBuilder();
         $this->teamLineUpBuilder = $teamLineUpBuilder ?: new TeamLineUpBuilder();
@@ -45,11 +46,11 @@ final class TeamLineUpResponseJsonMapper extends Response
     public function toDataTransferObject(): TeamLineUp
     {
         return $this->teamLineUpBuilder
-            ->setTeam((new TeamJsonMapper($this->get('team'), $this->teamBilder))->toDataTransferObject())
-            ->setFormation(TeamFormation::fromString($this->get('formation')))
-            ->setStartingEleven($this->mapPlayersIntoDto($this->get('startXI')))
-            ->setSubstitutes($this->mapPlayersIntoDto($this->get('substitutes')))
-            ->setCoach($this->mapCoachResponseIntoDto($this->get('coach')))
+            ->setTeam((new TeamJsonMapper($this->response->get('team'), $this->teamBilder))->toDataTransferObject())
+            ->setFormation(TeamFormation::fromString($this->response->get('formation')))
+            ->setStartingEleven($this->mapPlayersIntoDto($this->response->get('startXI')))
+            ->setSubstitutes($this->mapPlayersIntoDto($this->response->get('substitutes')))
+            ->setCoach($this->mapCoachResponseIntoDto($this->response->get('coach')))
             ->build();
     }
 

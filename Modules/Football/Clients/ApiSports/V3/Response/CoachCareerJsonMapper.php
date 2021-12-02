@@ -10,40 +10,42 @@ use Module\Football\DTO\Builders\TeamBuilder;
 use Module\Football\ValueObjects\CoachCareer;
 use Module\Football\ValueObjects\Name;
 
-final class CoachCareerJsonMapper extends Response
+final class CoachCareerJsonMapper
 {
+    private Response $response;
+
     /**
      * @param array<string, mixed> $response
      */
     public function __construct(array $response, private ?TeamBuilder $teamBuilder = null)
     {
-        parent::__construct($response);
+        $this->response = new Response($response);
     }
 
     public function mapIntoCoachCareerObject(): CoachCareer
     {
         return new CoachCareer(
             $this->getTeam(),
-            new Date($this->get('start')),
+            new Date($this->response->get('start')),
             $this->getEndDate()
         );
     }
 
     private function getEndDate(): ?Date
     {
-        if ($this->get('end') === null) {
+        if ($this->response->get('end') === null) {
             return null;
         }
 
-        return new Date($this->get('end'));
+        return new Date($this->response->get('end'));
     }
 
     private function getTeam(): Team|Name
     {
-        if ($this->get('team.id') === null) {
-            return new Name($this->get('team.name'));
+        if ($this->response->get('team.id') === null) {
+            return new Name($this->response->get('team.name'));
         }
 
-        return (new TeamJsonMapper($this->get('team'), $this->teamBuilder))->toDataTransferObject();
+        return (new TeamJsonMapper($this->response->get('team'), $this->teamBuilder))->toDataTransferObject();
     }
 }
