@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Factories;
 
+use Module\Football\Collections\LeagueTable;
 use Module\Football\DTO\StandingData;
 use Module\Football\DTO\LeagueStanding;
 use Module\Football\ValueObjects\TeamForm;
@@ -47,5 +48,10 @@ final class LeagueStandingFactory extends Factory
     public function toDto(): LeagueStanding
     {
         return $this->mapToDto();
+    }
+
+    public function toCollection(): LeagueTable
+    {
+        return $this->mapToCollection(LeagueTable::class);
     }
 }
