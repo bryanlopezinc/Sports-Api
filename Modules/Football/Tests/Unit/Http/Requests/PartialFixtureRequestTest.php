@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Tests\Unit\Http\Requests;
 
+use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 use Module\Football\Http\PartialFixtureRequest;
 use Tests\TestCase;
 
@@ -11,16 +12,16 @@ class PartialFixtureRequestTest extends TestCase
 {
     public function test_cannot_request_only_id(): void
     {
-        $request = new PartialFixtureRequest(['id']);
+        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
 
-        $this->assertFalse($request->wantsPartialResponse());
+         new PartialFixtureRequest(['id']);
     }
 
-    public function test_will_return_empty_if_all_fields_are_invalid(): void
+    public function test_will_throw_exception_if_fields_are_invalid(): void
     {
-        $request = new PartialFixtureRequest(['foo', 'bar']);
+        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
 
-        $this->assertFalse($request->wantsPartialResponse());
+        new PartialFixtureRequest(['foo', 'bar']);
     }
 
     public function test_wants_partial_response(): void

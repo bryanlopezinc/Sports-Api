@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Tests\Unit\Http\Requests;
 
+use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 use Tests\TestCase;
 use Module\Football\Http\PartialLeagueRequest;
 
@@ -11,16 +12,16 @@ class PartialLeagueRequestTest extends TestCase
 {
     public function test_cannot_request_only_id(): void
     {
-        $request = new PartialLeagueRequest(['id']);
+        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
 
-        $this->assertFalse($request->wantsPartialResponse());
+        new PartialLeagueRequest(['id']);
     }
 
-    public function test_will_return_empty_if_all_fields_are_invalid(): void
+    public function test_will_throw_exceptions_when_field_is_invalid(): void
     {
-        $request = new PartialLeagueRequest(['foo', 'bar']);
+        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
 
-        $this->assertFalse($request->wantsPartialResponse());
+        new PartialLeagueRequest(['foo', 'bar']);
     }
 
     public function test_wants_partial_response(): void

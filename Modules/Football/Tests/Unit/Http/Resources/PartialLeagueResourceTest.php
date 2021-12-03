@@ -8,6 +8,7 @@ use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Testing\TestResponse;
+use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 use Module\Football\Factories\LeagueFactory;
 use Module\Football\Http\Resources\PartialLeagueResource;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -57,14 +58,18 @@ class PartialLeagueResourceTest extends TestCase
         $this->makeFullResponseAssertions($this->getTestReponse([]));
     }
 
-    public function test_will_return_all_attributes_when_only_id_attribute_is_requested(): void
+    public function test_will_throw_exception_when_only_id_attribute_is_requested(): void
     {
-        $this->makeFullResponseAssertions($this->getTestReponse(['id']));
+        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
+
+        $this->getTestReponse(['id'])->assertStatus(400);
     }
 
-    public function test_will_return_all_attributes_when_invalid_fields_are_requested(): void
+    public function test_will_throw_exception_when_invalid_fields_are_requested(): void
     {
-        $this->makeFullResponseAssertions($this->getTestReponse(['foo', 'bar']));
+        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
+
+        $this->getTestReponse(['foo', 'bar'])->assertStatus(400);
     }
 
     public function test_will_return_only_coverage_and_season_attributes(): void

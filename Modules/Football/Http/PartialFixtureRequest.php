@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Http;
 
 use Illuminate\Http\Request;
+use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 
 /**
  * Input Filters to return only specific fixture fields in response
@@ -35,21 +36,30 @@ final class PartialFixtureRequest
      */
     public function __construct(private array $requestedFields)
     {
-        $this->requestedFields = collect($requestedFields)->unique()->filter(fn (string $field): bool => inArray($field, self::ALLOWED))->all();
+        $this->requestedFields = collect($requestedFields)->unique()->all();
+
+        $this->validate();
 
         $this->normalizeRequestData();
     }
 
+    private function validate(): void
+    {
+        // Only id cannot be requested
+        if (count($this->requestedFields) === 1 && inArray('id', $this->requestedFields)) {
+            throw new InvalidPartialResourceFieldsHttpException('Only id field cannot be requested');
+        }
+
+        foreach ($this->requestedFields as $field) {
+            if (!inArray($field, self::ALLOWED)) {
+                throw new InvalidPartialResourceFieldsHttpException();
+            }
+        }
+    }
+
     private function normalizeRequestData(): void
     {
-        $attributes = $this->requestedFields; 
-
-        // Only id cannot be requested
-        if (count($attributes) === 1 && inArray('id', $attributes)) {
-            $this->requestedFields = [];
-
-            return;
-        }
+        $attributes = $this->requestedFields;
 
         //Ignore period_goals if specific period_goals data is requested
         if ($this->wantsSpecificPeriodGoalsData() && $this->wants('period_goals')) {
@@ -61,7 +71,7 @@ final class PartialFixtureRequest
 
     public static function fromRequest(Request $request, string $key = 'filter'): self
     {
-        if (!$request->has($key)) {
+        if (!$request->filled($key)) {
             return new self([]);
         }
 
