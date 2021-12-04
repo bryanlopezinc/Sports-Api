@@ -32,6 +32,21 @@ class FetchTeamHeadToHeadTest extends TestCase
         $this->getTestRespone(34, 33)->assertSuccessful();
     }
 
+    public function test_will_throw_validation_exception_when_ids_are_same(): void
+    {
+        $this->getTestRespone(33, 33)->assertStatus(422);
+    }
+
+    public function test_will_limit_head_to_head_response(): void
+    {
+        $this->withoutExceptionHandling();
+
+        Http::fake(fn () => Http::response(FetchTeamHeadToHeadResponse::json()));
+
+        $this->getTestRespone(34, 33)->assertJsonCount(23, 'data'); // 23 head to head fixtures in headtohead json stub
+        $this->getTestRespone(34, 33, ['limit' => 5])->assertJsonCount(5, 'data');
+    }
+
     public function test_will_return_partial_response_when_needed(): void
     {
         $this->withoutExceptionHandling();
