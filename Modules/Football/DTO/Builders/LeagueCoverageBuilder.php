@@ -18,6 +18,11 @@ final class LeagueCoverageBuilder extends Builder
         return $this->set('coversEvents', $supportsEvents);
     }
 
+    public function supportsLeagueStanding(bool $supports): self
+    {
+        return $this->set('coversLeagueStanding', $supports);
+    }
+
     public function supportsFixturePlayersStatistics(bool $supportsPlayerStats): self
     {
         return $this->set('coversPlayerStatistics', $supportsPlayerStats);

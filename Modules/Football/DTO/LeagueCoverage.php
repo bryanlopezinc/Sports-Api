@@ -14,6 +14,7 @@ final class LeagueCoverage extends DataTransferObject
     protected bool $coverTopScorers;
     protected bool $coversTopAssists;
     protected bool $coversPlayerStatistics;
+    protected bool $coversLeagueStanding;
 
     public function coversPlayerStatistics(): bool
     {
@@ -33,6 +34,11 @@ final class LeagueCoverage extends DataTransferObject
     public function coversTopScorers(): bool
     {
         return $this->coverTopScorers;
+    }
+
+    public function coversLeagueStanding(): bool
+    {
+        return $this->coversLeagueStanding;
     }
 
     public function coverslineUp(): bool

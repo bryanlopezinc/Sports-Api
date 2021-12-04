@@ -12,6 +12,9 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureByDateResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueStandingResponse;
 
+/**
+ * @group 112
+ */
 class FetchLeagueStandingTest extends TestCase
 {
     private function getTestResponse(int $id, int $season, array $query = []): TestResponse
@@ -29,6 +32,7 @@ class FetchLeagueStandingTest extends TestCase
         $this->withoutExceptionHandling();
 
         Http::fakeSequence()
+            ->push(FetchLeagueResponse::json())
             ->push(FetchLeagueStandingResponse::json())
             ->push(FetchLeagueResponse::json())
             ->push(FetchFixtureByDateResponse::json());
@@ -38,17 +42,22 @@ class FetchLeagueStandingTest extends TestCase
 
     public function test_will_return_validation_error_when_teams_are_invalid()
     {
+        Http::fakeSequence()->push(FetchLeagueResponse::json());
+
         $this->getTestResponse(400, 2018, ['teams' => '22,foo,40'])->assertStatus(422);
     }
 
     public function test_will_return_validation_error_when_there_are_duplicate_teams()
     {
+        Http::fakeSequence()->push(FetchLeagueResponse::json());
+
         $this->getTestResponse(400, 2018, ['teams' => '22,40,40'])->assertStatus(422);
     }
 
     public function test_will_return_validation_error_if_a_requested_team_id_does_not_exists_in_league_table()
     {
         Http::fakeSequence()
+            ->push(FetchLeagueResponse::json())
             ->push(FetchLeagueStandingResponse::json())
             ->push(FetchLeagueResponse::json())
             ->push(FetchFixtureByDateResponse::json());
@@ -63,6 +72,7 @@ class FetchLeagueStandingTest extends TestCase
         $this->withoutExceptionHandling();
 
         Http::fakeSequence()
+            ->push(FetchLeagueResponse::json())
             ->push(FetchLeagueStandingResponse::json())
             ->push(FetchLeagueResponse::json())
             ->push(FetchFixtureByDateResponse::json());
