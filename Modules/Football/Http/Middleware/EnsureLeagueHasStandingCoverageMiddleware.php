@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Football\Http\Middleware;
 
-use App\Exceptions\Http\HttpException;
 use Illuminate\Http\Request;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Services\FetchLeagueService;
+use Module\Football\Exceptions\Http\CoverageNotSupportedHttpException;
 
 final class EnsureLeagueHasStandingCoverageMiddleware
 {
@@ -26,7 +26,7 @@ final class EnsureLeagueHasStandingCoverageMiddleware
         $league = $this->service->findByIdAndSeason(LeagueId::fromRequest($request, 'league_id'), Season::fromString($request->input('season')));
 
         if (!$league->getSeason()->getCoverage()->coversLeagueStanding()) {
-            throw new HttpException(403, 'League standing not supported for league season');
+            throw new CoverageNotSupportedHttpException('LeagueStandingNotSupported');
         }
 
         return $next($request);

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Services\FetchLeagueService;
-use Module\Football\Exceptions\Http\LeagueTopAssistsNotSupportedForCurrentSeasonHttpException as HttpException;
+use Module\Football\Exceptions\Http\CoverageNotSupportedHttpException;
 
 final class CheckCoversLeagueTopAssistsMiddleware
 {
@@ -26,7 +26,7 @@ final class CheckCoversLeagueTopAssistsMiddleware
         $league = $this->service->findByIdAndSeason(LeagueId::fromRequest($request), Season::fromString($request->input('season')));
 
         if (!$league->getSeason()->getCoverage()->coversTopAssists()) {
-            throw new HttpException;
+            throw new CoverageNotSupportedHttpException('TopAssistsNotSupported');
         }
 
         return $next($request);

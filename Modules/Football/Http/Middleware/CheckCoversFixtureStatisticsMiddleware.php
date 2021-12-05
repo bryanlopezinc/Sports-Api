@@ -7,7 +7,7 @@ namespace Module\Football\Http\Middleware;
 use Illuminate\Http\Request;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Services\FetchFixtureService;
-use Module\Football\Exceptions\Http\FixtureStatisticsNotSupportedForLeagueSeasonHttpException;
+use Module\Football\Exceptions\Http\CoverageNotSupportedHttpException;
 
 final class CheckCoversFixtureStatisticsMiddleware
 {
@@ -27,7 +27,7 @@ final class CheckCoversFixtureStatisticsMiddleware
         $coversLineUps = $fixture->league()->getSeason()->getCoverage()->coversStatistics();
 
         if (!$coversLineUps) {
-            throw new FixtureStatisticsNotSupportedForLeagueSeasonHttpException;
+            throw new CoverageNotSupportedHttpException('FixtureStatisticsNotSupported');
         }
 
         return $next($request);
