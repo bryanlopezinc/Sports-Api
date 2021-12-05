@@ -9,9 +9,6 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use Module\Football\Clients\ApiSports\V3\ApiSportsClient;
 
-/**
- * @group apc
- */
 class ApiSportsClientTest extends TestCase
 {
     public function test_will_cache_404_error_response(): void

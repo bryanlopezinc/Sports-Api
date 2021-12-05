@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Tests\Feature;
 
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 use Module\Football\Routes\Name;
 use Illuminate\Support\Facades\Http;
@@ -12,9 +13,6 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureByDateResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueStandingResponse;
 
-/**
- * @group 112
- */
 class FetchLeagueStandingTest extends TestCase
 {
     private function getTestResponse(int $id, int $season, array $query = []): TestResponse
@@ -65,6 +63,19 @@ class FetchLeagueStandingTest extends TestCase
         $this->getTestResponse(400, 2018, [
             'teams'         => '4063', // team id does not exists in leagueTable.json stub
         ])->assertStatus(400);
+    }
+
+    public function test_will_return_403_status_code_when_league_standing_is_not_supported()
+    {
+        $json = json_decode(FetchLeagueResponse::json(), true);
+
+        Arr::set($json, 'response.0.seasons.11.coverage.standings', false); //edit 2021 season
+        Arr::set($json, 'response.0.seasons', [Arr::get($json, 'response.0.seasons.11')]);
+
+        Http::fakeSequence()->push(json_encode($json));
+
+        //season parameter should match edited season
+        $this->getTestResponse(39, 2021)->assertStatus(403);
     }
 
     public function test_will_return_partial_response()
