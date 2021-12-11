@@ -22,6 +22,7 @@ final class Name
     public const FETCH_FIXTURES_BY_DATE            = 'fixtures.by_date';
     public const FETCH_FIXTURES_PLAYERS_STAT       = 'fixtures.players.statistics';
     public const FETCH_FIXTURE_EVENTS              = 'fixture.events';
+    public const FETCH_FIXTURE_PREDICTIONS         = 'fixture.predictions';
     public const FETCH_COACH                       = 'coach.find';
     public const FETCH_COACH_CAREER_HISTORY        = 'coach.careerHistory';
 }

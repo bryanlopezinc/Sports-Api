@@ -8,8 +8,7 @@ use Module\User\Http\Controllers;
 use Module\User\Routes\RouteName;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('users')
-    ->middleware(Middleware\HandleDbTransactionsMiddleware::class)
+Route::middleware(Middleware\HandleDbTransactionsMiddleware::class)
     ->group(function () {
 
         Route::middleware(['auth:' . Config::GUARD])

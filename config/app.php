@@ -184,6 +184,8 @@ return [
         Module\User\Providers\UserFavouritesRepositoryServiceProvider::class,
         Module\User\Providers\UserRepositoryServiceProvider::class,
         Module\User\Providers\UserFavouritesResourcesServiceProvider::class,
+        Module\User\Predictions\Football\PredictionRepositoryServiceProvider::class,
+        Module\User\Predictions\Football\FixturePredictionsCacheServiceProvider::class,
     ],
 
     /*

@@ -18,6 +18,9 @@ final class FetchFixtureService
     ) {
     }
 
+    /**
+     * @throws \App\Exceptions\Http\ResourceNotFoundHttpException
+     */
     public function fetchFixture(FixtureId $fixtureId): Fixture
     {
         if ($this->cache->has($fixtureId)) {

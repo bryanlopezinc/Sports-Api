@@ -35,6 +35,7 @@ Route::prefix('football')->group(function () {
     Route::prefix('fixtures')->group(function () {
         Route::get('live', Controllers\FetchLiveFixturesController::class)->name(Name::FETCH_LIVE_FIXTURES);
         Route::get('date', Controllers\FetchFixturesByDateController::class)->name(Name::FETCH_FIXTURES_BY_DATE);
+        Route::get('predictions', Controllers\FetchFixturePredictionsController::class)->name(Name::FETCH_FIXTURE_PREDICTIONS);
 
         Route::get('players/statistics', Controllers\FetchFixturePlayersStatisticsController::class)
             ->middleware(MW\EnsureCoversPlayerStatisticsMiddleware::class)

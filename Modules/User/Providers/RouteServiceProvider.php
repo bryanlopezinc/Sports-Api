@@ -23,9 +23,10 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapApiRoutes(): void
     {
-        Route::prefix('v1')
-            ->middleware(['api'])
-            ->group(base_path('Modules\User\Routes\routes.php'));
+        $routeRegistrar = Route::prefix('v1/users')->middleware(['api']);
+
+        $routeRegistrar->group(base_path('Modules\User\Routes\routes.php'));
+        $routeRegistrar->group(base_path('Modules\User\Routes\predictions.php'));
     }
 
     protected function configureRateLimiting(): void
