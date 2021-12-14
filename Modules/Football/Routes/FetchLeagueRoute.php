@@ -11,14 +11,14 @@ final class FetchLeagueRoute implements JsonSerializable
 {
     use SerializeRoute;
 
-    public function __construct(private LeagueId $id)
+    public function __construct(private LeagueId $id, private array $query = [])
     {
     }
 
     public function __toString()
     {
-        return route(Name::FETCH_LEAGUE, [
+        return route(Name::FETCH_LEAGUE, array_merge([
             'id'    => $this->id->toInt()
-        ]);
+        ], $this->query));
     }
 }

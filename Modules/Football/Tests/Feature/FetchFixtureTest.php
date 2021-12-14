@@ -12,15 +12,12 @@ use Module\Football\Routes\FetchFixtureRoute;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 
-/**
- * @group 112
- */
 class FetchFixtureTest extends TestCase
 {
-    private function getTestRespone(int $id): TestResponse
+    private function getTestResponse(int $id, array $query = []): TestResponse
     {
         return $this->getJson(
-            (string)new FetchFixtureRoute(new FixtureId($id))
+            (string)new FetchFixtureRoute(new FixtureId($id), $query)
         );
     }
 
@@ -28,11 +25,9 @@ class FetchFixtureTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
-        $this->getTestRespone(12)
+        $this->getTestResponse(12)
             ->assertSuccessful()
             ->assertHeader('max-age')
             ->assertJsonCount(3, 'data')
@@ -85,6 +80,30 @@ class FetchFixtureTest extends TestCase
                         'line_up',
                         'stats',
                         'players_stats',
+                    ]
+                ]
+            ]);
+    }
+
+    public function test_will_return_partial_response_when_needed(): void
+    {
+        $this->withoutExceptionHandling();
+
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
+
+        $this->getTestResponse(34, ['filter' => 'date,status'])
+            ->assertSuccessful()
+            ->assertJsonCount(1)
+            ->assertJsonCount(2, 'data.attributes')
+            ->assertJsonStructure([
+                'data' => [
+                    "type",
+                    "attributes" => [
+                        "date",
+                        "status" => [
+                            "info",
+                            "short"
+                        ]
                     ]
                 ]
             ]);

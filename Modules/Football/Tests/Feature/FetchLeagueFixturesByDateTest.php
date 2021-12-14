@@ -15,7 +15,7 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueFixturesByDateResponse;
 
 class FetchLeagueFixturesByDateTest extends TestCase
 {
-    private function getTestRespone(): TestResponse
+    private function getTestResponse(): TestResponse
     {
         $route = new FetchLeagueFixturesByDateRoute(
             new LeagueId(22),
@@ -31,11 +31,8 @@ class FetchLeagueFixturesByDateTest extends TestCase
      */
     public function FetchLeagueFixturesByDate_success_response(): void
     {
-        Http::fakeSequence()
-            ->push(FetchLeagueFixturesByDateResponse::json());
+        Http::fakeSequence()->push(FetchLeagueFixturesByDateResponse::json());
 
-        $this->withoutExceptionHandling()
-            ->getTestRespone()
-            ->assertSuccessful();
+        $this->withoutExceptionHandling()->getTestResponse()->assertSuccessful();
     }
 }

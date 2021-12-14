@@ -6,24 +6,9 @@ namespace Module\Football\Tests\Unit\Http\Requests;
 
 use Tests\TestCase;
 use Module\Football\Http\PartialLeagueStandingRequest;
-use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 
 class PartialLeagueStandingRequestTest extends TestCase
 {
-    public function test_will_throw_exception_for_invalid_fields(): void
-    {
-        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
-
-        new PartialLeagueStandingRequest(['foo']);
-    }
-
-    public function test_will_throw_exception_when_only_team_field_is_Requested(): void
-    {
-        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
-
-        new PartialLeagueStandingRequest(['team']);
-    }
-
     public function test_will_include_team_attribute_by_default(): void
     {
         $request = new PartialLeagueStandingRequest(['points']);

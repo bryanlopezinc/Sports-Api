@@ -10,6 +10,7 @@ use Illuminate\Validation\Validator;
 use Module\Football\Rules\SeasonRule;
 use Module\Football\ValueObjects\TeamId;
 use App\Exceptions\InvalidResourceIdException;
+use Module\Football\Rules\PartialLeagueStandingFieldsRule;
 
 final class FetchLeagueStandingRequest extends FormRequest
 {
@@ -17,7 +18,8 @@ final class FetchLeagueStandingRequest extends FormRequest
     {
         return [
             'league_id' => ['required', 'int', new ResourceIdRule],
-            'season'    => ['required', new SeasonRule]
+            'season'    => ['required', new SeasonRule],
+            'fields'    => ['sometimes', 'string', new PartialLeagueStandingFieldsRule]
         ];
     }
 

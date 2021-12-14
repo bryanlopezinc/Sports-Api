@@ -16,7 +16,6 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Module\Football\Factories\LeagueStandingFactory;
 use Module\Football\DTO\Builders\LeagueStandingBuilder;
 use Module\Football\Http\Resources\PartialLeagueStandingResource;
-use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 
 class PartialLeagueStandingResourceTest extends TestCase
 {
@@ -69,20 +68,6 @@ class PartialLeagueStandingResourceTest extends TestCase
     public function test_will_return_all_response_when_no_fields_are_requested(): void
     {
         $this->makeFullResponseAssertions($this->getTestReponse([]));
-    }
-
-    public function test_will_throw_exception_when_invalid_fields_are_requested(): void
-    {
-        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
-
-        $this->getTestReponse(['filter' => 'foo,bar'])->assertStatus(400);
-    }
-
-    public function test_will_throw_exception_when_only_team_field_is_requested(): void
-    {
-        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
-
-        $this->getTestReponse(['filter' => 'team'])->assertStatus(400);
     }
 
     public function test_will_return_points_and_team_fields(): void

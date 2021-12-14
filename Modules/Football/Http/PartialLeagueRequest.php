@@ -5,32 +5,12 @@ declare(strict_types=1);
 namespace Module\Football\Http;
 
 use Illuminate\Http\Request;
-use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 
 /**
  * Input Filters to return only specific league fields in response
  */
 final class PartialLeagueRequest
 {
-    private const ALLOWED = [
-        'logo_url',
-        'name',
-        'country',
-        'season',
-        'season.season',
-        'season.start',
-        'season.end',
-        'season.is_current_season',
-        'coverage',
-        'coverage.line_up',
-        'coverage.events',
-        'coverage.stats',
-        'coverage.top_scorers',
-        'coverage.top_assists',
-        'links',
-        'id'
-    ];
-
     /**
      * @param array<string> $requestedFields
      */
@@ -38,23 +18,7 @@ final class PartialLeagueRequest
     {
         $this->requestedFields = collect($requestedFields)->unique()->all();
 
-        $this->validate();
-
         $this->normalizeRequestData();
-    }
-
-    private function validate(): void
-    {
-        // Only id cannot be requested
-        if (count($this->requestedFields) === 1 && inArray('id', $this->requestedFields)) {
-            throw new InvalidPartialResourceFieldsHttpException('Only id cannot be requested');
-        }
-
-        foreach ($this->requestedFields as $field) {
-            if (!inArray($field, self::ALLOWED)) {
-                throw new InvalidPartialResourceFieldsHttpException();
-            }
-        }
     }
 
     private function normalizeRequestData(): void

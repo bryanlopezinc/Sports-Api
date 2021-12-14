@@ -13,7 +13,7 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchTeamResponse;
 
 class FetchTeamTest extends TestCase
 {
-    private function getTestRespone(int $teamId): TestResponse
+    private function getTestResponse(int $teamId): TestResponse
     {
         return $this->getJson(
             (string)new FetchTeamRoute(new TeamId($teamId))
@@ -25,7 +25,7 @@ class FetchTeamTest extends TestCase
         Http::fake(fn () => Http::response(FetchTeamResponse::json()));
 
         $this->withoutExceptionHandling()
-            ->getTestRespone(400)
+            ->getTestResponse(400)
             ->assertSuccessful()
             ->assertHeader('max-age')
             ->assertJsonStructure([

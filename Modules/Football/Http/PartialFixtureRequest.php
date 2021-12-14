@@ -5,32 +5,12 @@ declare(strict_types=1);
 namespace Module\Football\Http;
 
 use Illuminate\Http\Request;
-use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 
 /**
  * Input Filters to return only specific fixture fields in response
  */
 final class PartialFixtureRequest
 {
-    private const ALLOWED = [
-        'id',
-        'referee',
-        'date',
-        'venue',
-        'minutes_elapsed',
-        'status',
-        'league',
-        'winner',
-        'teams',
-        'score',
-        'links',
-        'period_goals',
-        'period_goals.first_half',
-        'period_goals.second_half',
-        'period_goals.extra_time',
-        'period_goals.penalty'
-    ];
-
     /**
      * @param array<string> $requestedFields
      */
@@ -38,23 +18,7 @@ final class PartialFixtureRequest
     {
         $this->requestedFields = collect($requestedFields)->unique()->all();
 
-        $this->validate();
-
         $this->normalizeRequestData();
-    }
-
-    private function validate(): void
-    {
-        // Only id cannot be requested
-        if (count($this->requestedFields) === 1 && inArray('id', $this->requestedFields)) {
-            throw new InvalidPartialResourceFieldsHttpException('Only id field cannot be requested');
-        }
-
-        foreach ($this->requestedFields as $field) {
-            if (!inArray($field, self::ALLOWED)) {
-                throw new InvalidPartialResourceFieldsHttpException();
-            }
-        }
     }
 
     private function normalizeRequestData(): void

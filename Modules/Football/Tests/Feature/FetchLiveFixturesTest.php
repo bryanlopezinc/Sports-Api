@@ -12,7 +12,7 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchLiveFixturesResponse;
 
 class FetchLiveFixturesTest extends TestCase
 {
-    private function getTestRespone(): TestResponse
+    private function getTestResponse(): TestResponse
     {
         return $this->getJson(route(Name::FETCH_LIVE_FIXTURES));
     }
@@ -22,11 +22,10 @@ class FetchLiveFixturesTest extends TestCase
      */
     public function FetchLiveFixtures_success_response(): void
     {
-        Http::fakeSequence()
-            ->push(FetchLiveFixturesResponse::json());
+        Http::fakeSequence()->push(FetchLiveFixturesResponse::json());
 
         $this->withoutExceptionHandling()
-            ->getTestRespone()
+            ->getTestResponse()
             ->assertSuccessful()
             ->assertHeader('max-age');
     }

@@ -8,7 +8,6 @@ use Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Testing\TestResponse;
-use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 use Module\Football\Factories\FixtureFactory;
 use Module\Football\Http\Resources\PartialFixtureResource;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -76,20 +75,6 @@ class PartialFixtureResourceTest extends TestCase
     public function test_will_return_full_response_when_no_fields_are_requested(): void
     {
         $this->makeFullResponseAssertions($this->getTestReponse([]));
-    }
-
-    public function test_will_throw_exception_when_only_id_is_requested(): void
-    {
-        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
-
-        $this->getTestReponse(['id'])->assertStatus(400);
-    }
-
-    public function test_will_throw_exception_when_invalid_fields_are_requested(): void
-    {
-        $this->expectException(InvalidPartialResourceFieldsHttpException::class);
-
-        $this->getTestReponse(['foo', 'baz'])->assertStatus(400);
     }
 
     public function test_will_return_only_attributes_combination_1(): void

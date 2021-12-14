@@ -7,8 +7,8 @@ namespace Module\Football\Http\Controllers;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Services\FetchFixtureService;
 use Module\Football\Http\Requests\FetchFixtureRequest;
-use Module\Football\Http\Resources\PartialFixtureResource;
 use Module\Football\Http\Resources\PartialLeagueResource;
+use Module\Football\Http\Resources\PartialFixtureResource;
 
 final class FetchFixtureController
 {

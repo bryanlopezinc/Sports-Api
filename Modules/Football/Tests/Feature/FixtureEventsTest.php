@@ -15,7 +15,7 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureEventsResponse;
 
 class FixtureEventsTest extends TestCase
 {
-    private function getTestRespone(int $id): TestResponse
+    private function getTestResponse(int $id): TestResponse
     {
         return $this->getJson(
             (string) new FetchFixtureEventsRoute(new FixtureId($id))
@@ -33,6 +33,6 @@ class FixtureEventsTest extends TestCase
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json());
 
-        $this->getTestRespone(400)->assertSuccessful();
+        $this->getTestResponse(400)->assertSuccessful();
     }
 }

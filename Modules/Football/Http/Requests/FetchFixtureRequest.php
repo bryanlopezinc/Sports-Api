@@ -7,14 +7,18 @@ namespace Module\Football\Http\Requests;
 use App\Rules\ResourceIdRule;
 use App\Http\Requests\FormRequest;
 use Module\Football\Rules\TimeZoneRule;
+use Module\Football\Rules\PartialFixtureFieldsRule;
+use Module\Football\Rules\PartialLeagueFieldsRule;
 
-class FetchFixtureRequest extends FormRequest
+final class FetchFixtureRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'id'        => ['required', 'int', new ResourceIdRule],
-            'timezone'  => ['sometimes', 'string', new TimeZoneRule]
+            'id'            => ['required', 'int', new ResourceIdRule],
+            'timezone'      => ['sometimes', 'string', new TimeZoneRule],
+            'filter'        => ['sometimes', 'string', new PartialFixtureFieldsRule],
+            'league_filter' => ['sometimes', 'string', new PartialLeagueFieldsRule]
         ];
     }
 }

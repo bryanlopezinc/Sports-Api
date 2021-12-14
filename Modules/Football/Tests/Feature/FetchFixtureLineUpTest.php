@@ -93,9 +93,7 @@ class FetchFixtureLineUpTest extends TestCase
         Arr::set($json, 'response.0.seasons.9.coverage.fixtures.lineups', false); //use the same season year with fixture stub league season year
         Arr::set($json, 'response.0.seasons', [Arr::get($json, 'response.0.seasons.9')]);
 
-        Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
-            ->push(json_encode($json));
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(json_encode($json));
 
         $this->getTestResponse(34)->assertStatus(403);
     }

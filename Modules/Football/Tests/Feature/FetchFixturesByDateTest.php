@@ -12,7 +12,7 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureByDateResponse;
 
 class FetchFixturesByDateTest extends TestCase
 {
-    private function getTestRespone(): TestResponse
+    private function getTestResponse(): TestResponse
     {
         return $this->getJson(route(Name::FETCH_FIXTURES_BY_DATE, [
             'date'  => today()->toDateString()
@@ -24,11 +24,10 @@ class FetchFixturesByDateTest extends TestCase
      */
     public function FetchFixturesByDate_success_response(): void
     {
-        Http::fakeSequence()
-            ->push(FetchFixtureByDateResponse::json());
+        Http::fakeSequence()->push(FetchFixtureByDateResponse::json());
 
         $this->withoutExceptionHandling()
-            ->getTestRespone()
+            ->getTestResponse()
             ->assertSuccessful();
     }
 }

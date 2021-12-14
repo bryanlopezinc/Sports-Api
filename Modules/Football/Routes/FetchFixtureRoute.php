@@ -11,14 +11,14 @@ final class FetchFixtureRoute implements JsonSerializable
 {
     use SerializeRoute;
 
-    public function __construct(private FixtureId $id)
+    public function __construct(private FixtureId $id, private array $query = [])
     {
     }
 
     public function __toString()
     {
-        return route(Name::FETCH_FIXTURE, [
+        return route(Name::FETCH_FIXTURE, array_merge([
             'id'    => $this->id->toInt()
-        ]);
+        ], $this->query));
     }
 }

@@ -13,7 +13,7 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchCoachResponse;
 
 class FetchCoachTest extends TestCase
 {
-    private function getTestRespone(int $id): TestResponse
+    private function getTestResponse(int $id): TestResponse
     {
         return $this->getJson(
             (string)new FetchCoachRoute(new CoachId($id))
@@ -24,10 +24,8 @@ class FetchCoachTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        Http::fakeSequence()
-            ->push(FetchCoachResponse::json());
+        Http::fakeSequence()->push(FetchCoachResponse::json());
 
-        $this->getTestRespone(12)
-            ->assertSuccessful();
+        $this->getTestResponse(12)->assertSuccessful();
     }
 }
