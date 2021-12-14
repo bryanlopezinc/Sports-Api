@@ -27,6 +27,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $routeRegistrar->group(base_path('Modules\User\Routes\routes.php'));
         $routeRegistrar->group(base_path('Modules\User\Routes\predictions.php'));
+        $routeRegistrar->group(base_path('Modules\User\Routes\favourites.php'));
     }
 
     protected function configureRateLimiting(): void

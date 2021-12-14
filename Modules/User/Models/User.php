@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Module\User\Favourites\Models\Favourite;
 
 /**
  * @method static Builder WithQueryOptions(QueryFields $queryOptions)
@@ -61,7 +62,7 @@ class User extends Authenticatable
 
     public function favourites(): HasMany
     {
-        return $this->hasMany(UserFavourite::class, 'user_id', 'id');
+        return $this->hasMany(Favourite::class, 'user_id', 'id');
     }
 
     public function findForPassport(string $username): ?self

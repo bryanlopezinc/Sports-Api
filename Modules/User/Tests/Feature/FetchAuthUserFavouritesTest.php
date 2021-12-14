@@ -7,12 +7,12 @@ namespace Module\User\Tests\Feature;
 use Tests\TestCase;
 use Laravel\Passport\Passport;
 use Module\User\Routes\RouteName;
+use Module\User\Favourites\Factory;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\User\Factories\UserFactory;
 use Module\Football\Factories\TeamFactory;
 use Module\Football\Factories\LeagueFactory;
-use Module\User\Factories\UserFavouriteFactory;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchTeamResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 
@@ -33,8 +33,8 @@ class FetchAuthUserFavouritesTest extends TestCase
         $team = TeamFactory::new()->toDto();
 
         $user = UserFactory::new()
-            ->has(UserFavouriteFactory::new()->footballLeagueType()->favouriteId($league->getId()->toInt()), 'favourites')
-            ->has(UserFavouriteFactory::new()->favouriteId($team->getId()->toInt()), 'favourites')
+            ->has(Factory::new()->footballLeagueType()->favouriteId($league->getId()->toInt()), 'favourites')
+            ->has(Factory::new()->favouriteId($team->getId()->toInt()), 'favourites')
             ->create();
 
         Passport::actingAs($user); // @phpstan-ignore-line
@@ -55,8 +55,8 @@ class FetchAuthUserFavouritesTest extends TestCase
 
         $user = UserFactory::new()
             ->private()
-            ->has(UserFavouriteFactory::new()->footballLeagueType()->favouriteId($league->getId()->toInt()), 'favourites')
-            ->has(UserFavouriteFactory::new()->favouriteId($team->getId()->toInt()), 'favourites')
+            ->has(Factory::new()->footballLeagueType()->favouriteId($league->getId()->toInt()), 'favourites')
+            ->has(Factory::new()->favouriteId($team->getId()->toInt()), 'favourites')
             ->create();
 
         Passport::actingAs($user); //@phpstan-ignore-line

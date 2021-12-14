@@ -7,14 +7,14 @@ namespace Module\User\Tests\Feature;
 use Tests\TestCase;
 use Laravel\Passport\Passport;
 use Module\User\Routes\RouteName;
+use Module\User\Favourites\Factory;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\User\Factories\UserFactory;
-use Module\User\Models\UserFavouriteCount;
 use Module\Football\Factories\LeagueFactory;
-use Module\User\Factories\UserFavouriteFactory;
-use Module\User\Models\UserFavourite as UserFavouriteModel;
+use Module\User\Favourites\Models\Favourite;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
+use Module\User\Favourites\Models\FavouriteCount;
 
 class AddFootballLeagueToFavouritesTest extends TestCase
 {
@@ -31,13 +31,12 @@ class AddFootballLeagueToFavouritesTest extends TestCase
 
         $league = LeagueFactory::new()->toDto();
         $user = UserFactory::new()
-            ->has(UserFavouriteFactory::new()->footballLeagueType()->favouriteId($league->getId()->toInt()), 'favourites')
+            ->has(Factory::new()->footballLeagueType()->favouriteId($league->getId()->toInt()), 'favourites')
             ->create();
 
         Passport::actingAs($user); // @phpstan-ignore-line
 
-        $this->getTestRespone($league->getId()->toInt())
-            ->assertStatus(409);
+        $this->getTestRespone($league->getId()->toInt())->assertStatus(409);
     }
 
     public function test_returns_404_status_code_when_league_does_not_exists(): void
@@ -52,7 +51,7 @@ class AddFootballLeagueToFavouritesTest extends TestCase
         $this->getTestRespone($league->getId()->toInt())
             ->assertNotFound();
 
-        $this->assertDatabaseMissing((new UserFavouriteModel)->getTable(),
+        $this->assertDatabaseMissing((new Favourite())->getTable(),
             [
                 'user_id'      => $factory->id, // @phpstan-ignore-line
                 'favourite_id' => $league->getId()->toInt()
@@ -73,14 +72,14 @@ class AddFootballLeagueToFavouritesTest extends TestCase
             ->getTestRespone($league->getId()->toInt())
             ->assertCreated();
 
-        $this->assertDatabaseHas((new UserFavouriteModel)->getTable(),
+        $this->assertDatabaseHas((new Favourite)->getTable(),
             [
                 'user_id'      => $factory->id, // @phpstan-ignore-line
                 'favourite_id' => $league->getId()->toInt()
             ]
         );
 
-        $this->assertDatabaseHas((new UserFavouriteCount())->getTable(),
+        $this->assertDatabaseHas((new FavouriteCount())->getTable(),
             [
                 'user_id'      => $factory->id, // @phpstan-ignore-line
                 'count'        => 1

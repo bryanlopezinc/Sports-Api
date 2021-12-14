@@ -7,14 +7,14 @@ namespace Module\User\Tests\Feature;
 use Tests\TestCase;
 use Laravel\Passport\Passport;
 use Module\User\Routes\RouteName;
+use Module\User\Favourites\Factory;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\User\Factories\UserFactory;
 use Module\Football\Factories\TeamFactory;
-use Module\User\Factories\UserFavouriteFactory;
-use Module\User\Models\UserFavourite as UserFavouriteModel;
+use Module\User\Favourites\Models\Favourite;
+use Module\User\Favourites\Models\FavouriteCount;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchTeamResponse;
-use Module\User\Models\UserFavouriteCount;
 
 class AddFootballTeamToFavouriteTest extends TestCase
 {
@@ -31,13 +31,12 @@ class AddFootballTeamToFavouriteTest extends TestCase
 
         $team = TeamFactory::new()->toDto();
         $user = UserFactory::new()
-            ->has(UserFavouriteFactory::new()->favouriteId($team->getId()->toInt()), 'favourites')
+            ->has(Factory::new()->favouriteId($team->getId()->toInt()), 'favourites')
             ->create();
 
         Passport::actingAs($user); // @phpstan-ignore-line
 
-        $this->getTestRespone($team->getId()->toInt())
-            ->assertStatus(409);
+        $this->getTestRespone($team->getId()->toInt())->assertStatus(409);
     }
 
     public function test_returns_404_status_code_when_team_does_not_exists(): void
@@ -49,10 +48,9 @@ class AddFootballTeamToFavouriteTest extends TestCase
 
         Passport::actingAs($factory); // @phpstan-ignore-line
 
-        $this->getTestRespone($team->getId()->toInt())
-            ->assertNotFound();
+        $this->getTestRespone($team->getId()->toInt())->assertNotFound();
 
-        $this->assertDatabaseMissing((new UserFavouriteModel)->getTable(),
+        $this->assertDatabaseMissing((new Favourite())->getTable(),
             [
                 'user_id'      => $factory->id, // @phpstan-ignore-line
                 'favourite_id' => $team->getId()->toInt()
@@ -73,14 +71,14 @@ class AddFootballTeamToFavouriteTest extends TestCase
             ->getTestRespone($team->getId()->toInt())
             ->assertCreated();
 
-        $this->assertDatabaseHas((new UserFavouriteModel)->getTable(),
+        $this->assertDatabaseHas((new Favourite)->getTable(),
             [
                 'user_id'      => $factory->id, // @phpstan-ignore-line
                 'favourite_id' => $team->getId()->toInt()
             ]
         );
 
-        $this->assertDatabaseHas((new UserFavouriteCount())->getTable(),
+        $this->assertDatabaseHas((new FavouriteCount())->getTable(),
             [
                 'user_id'      => $factory->id, // @phpstan-ignore-line
                 'count'        => 1
