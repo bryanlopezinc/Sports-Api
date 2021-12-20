@@ -6,7 +6,7 @@ namespace Module\User\Http\Requests;
 
 use App\Rules\ResourceIdRule;
 use Module\User\Routes\RouteName;
-use App\Http\Requests\FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\RequiredIf;
 
 final class UserProfileRequest extends FormRequest

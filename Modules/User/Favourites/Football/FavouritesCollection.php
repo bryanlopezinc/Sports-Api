@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Favourites\Football;
 
-use App\Collections\DtoCollection;
+use App\Collections\BaseCollection;
 use Illuminate\Support\Collection;
 use Module\User\Favourites\Dto\Favourite;
 use Module\Football\ValueObjects\TeamId;
@@ -12,7 +12,7 @@ use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Collections\TeamIdsCollection;
 use Module\Football\Collections\LeagueIdsCollection;
 
-final class FavouritesCollection extends DtoCollection
+final class FavouritesCollection extends BaseCollection
 {
     protected function isValid($value): bool
     {

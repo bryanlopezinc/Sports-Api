@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Football\Collections;
 
+use App\Collections\BaseCollection;
 use Module\Football\DTO\League;
-use App\Collections\DtoCollection;
 use Illuminate\Support\Collection;
 use Module\Football\DTO\LeagueStanding;
 use Module\Football\Attributes\LeagueTableValidators\EnsureStandingsHaveSameLeague;
@@ -16,7 +16,7 @@ use Module\Football\Attributes\LeagueTableValidators\EnsureRanksAreInConsecutive
  */
 #[EnsureStandingsHaveSameLeague]
 #[EnsureRanksAreInConsecutiveOrder]
-final class LeagueTable extends DtoCollection
+final class LeagueTable extends BaseCollection
 {
     protected function isValid(mixed $value): bool
     {

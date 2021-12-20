@@ -7,7 +7,7 @@ namespace Module\User\Favourites;
 use App\Utils\PaginationData;
 use App\Rules\ResourceIdRule;
 use Module\User\Routes\RouteName;
-use App\Http\Requests\FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\RequiredIf;
 
 final class UserFavouritesRequest extends FormRequest

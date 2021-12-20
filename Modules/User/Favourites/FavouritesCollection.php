@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\User\Favourites;
 
-use App\Collections\DtoCollection;
+use App\Collections\BaseCollection;
 use Illuminate\Support\Collection;
 use Module\User\Favourites\Dto\Favourite;
 use Module\User\Favourites\Football\FavouritesCollection as FootballSportTypeCollection;
 
-final class FavouritesCollection extends DtoCollection
+final class FavouritesCollection extends BaseCollection
 {
     protected function isValid($value): bool
     {

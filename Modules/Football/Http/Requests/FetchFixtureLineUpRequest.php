@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Http\Requests;
 
-use App\Http\Requests\FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\ResourceIdRule;
 
 final class FetchFixtureLineUpRequest extends FormRequest

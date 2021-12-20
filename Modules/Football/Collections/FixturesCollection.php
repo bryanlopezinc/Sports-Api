@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Football\Collections;
 
+use App\Collections\BaseCollection;
 use Module\Football\DTO\Fixture;
-use App\Collections\DtoCollection;
 use Illuminate\Support\Collection;
 
 /**
  * @template T of Fixture
  */
-final class FixturesCollection extends DtoCollection
+final class FixturesCollection extends BaseCollection
 {
     protected function isValid(mixed $value): bool
     {

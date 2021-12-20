@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Http\Requests;
 
 use App\Rules\ResourceIdRule;
-use App\Http\Requests\FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
 final class fetchCoachCareerHistoryRequest extends FormRequest
 {

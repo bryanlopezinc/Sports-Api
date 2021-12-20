@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\User\Collections;
 
+use App\Collections\BaseCollection;
 use Module\User\Dto\User;
-use App\Collections\DtoCollection;
 
 /**
  * @template T of User
  */
-final class UsersCollection extends DtoCollection
+final class UsersCollection extends BaseCollection
 {
     protected function isValid(mixed $value): bool
     {

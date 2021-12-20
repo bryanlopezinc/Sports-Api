@@ -7,7 +7,7 @@ namespace Module\User\Http\Requests;
 use App\Utils\Config;
 use App\ValueObjects\Email;
 use Module\User\QueryFields;
-use App\Http\Requests\FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use Module\User\Rules\UsernameRule;
 use Module\User\ValueObjects\Username;
 use Illuminate\Contracts\Validation\Rule;

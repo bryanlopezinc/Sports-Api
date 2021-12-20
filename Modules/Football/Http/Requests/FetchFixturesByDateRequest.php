@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Http\Requests;
 
-use App\Http\Requests\FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use Module\Football\Rules\TimeZoneRule;
 
 class FetchFixturesByDateRequest extends FormRequest

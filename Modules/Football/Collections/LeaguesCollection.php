@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Football\Collections;
 
+use App\Collections\BaseCollection;
 use Module\Football\DTO\League;
-use App\Collections\DtoCollection;
 use Illuminate\Support\Collection;
 use Module\Football\ValueObjects\LeagueId;
 
 /**
  * @template T of League
  */
-final class LeaguesCollection extends DtoCollection
+final class LeaguesCollection extends BaseCollection
 {
     protected function isValid(mixed $value): bool
     {

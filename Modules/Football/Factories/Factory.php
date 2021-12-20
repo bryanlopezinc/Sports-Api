@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Factories;
 
-use App\Collections\BaseCollection;
-use App\DTO\DataTransferObject;
-use App\Collections\DtoCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory as BaseFactory;
 

@@ -6,7 +6,7 @@ namespace Module\User\Predictions\Football;
 
 use App\Rules\ResourceIdRule;
 use Illuminate\Validation\Rule;
-use App\Http\Requests\FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
 final class PredictFixtureRequest extends FormRequest
 {
