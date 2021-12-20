@@ -31,9 +31,9 @@ final class CoachResource extends JsonResource
         return [
             'type'       => 'football_coach',
             'attributes' => [
-                'id'            => $this->coach->id()->toInt(),
+                'id'            => $this->coach->id()->asHashedId(),
                 'name'          => $rescuer->rescue(fn () => $this->coach->name()->value()),
-                'photo_url'     => $rescuer->rescue(fn () => $this->coach->photoUrl()->url()),
+                'photo_url'     => $rescuer->rescue(fn () => $this->coach->photoUrl()->toString()),
                 'team'          => $rescuer->rescue(fn () => $this->when($this->coach->hasCurrentTeam(), fn () => new TeamResource($this->coach->currentTeam()))),
                 'has_team'      => $rescuer->rescue(fn () => $this->coach->hasCurrentTeam()),
                 'age'           => $rescuer->rescue(fn () => $this->coach->age()->toInt()),

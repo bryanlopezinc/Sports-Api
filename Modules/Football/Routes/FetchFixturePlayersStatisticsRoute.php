@@ -18,7 +18,7 @@ final class FetchFixturePlayersStatisticsRoute implements JsonSerializable
     public function __toString()
     {
         return route(Name::FETCH_FIXTURES_PLAYERS_STAT, [
-            'id'    => $this->id->toInt()
+            'id'    => $this->id->asHashedId()
         ]);
     }
 }

@@ -18,7 +18,7 @@ final class FetchCoachRoute implements JsonSerializable
     public function __toString()
     {
         return route(Name::FETCH_COACH, [
-            'id'    => $this->id->toInt()
+            'id' => $this->id->asHashedId()
         ]);
     }
 }

@@ -25,7 +25,7 @@ final class TeamSquadResource extends JsonResource
     {
         return [
             'type'          => 'football_team_squad',
-            'team_id'       => TeamId::fromRequest($request)->toInt(),
+            'team_id'       => TeamId::fromRequest($request)->asHashedId(),
             'total'         => $this->players->count(),
             'squad'         => [
                 'goal_keepers'  => $this->transformCollection($this->players->goalKeepers()),

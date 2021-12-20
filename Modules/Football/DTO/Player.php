@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Football\DTO;
 
-use App\ValueObjects\Url;
 use App\ValueObjects\Date;
 use App\ValueObjects\Country;
 use App\DTO\DataTransferObject;
+use Module\Football\Media\ImageUrl;
 use Module\Football\PlayerPositionOnGrid;
 use Module\Football\ValueObjects\PlayerId;
 use Module\Football\ValueObjects\PlayerAge;
@@ -19,7 +19,7 @@ use Module\Football\ValueObjects\PlayerPosition;
 final class Player extends DataTransferObject
 {
     protected PlayerAge $age;
-    protected Url $photo;
+    protected ImageUrl $photo;
     protected Date $birth_date;
     protected HeightValue $height_in_cm;
     protected Country $nationality;
@@ -72,7 +72,7 @@ final class Player extends DataTransferObject
         return $this->name;
     }
 
-    public function photoUrl(): Url
+    public function photoUrl(): ImageUrl
     {
         return $this->photo;
     }

@@ -94,7 +94,7 @@ final class TeamLineUpResponseJsonMapper
         return $this->coachBuilder
             ->id($response->get('id'))
             ->name($response->get('name'))
-            ->photoUrl($response->get('photo'))
+            ->photoUrl($response->get('id'))
             ->build();
     }
 }

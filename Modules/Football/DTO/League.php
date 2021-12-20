@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Football\DTO;
 
-use App\ValueObjects\Url;
 use App\ValueObjects\Country;
 use App\DTO\DataTransferObject;
+use Module\Football\Media\ImageUrl;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\ValueObjects\LeagueType;
 use Module\Football\ValueObjects\Name;
@@ -14,7 +14,7 @@ use Module\Football\ValueObjects\Name;
 final class League extends DataTransferObject
 {
     protected LeagueId $id;
-    protected Url $logo;
+    protected ImageUrl $logo;
     protected Country $country;
     protected Name $name;
     protected LeagueType $type;
@@ -35,7 +35,7 @@ final class League extends DataTransferObject
         return $this->id;
     }
 
-    public function getLogoUrl(): Url
+    public function getLogoUrl(): ImageUrl
     {
         return $this->logo;
     }

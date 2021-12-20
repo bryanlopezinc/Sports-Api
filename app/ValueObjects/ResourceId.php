@@ -6,6 +6,7 @@ namespace App\ValueObjects;
 
 use Illuminate\Http\Request;
 use App\Exceptions\InvalidResourceIdException;
+use App\HashId\HashIdInterface;
 
 class ResourceId
 {
@@ -22,6 +23,14 @@ class ResourceId
     public function toInt(): int
     {
         return $this->id;
+    }
+
+    public function asHashedId(): string
+    {
+        /** @var HashIdInterface */
+        $hasher = app(HashIdInterface::class);
+
+        return $hasher->hash($this->id);
     }
 
     protected static function getIdFromRequest(Request $request = null, string $key = 'id'): int

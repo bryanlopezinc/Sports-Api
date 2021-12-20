@@ -15,7 +15,7 @@ final class AddResourceToFavouritesRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'    => ['required', 'int', new ResourceIdRule],
+            'id'    => ['required', new ResourceIdRule()],
         ];
     }
 }

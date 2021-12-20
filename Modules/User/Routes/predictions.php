@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\HashId\ConvertHashedValuesToIntegerMiddleware;
 use App\Http\Middleware;
 use Module\User\Routes\Config;
 use Module\User\Routes\RouteName;
@@ -13,6 +14,7 @@ Route::prefix('predictions')
     ->group(function () {
 
         Route::post('football/predict', Football\PredictFixtureController::class)
+            ->middleware(ConvertHashedValuesToIntegerMiddleware::keys('fixture_id'))
             ->middleware(Football\EnsureFixtureCanBePredictedMiddleware::class)
             ->name(RouteName::PREDICT_FOOTBALL_FIXTURE);
     });

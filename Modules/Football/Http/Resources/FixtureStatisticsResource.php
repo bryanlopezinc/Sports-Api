@@ -25,7 +25,7 @@ final class FixtureStatisticsResource extends JsonResource
     {
         return [
             'type'             => 'football_fixture_statistics',
-            'fixture_id'       => FixtureId::fromRequest($request)->toInt(),
+            'fixture_id'       => FixtureId::fromRequest($request)->asHashedId(),
             'stats'            => collect([$this->statistics->teamOne(), $this->statistics->teamTwo()])->map(function (FixtureStatisticsDto $stat) {
                 return [
                     'team'      => new TeamResource($stat->team()),

@@ -30,7 +30,7 @@ final class TeamJsonMapper
             ->setId($this->response->get('id'))
             ->when($this->response->has('name'), fn (TeamBuilder $b) => $b->setName($this->response->get('name')))
             ->when($this->response->has('national'), fn (TeamBuilder $b) => $b->setIsNational($this->response->get('national')))
-            ->when($this->response->has('logo'), fn (TeamBuilder $b) => $b->setLogoUrl($this->response->get('logo')))
+            ->when($this->response->has('logo'), fn (TeamBuilder $b) => $b->setLogoUrl($this->response->get('id')))
             ->when($this->response->has('country'), fn (TeamBuilder $b) => $b->setCountry(new CountryNameNormalizerUsingSimilarText($this->response->get('country'))))
             ->build();
     }

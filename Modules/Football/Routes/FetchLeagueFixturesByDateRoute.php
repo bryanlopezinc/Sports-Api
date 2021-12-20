@@ -20,7 +20,7 @@ final class FetchLeagueFixturesByDateRoute implements JsonSerializable
     public function __toString()
     {
         return route(Name::FETCH_LEAGUE_FIXTURE_BY_DATE, [
-            'league_id'    => $this->leagueId->toInt(),
+            'league_id'    => $this->leagueId->asHashedId(),
             'season'       => $this->season->toInt(),
             'date'         => $this->date->toCarbon()->toDateString()
         ]);

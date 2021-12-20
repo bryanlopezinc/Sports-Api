@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Football\DTO\Builders;
 
-use App\ValueObjects\Url;
 use App\ValueObjects\Date;
 use App\ValueObjects\Country;
 use Module\Football\DTO\Player;
+use Module\Football\Media\UrlGenerator;
 use Module\Football\PlayerPositionOnGrid;
 use Module\Football\ValueObjects\PlayerId;
 use Module\Football\ValueObjects\PlayerAge;
@@ -24,9 +24,9 @@ final class PlayerBuilder extends Builder
         return new self($player->toArray());
     }
 
-    public function setPhotoUrl(string $url): self
+    public function setPhotoUrl(int $playerId): self
     {
-        return $this->set('photo', Url::fromString($url));
+        return $this->set('photo', UrlGenerator::new()->playerPhoto(new PlayerId($playerId)));
     }
 
     public function setDateOfBirth(string $dateOfBirth): self

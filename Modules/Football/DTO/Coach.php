@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Football\DTO;
 
-use App\ValueObjects\Url;
 use App\ValueObjects\Country;
 use App\DTO\DataTransferObject;
+use Module\Football\Media\ImageUrl;
 use Module\Football\ValueObjects\CoachId;
 use Module\Football\ValueObjects\CoachAge;
 use Module\Football\ValueObjects\Name;
@@ -18,7 +18,7 @@ final class Coach extends DataTransferObject
     protected Team $team;
     protected bool $hasCurrentTeam;
     protected CoachId $id;
-    protected Url $photo_url;
+    protected ImageUrl $photo_url;
     protected Name $name;
 
     public function id(): CoachId
@@ -36,7 +36,7 @@ final class Coach extends DataTransferObject
         return $this->name;
     }
 
-    public function photoUrl(): Url
+    public function photoUrl(): ImageUrl
     {
         return $this->photo_url;
     }

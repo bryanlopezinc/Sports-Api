@@ -166,6 +166,8 @@ return [
          * Package Service Providers...
          */
 
+        Module\Football\Media\RouteServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -174,8 +176,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\HashId\ServiceProvider::class,
 
         ...(new Module\Football\Providers\ServiceProviders)->getDefinedProviders(),
+        Module\Football\Media\ServiceProvider::class,
 
         Module\User\Providers\ConfigServiceProvider::class,
         Module\User\Providers\RouteServiceProvider::class,

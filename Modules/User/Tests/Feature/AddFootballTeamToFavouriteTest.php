@@ -21,7 +21,7 @@ class AddFootballTeamToFavouriteTest extends TestCase
     private function getTestRespone(int $id): TestResponse
     {
         return $this->postJson(route(RouteName::ADD_FOOTBALL_TEAM_TO_FAVOURITES), [
-            'id'        => $id
+            'id' => $this->hashId($id)
         ]);
     }
 

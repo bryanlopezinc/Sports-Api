@@ -30,7 +30,7 @@ final class FixtureEventsResource extends JsonResource
     {
         return [
             'type'          => 'football_events',
-            'fixture_id'    => FixtureId::fromRequest($request)->toInt(),
+            'fixture_id'    => FixtureId::fromRequest($request)->asHashedId(),
             'events'        => $this->events->toLaravelCollection()->map(function (Object $event): array {
                 return match ($event::class) {
                     CardEvent::class           => $this->transformCardEvent($event),

@@ -19,7 +19,7 @@ final class FetchLeagueTopScorersRoute implements JsonSerializable
     public function __toString()
     {
         return route(Name::FETCH_LEAGUE_TOP_SCORERS, [
-            'id'     => $this->id->toInt(),
+            'id'     => $this->id->asHashedId(),
             'season' => $this->season->toInt()
         ]);
     }

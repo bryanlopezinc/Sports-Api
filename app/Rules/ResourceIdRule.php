@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Rules;
 
+use App\Exceptions\InvalidResourceIdException;
 use App\ValueObjects\ResourceId;
 use Illuminate\Contracts\Validation\Rule;
-use App\Exceptions\InvalidResourceIdException;
+use Illuminate\Validation\Concerns\ValidatesAttributes;
 
 final class ResourceIdRule implements Rule
 {
+    use ValidatesAttributes;
+
     protected string|array $message;
 
     /**
@@ -19,15 +22,18 @@ final class ResourceIdRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        if (!$this->validateInteger($attribute, $value)) {
+            $this->message = sprintf('The %s attribute is invalid', $attribute);
+
+            return false;
+        }
+
         try {
-            new class((int) $value) extends ResourceId
-            {
-            };
+            new ResourceId((int) $value);
 
             return true;
         } catch (InvalidResourceIdException) { // @phpstan-ignore-line
-
-            $this->message = 'invalid resource id';
+            $this->message = sprintf('The %s attribute is invalid', $attribute);
 
             return false;
         }

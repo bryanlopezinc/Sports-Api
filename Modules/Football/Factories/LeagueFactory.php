@@ -17,8 +17,8 @@ final class LeagueFactory extends Factory
     public function definition()
     {
         return (new LeagueBuilder)
-            ->setId($this->getIncrementingId())
-            ->setLogoUrl($this->faker->url)
+            ->setId($id = $this->getIncrementingId())
+            ->setLogoUrl($id)
             ->setType(LeagueType::LEAGUE)
             ->setCountry(collect(Country::VALID)->random())
             ->setName($this->faker->company)

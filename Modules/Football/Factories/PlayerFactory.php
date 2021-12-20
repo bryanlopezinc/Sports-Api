@@ -27,8 +27,8 @@ final class PlayerFactory extends Factory
         ];
 
         return (new PlayerBuilder)
-            ->setId($this->getIncrementingId())
-            ->setPhotoUrl($this->faker->url)
+            ->setId($id = $this->getIncrementingId())
+            ->setPhotoUrl($id)
             ->setDateOfBirth(now()->subYears(rand(PlayerAge::MIN, PlayerAge::MAX))->toDateString())
             ->setPosition(collect($positions)->shuffle()->first())
             ->setHeight(collect(range(HeightValue::MIN_HEIGHT_CM, HeightValue::MAX_HEIGHT_CM))->random())

@@ -270,8 +270,8 @@ class PartialLeagueStandingResourceTest extends TestCase
 
                 $assert->fromArray($assert->toArray()['data']['standings'])
                     ->count(2)
-                    ->where('0.team.attributes.id', $teamIds->first())
-                    ->where('1.team.attributes.id', $teamIds->last());
+                    ->where('0.team.attributes.id', $this->hashId($teamIds->first()))
+                    ->where('1.team.attributes.id', $this->hashId($teamIds->last()));
 
                 $assert->etc();
             });

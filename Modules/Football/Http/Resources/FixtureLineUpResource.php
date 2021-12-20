@@ -29,7 +29,7 @@ final class FixtureLineUpResource extends JsonResource
     {
         return [
             'type'               => 'football_fixture_lineup',
-            'fixture_id'         => FixtureId::fromRequest($request)->toInt(),
+            'fixture_id'         => FixtureId::fromRequest($request)->asHashedId(),
             'line_up'            => [
                 'home'           => $this->transformTeamLineUp($this->fixtureLineUp->homeTeam()),
                 'away'           => $this->transformTeamLineUp($this->fixtureLineUp->awayTeam()),

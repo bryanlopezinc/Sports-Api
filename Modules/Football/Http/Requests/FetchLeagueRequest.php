@@ -14,7 +14,7 @@ final class FetchLeagueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id'       => ['required', 'int', new ResourceIdRule],
+            'id'       => ['required', new ResourceIdRule()],
             'season'   => ['nullable', new SeasonRule],
             'filter'   => ['sometimes', 'string', new PartialLeagueFieldsRule]
         ];

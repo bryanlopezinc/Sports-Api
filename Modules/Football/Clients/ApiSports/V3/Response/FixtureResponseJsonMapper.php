@@ -148,7 +148,7 @@ final class FixtureResponseJsonMapper
             ->setId($data->get('id'))
             ->setName($data->get('name'))
             ->setCountry(new CountryNameNormalizerUsingSimilarText($data->get('country')))
-            ->setLogoUrl($data->get('logo'))
+            ->setLogoUrl($data->get('id'))
             ->setSeason((new LeagueSeasonBuilder())->setSeason($data->get('season'))->build())
             ->build();
     }

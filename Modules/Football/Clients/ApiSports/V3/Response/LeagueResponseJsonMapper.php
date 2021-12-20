@@ -39,7 +39,7 @@ final class LeagueResponseJsonMapper
         return $this->builder
             ->setId($this->response->get('league.id'))
             ->setName($this->response->get('league.name'))
-            ->setLogoUrl($this->response->get('league.logo'))
+            ->setLogoUrl($this->response->get('league.id'))
             ->when($this->response->has('seasons'), fn (LeagueBuilder $b) => $b->setSeason($this->getCorrespondingLeagueSeason($withSeason)))
             ->when($this->response->has('country.name'), fn (LeagueBuilder $b) => $b->setCountry(new CountryNameNormalizerUsingSimilarText($this->response->get('country.name'))))
             ->when($this->response->has('league.type'), function (LeagueBuilder $b) {

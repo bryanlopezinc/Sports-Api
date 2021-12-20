@@ -33,7 +33,7 @@ final class CoachResponseJsonMapper
             ->id($this->response->get('id'))
             ->name($this->response->get('firstname') . ' ' . $this->response->get('lastname'))
             ->dateOfBirth($this->response->get('birth.date'))
-            ->photoUrl($this->response->get('photo'))
+            ->photoUrl($this->response->get('id'))
             ->setCountry(new CountryNameNormalizerUsingSimilarText($this->response->get('nationality')))
             ->build();
     }

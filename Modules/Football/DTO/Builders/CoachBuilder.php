@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Football\DTO\Builders;
 
 use Stringable;
-use App\ValueObjects\Url;
 use App\ValueObjects\Date;
 use App\ValueObjects\Country;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\Coach;
+use Module\Football\Media\UrlGenerator;
 use Module\Football\ValueObjects\Name;
 use Module\Football\ValueObjects\CoachId;
 use Module\Football\ValueObjects\CoachAge;
@@ -23,9 +23,9 @@ final class CoachBuilder extends Builder
         return $this->set('age', new CoachAge($dob->toCarbon()->age));
     }
 
-    public function photoUrl(string $url): self
+    public function photoUrl(int $coachId): self
     {
-        return $this->set('photo_url', Url::fromString($url));
+        return $this->set('photo_url', UrlGenerator::new()->coachPhoto(new CoachId($coachId)));
     }
 
     public function name(string $name): self

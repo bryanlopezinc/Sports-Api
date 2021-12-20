@@ -16,7 +16,7 @@ class FetchFixturePredictionsTest extends TestCase
     private function getTestResponse(int $id): TestResponse
     {
         return $this->getJson(
-            route(Name::FETCH_FIXTURE_PREDICTIONS, ['id' => $id])
+            route(Name::FETCH_FIXTURE_PREDICTIONS, ['id' => $this->hashId($id)])
         );
     }
 

@@ -41,7 +41,7 @@ final class FixtureResource extends JsonResource
         return [
             'type'              => 'football_fixture',
             'attributes'        => [
-                'id'                   => $this->fixture->id()->toInt(),
+                'id'                   => $this->fixture->id()->asHashedId(),
                 'referee'              => $this->transformRefereeData(),
                 'date'                 => $this->fixture->date()->toCarbon($timezone->toDateTimeZone())->toDateTimeString(),
                 'has_venue_info'       => $venueIsAvailable = $this->fixture->venueInfoIsAvailable(),

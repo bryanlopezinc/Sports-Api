@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Football\DTO\Builders;
 
 use Stringable;
-use App\ValueObjects\Url;
 use App\ValueObjects\Country;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\Venue;
+use Module\Football\Media\UrlGenerator;
 use Module\Football\ValueObjects\Name;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\ValueObjects\TeamYearFounded;
@@ -50,9 +50,9 @@ final class TeamBuilder extends Builder
         return $this->set('has_year_founded_info', $hasYearFounded);
     }
 
-    public function setLogoUrl(string $url): self
+    public function setLogoUrl(int $teamId): self
     {
-        return $this->set('logo', new Url($url));
+        return $this->set('logo', UrlGenerator::new()->teamLogo(new TeamId($teamId)));
     }
 
     public function setId(int $id): self

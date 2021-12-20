@@ -16,8 +16,8 @@ class FetchTeamHeadToHeadTest extends TestCase
     private function getTestResponse(int $teamOne, int $teamTwo, array $query = []): TestResponse
     {
         $parameters = array_merge([
-            'team_id_1'     => $teamOne,
-            'team_id_2'     => $teamTwo,
+            'team_id_1'     => $this->hashId($teamOne),
+            'team_id_2'     => $this->hashId($teamTwo),
         ], $query);
 
         return $this->getJson(route(Name::FETCH_TEAM_HEAD_TO_HEAD, $parameters));

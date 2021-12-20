@@ -30,9 +30,9 @@ final class TeamResource extends JsonResource
         return [
             'type'              => 'football_team',
             'attributes'        => [
-                'id'                     => $this->team->getId()->toInt(),
+                'id'                     => $this->team->getId()->asHashedId(),
                 'name'                   => $this->team->getName()->value(),
-                'logo_url'               => $rescuer->rescue(fn () => $this->team->getLogoUrl()->url()),
+                'logo_url'               => $rescuer->rescue(fn () => $this->team->getLogoUrl()->toString()),
                 'has_year_founded_info'  => $rescuer->rescue(fn () => $this->team->hasYearFoundedInfo()),
                 'year_founded'           => $this->getYearFoundedInfo($rescuer),
                 'country'                => $rescuer->rescue(fn () => new CountryResource($this->team->getCountry())),

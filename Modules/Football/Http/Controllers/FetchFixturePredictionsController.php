@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Football\Http\Controllers;
 
+use App\Rules\ResourceIdRule;
 use Illuminate\Http\Request;
 use Module\Football\FixturePredictions;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Services\FetchFixtureService;
 use Module\Football\Http\Resources\FixturePredictionsResource;
-use Module\Football\Http\Traits\ValidatesFixtureId;
 use Module\User\Predictions\Football\FetchFixturePredictionsService;
 
 /**
@@ -17,8 +17,6 @@ use Module\User\Predictions\Football\FetchFixturePredictionsService;
  */
 final class FetchFixturePredictionsController
 {
-    use ValidatesFixtureId;
-
     public function __construct(private FetchFixtureService $service, private FetchFixturePredictionsService $fixturePredictions)
     {
     }
@@ -26,7 +24,7 @@ final class FetchFixturePredictionsController
     public function __invoke(Request $request): FixturePredictionsResource
     {
         $request->validate([
-            'id' => $this->rules()
+            'id' => ['required', new ResourceIdRule()]
         ]);
 
         $fixtureId = FixtureId::fromRequest($request);

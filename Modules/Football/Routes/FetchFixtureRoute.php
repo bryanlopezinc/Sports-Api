@@ -18,7 +18,7 @@ final class FetchFixtureRoute implements JsonSerializable
     public function __toString()
     {
         return route(Name::FETCH_FIXTURE, array_merge([
-            'id'    => $this->id->toInt()
+            'id' => $this->id->asHashedId()
         ], $this->query));
     }
 }

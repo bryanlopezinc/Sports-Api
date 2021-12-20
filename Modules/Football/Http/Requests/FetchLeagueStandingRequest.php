@@ -8,8 +8,6 @@ use App\Rules\ResourceIdRule;
 use App\Http\Requests\FormRequest;
 use Illuminate\Validation\Validator;
 use Module\Football\Rules\SeasonRule;
-use Module\Football\ValueObjects\TeamId;
-use App\Exceptions\InvalidResourceIdException;
 use Module\Football\Rules\PartialLeagueStandingFieldsRule;
 
 final class FetchLeagueStandingRequest extends FormRequest
@@ -17,10 +15,22 @@ final class FetchLeagueStandingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'league_id' => ['required', 'int', new ResourceIdRule],
+            'league_id' => ['required', new ResourceIdRule()],
+            'teams.*'   => ['sometimes', new ResourceIdRule()],
             'season'    => ['required', new SeasonRule],
             'fields'    => ['sometimes', 'string', new PartialLeagueStandingFieldsRule]
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        if (!$this->filled('teams')) {
+            return;
+        }
+
+        $this->merge([
+            'teams' => explode(',', $this->input('teams'))
+        ]);
     }
 
     /**
@@ -32,25 +42,16 @@ final class FetchLeagueStandingRequest extends FormRequest
             return;
         }
 
-        $teamIds = explode(',', $this->input('teams'));
-
-        $validator->after(function (Validator $validator) use ($teamIds) {
-            foreach ($teamIds as $teamId) {
-                try {
-                    if (!is_numeric($teamId)) {
-                        throw new InvalidResourceIdException;
-                    }
-                    new TeamId((int) $teamId);
-                } catch (InvalidResourceIdException) {
-                    $validator->errors()->add('teams', 'Invalid Team Id');
-                }
+        $validator->after(function (Validator $validator): void {
+            if (collect($this->input('teams'))->duplicatesStrict()->isNotEmpty()) {
+                $validator->errors()->add('teams', 'Duplicate team ids in request');
             }
         });
 
-        $validator->after(function (Validator $validator) use ($teamIds) {
-            if (collect($teamIds)->duplicatesStrict()->isNotEmpty()) {
-                $validator->errors()->add('teams', 'Duplicate team ids in request');
-            }
+        $validator->after(function (): void {
+            $this->merge([
+                'teams' => implode(',', $this->input('teams'))
+            ]);
         });
     }
 }

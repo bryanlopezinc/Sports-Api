@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Football\DTO\Builders;
 
 use Stringable;
-use App\ValueObjects\Url;
 use App\ValueObjects\Country;
 use Module\Football\DTO\League;
 use Module\Football\DTO\LeagueSeason;
+use Module\Football\Media\UrlGenerator;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\ValueObjects\LeagueType;
 use Module\Football\ValueObjects\Name;
@@ -40,9 +40,9 @@ final class LeagueBuilder extends Builder
         return $this->set('type', new LeagueType($type));
     }
 
-    public function setLogoUrl(string $url): self
+    public function setLogoUrl(int $leagueId): self
     {
-        return $this->set('logo', new Url($url));
+        return $this->set('logo', UrlGenerator::new()->leagueLogo(new LeagueId($leagueId)));
     }
 
     public function setId(int $id): self

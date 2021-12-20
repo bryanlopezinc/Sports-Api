@@ -12,7 +12,7 @@ final class FetchCoachRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'int', new ResourceIdRule],
+            'id' => ['required', new ResourceIdRule()],
         ];
     }
 }

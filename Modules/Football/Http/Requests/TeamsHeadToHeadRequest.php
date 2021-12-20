@@ -16,7 +16,7 @@ final class TeamsHeadToHeadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'team_id_1'     => $idRules = ['required', 'int', new ResourceIdRule],
+            'team_id_1'     => $idRules = ['required', new ResourceIdRule()],
             'team_id_2'     => $idRules,
             'timezone'      => ['sometimes', 'string', new TimeZoneRule],
             'limit'         => ['sometimes', 'int', 'min:1', 'max:50'],

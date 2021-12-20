@@ -14,10 +14,10 @@ final class CoachFactory extends Factory
     public function definition()
     {
         return (new CoachBuilder())
-            ->id($this->getIncrementingId())
+            ->id($id = $this->getIncrementingId())
             ->dateOfBirth(now()->subYears(40)->toDateString())
             ->name($this->faker->name)
-            ->photoUrl($this->faker->url)
+            ->photoUrl($id)
             ->setCountry('Germany')
             ->team(TeamFactory::new()->toDto())
             ->toArray();

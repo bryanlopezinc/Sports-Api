@@ -15,7 +15,7 @@ final class FetchFixtureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id'            => ['required', 'int', new ResourceIdRule],
+            'id'            => ['required', new ResourceIdRule()],
             'timezone'      => ['sometimes', 'string', new TimeZoneRule],
             'filter'        => ['sometimes', 'string', new PartialFixtureFieldsRule],
             'league_filter' => ['sometimes', 'string', new PartialLeagueFieldsRule]

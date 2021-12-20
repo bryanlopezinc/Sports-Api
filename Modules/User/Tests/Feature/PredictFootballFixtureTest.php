@@ -22,7 +22,7 @@ class PredictFootballFixtureTest extends TestCase
     private function getTestResponse(int $id, string $prediction): TestResponse
     {
         return $this->postJson(route(RouteName::PREDICT_FOOTBALL_FIXTURE, [
-            'fixture_id'    => $id,
+            'fixture_id'    => $this->hashId($id),
             'prediction'    => $prediction
         ]));
     }
@@ -100,7 +100,7 @@ class PredictFootballFixtureTest extends TestCase
         $fixturePredictionsResponse = function () {
             Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
-            return $this->getJson(route(Name::FETCH_FIXTURE_PREDICTIONS, ['id' => 215662]));
+            return $this->getJson(route(Name::FETCH_FIXTURE_PREDICTIONS, ['id' => $this->hashId(215662)]));
         };
 
         $predictFixture = function ($user) use ($fixtureJson) {

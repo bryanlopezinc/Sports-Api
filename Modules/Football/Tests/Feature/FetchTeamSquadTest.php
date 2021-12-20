@@ -15,7 +15,7 @@ class FetchTeamSquadTest extends TestCase
     private function getTestResponse(int $id): TestResponse
     {
         return $this->getJson(route(Name::FETCH_TEAM_SQUAD, [
-            'id'     => $id,
+            'id'     => $this->hashId($id),
         ]));
     }
 

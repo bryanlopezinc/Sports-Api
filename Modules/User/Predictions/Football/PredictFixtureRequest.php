@@ -22,7 +22,7 @@ final class PredictFixtureRequest extends FormRequest
     public function rules()
     {
         return [
-            'fixture_id'  => ['bail', 'required', 'int', new ResourceIdRule],
+            'fixture_id'  => ['required', 'bail', new ResourceIdRule()],
             'prediction'  => ['bail', 'required', 'string', Rule::in(self::VALID_PREDICTIONS)],
         ];
     }

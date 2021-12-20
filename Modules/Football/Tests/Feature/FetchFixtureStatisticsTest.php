@@ -35,9 +35,7 @@ class FetchFixtureStatisticsTest extends TestCase
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json());
 
-        $this->withoutExceptionHandling()
-            ->getTestResponse(34)
-            ->assertSuccessful();
+        $this->withoutExceptionHandling()->getTestResponse(34)->assertSuccessful();
     }
 
     public function test_will_return_403_status_code_when_fixture_statistics_is_not_supported()

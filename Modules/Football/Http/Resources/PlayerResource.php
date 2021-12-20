@@ -29,9 +29,9 @@ class PlayerResource extends JsonResource
         return [
             'type'           => 'football_player',
             'attributes'     => [
-                'id'             => $this->player->getId()->toInt(),
+                'id'             => $this->player->getId()->asHashedId(),
                 'name'           => $this->player->name(),
-                'photo_url'      => $rescuer->rescue(fn () => $this->player->photoUrl()->url()),
+                'photo_url'      => $rescuer->rescue(fn () => $this->player->photoUrl()->toString()),
                 'date_of_birth'  => $rescuer->rescue(fn () => $this->player->birthDate()->toCarbon()->toDateString()),
                 'height_cm'      => $rescuer->rescue(fn () => $this->player->height()->height()),
                 'country'        => $rescuer->rescue(fn () => new CountryResource($this->player->nationality())),

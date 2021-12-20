@@ -15,7 +15,7 @@ class FetchLeagueFixturesByDateRequest extends FormRequest
         return [
             'date'        => ['required', 'date', 'date_format:Y-m-d'],
             'season'      => ['required', new SeasonRule],
-            'league_id'   => ['required', new ResourceIdRule]
+            'league_id'   => ['required', new ResourceIdRule()]
         ];
     }
 }
