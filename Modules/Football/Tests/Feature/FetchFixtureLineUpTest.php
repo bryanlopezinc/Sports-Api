@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Routes\FetchFixtureLineUpRoute;
+use Module\Football\Routes\Name;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureLineUpResponse;
@@ -22,6 +23,14 @@ class FetchFixtureLineUpTest extends TestCase
         return $this->getJson(
             (string) new FetchFixtureLineUpRoute(new FixtureId($id))
         );
+    }
+
+    /**
+     * @group 111
+     */
+    public function test_will_throw_validation_error_when_required_fields_are_missing()
+    {
+        $this->getJson(route(Name::FETCH_FIXTURE_LINEUP))->assertStatus(422)->assertJsonValidationErrors(['id']);
     }
 
     /**

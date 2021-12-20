@@ -54,6 +54,11 @@ class FetchLeagueStandingTest extends TestCase
         $this->getTestResponse(400, 2018, ['teams' => $teamIds])->assertStatus(422);
     }
 
+    public function test_will_throw_validation_error_when_atributes_are_missing()
+    {
+        $this->getJson(route(Name::FETCH_LEAGUE_STANDING))->assertStatus(422)->assertJsonValidationErrors(['league_id', 'season']);
+    }
+
     public function test_will_return_validation_error_if_a_requested_team_id_does_not_exists_in_league_table()
     {
         Http::fakeSequence()

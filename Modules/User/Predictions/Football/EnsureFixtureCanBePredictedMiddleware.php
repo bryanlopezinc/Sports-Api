@@ -24,6 +24,9 @@ final class EnsureFixtureCanBePredictedMiddleware
      */
     public function handle(Request $request, $next)
     {
+        //Ensure all attributes needed for validation are present and valid.
+        app(PredictFixtureRequest::class);
+
         $status = $this->service->fetchFixture(FixtureId::fromRequest($request, 'fixture_id'))->status();
 
         if ($status->code() === FixtureStatus::NOT_STARTED) {

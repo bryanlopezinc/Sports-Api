@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Services\FetchFixtureService;
 use Module\Football\Exceptions\Http\CoverageNotSupportedHttpException;
+use Module\Football\Http\Requests\FetchFixturePlayersStatisticsRequest;
 
 final class EnsureCoversPlayerStatisticsMiddleware
 {
@@ -22,6 +23,9 @@ final class EnsureCoversPlayerStatisticsMiddleware
      */
     public function handle(Request $request, $next)
     {
+        //Ensure all attributes needed for validation are present and valid.
+        app(FetchFixturePlayersStatisticsRequest::class);
+
         $fixture = $this->service->fetchFixture(FixtureId::fromRequest($request));
 
         $coversPlayerStatistics = $fixture->league()->getSeason()->getCoverage()->coversPlayerStatistics();

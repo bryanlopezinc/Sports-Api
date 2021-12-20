@@ -27,6 +27,18 @@ class PredictFootballFixtureTest extends TestCase
         ]));
     }
 
+    public function test_will_throw_validation_error_when_atributes_are_missing_or_invalid()
+    {
+        Passport::actingAs(UserFactory::new()->create());
+
+        $this->postJson(route(RouteName::PREDICT_FOOTBALL_FIXTURE))->assertStatus(422)->assertJsonValidationErrors(['fixture_id', 'prediction']);
+
+         $this->postJson(route(RouteName::PREDICT_FOOTBALL_FIXTURE, [
+            'fixture_id'    => $this->hashId(300),
+            'prediction'    => 'foo'
+        ]))->assertStatus(422)->assertJsonValidationErrors(['prediction']);
+    }
+
     public function test_unauthorized_user_cannot_predict_fixture(): void
     {
         $this->getTestResponse(215662, $this->prediction())->assertUnauthorized();

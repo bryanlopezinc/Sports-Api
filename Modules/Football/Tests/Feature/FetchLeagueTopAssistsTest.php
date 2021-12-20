@@ -11,6 +11,7 @@ use Illuminate\Testing\TestResponse;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Routes\FetchLeagueTopAssistsRoute;
+use Module\Football\Routes\Name;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchTopAssistsResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueFixturesByDateResponse;
@@ -22,6 +23,11 @@ class FetchLeagueTopAssistsTest extends TestCase
         return $this->getJson(
             (string) new FetchLeagueTopAssistsRoute(new LeagueId($id), new Season($season))
         );
+    }
+
+    public function test_will_throw_validation_error_when_required_fields_are_missing()
+    {
+        $this->getJson(route(Name::FETCH_LEAGUE_TOP_ASSISTS))->assertStatus(422)->assertJsonValidationErrors(['id']);
     }
 
     public function test_success_response(): void

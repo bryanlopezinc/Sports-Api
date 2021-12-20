@@ -9,6 +9,7 @@ use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Services\FetchLeagueService;
 use Module\Football\Exceptions\Http\CoverageNotSupportedHttpException;
+use Module\Football\Http\Requests\FetchLeagueTopAssistsRequest;
 
 final class CheckCoversLeagueTopAssistsMiddleware
 {
@@ -23,6 +24,9 @@ final class CheckCoversLeagueTopAssistsMiddleware
      */
     public function handle(Request $request, $next)
     {
+        //Ensure all attributes needed for validation are present and valid.
+        app(FetchLeagueTopAssistsRequest::class);
+
         $league = $this->service->findByIdAndSeason(LeagueId::fromRequest($request), Season::fromString($request->input('season')));
 
         if (!$league->getSeason()->getCoverage()->coversTopAssists()) {

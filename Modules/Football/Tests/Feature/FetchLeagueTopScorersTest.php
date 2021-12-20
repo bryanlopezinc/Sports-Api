@@ -11,6 +11,7 @@ use Illuminate\Testing\TestResponse;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Routes\FetchLeagueTopScorersRoute;
+use Module\Football\Routes\Name;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchTopScorersResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueFixturesByDateResponse;
@@ -34,6 +35,11 @@ class FetchLeagueTopScorersTest extends TestCase
         $this->withoutExceptionHandling()
             ->getTestResponse(34, 2020)
             ->assertSuccessful();
+    }
+
+    public function test_will_throw_validation_error_when_required_fields_are_missing()
+    {
+        $this->getJson(route(Name::FETCH_LEAGUE_TOP_SCORERS))->assertStatus(422)->assertJsonValidationErrors(['id', 'season']);
     }
 
     public function test_throws_exception_when_top_scorers_is_not_yet_available(): void

@@ -9,6 +9,7 @@ use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Services\FetchLeagueService;
 use Module\Football\Exceptions\Http\CoverageNotSupportedHttpException;
+use Module\Football\Http\Requests\FetchLeagueStandingRequest;
 
 final class EnsureLeagueHasStandingCoverageMiddleware
 {
@@ -23,6 +24,9 @@ final class EnsureLeagueHasStandingCoverageMiddleware
      */
     public function handle(Request $request, $next)
     {
+        //Ensure all attributes needed for validation are present and valid.
+        app(FetchLeagueStandingRequest::class);
+
         $league = $this->service->findByIdAndSeason(LeagueId::fromRequest($request, 'league_id'), Season::fromString($request->input('season')));
 
         if (!$league->getSeason()->getCoverage()->coversLeagueStanding()) {
