@@ -15,12 +15,7 @@ final class LeaguesTopAsisstsCacheServiceProvider extends Provider implements De
     public function boot(): void
     {
         $this->app->singleton(LeaguesTopAssistsCacheInterface::class, function ($app) {
-
-            $store = $app->runningUnitTests() ? env('CACHE_DRIVER') : Config::get('football.cache.leaguesTopAssists.driver');
-
-            return new LeaguesTopAsisstsCacheRepository(
-                $app['cache']->store($store),
-            );
+            return new LeaguesTopAsisstsCacheRepository($app['cache']->store());
         });
     }
 

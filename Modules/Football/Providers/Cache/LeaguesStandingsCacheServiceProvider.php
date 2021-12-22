@@ -15,12 +15,7 @@ final class LeaguesStandingsCacheServiceProvider extends Provider implements Def
     public function boot(): void
     {
         $this->app->singleton(LeaguesTablesCacheInterface::class, function ($app) {
-
-            $store = $app->runningUnitTests() ? env('CACHE_DRIVER') : Config::get('football.cache.leaguesStandings.driver');
-
-            return new LeagueStandingCacheRepository(
-                $app['cache']->store($store),
-            );
+            return new LeagueStandingCacheRepository($app['cache']->store());
         });
     }
 

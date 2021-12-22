@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Providers\Cache;
 
-use App\Utils\Config;
 use Module\Football\Cache\FixturesCacheRepository;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
@@ -20,12 +19,7 @@ final class FixturesCacheServiceProvider extends Provider implements DeferrableP
     public function boot(): void
     {
         $this->app->singleton(FixturesCacheInterface::class, function ($app) {
-
-            $store = $app->runningUnitTests()  ? env('CACHE_DRIVER') : Config::get('football.cache.fixtures.driver');
-
-            return new FixturesCacheRepository(
-                $app['cache']->store($store),
-            );
+            return new FixturesCacheRepository($app['cache']->store());
         });
     }
 

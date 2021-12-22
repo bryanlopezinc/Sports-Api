@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Providers\Cache;
 
-use App\Utils\Config;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Module\Football\Cache\TeamsHeadToHeadCacheRepository;
@@ -15,12 +14,7 @@ final class TeamsHeadToHeadCacheServiceProvider extends Provider implements Defe
     public function boot(): void
     {
         $this->app->singleton(TeamsHeadToHeadCacheInterface::class, function ($app) {
-
-            $store = $app->runningUnitTests() ? env('CACHE_DRIVER') : Config::get('football.cache.teamH2H.driver');
-
-            return new TeamsHeadToHeadCacheRepository(
-                $app['cache']->store($store),
-            );
+            return new TeamsHeadToHeadCacheRepository($app['cache']->store());
         });
     }
 

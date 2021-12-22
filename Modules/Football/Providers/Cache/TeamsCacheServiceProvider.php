@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Providers\Cache;
 
-use App\Utils\Config;
 use Module\Football\Cache\TeamsCacheRepository;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
@@ -15,12 +14,7 @@ final class TeamsCacheServiceProvider extends Provider implements DeferrableProv
     public function boot(): void
     {
         $this->app->singleton(TeamsCacheInterface::class, function ($app) {
-
-            $store = $app->runningUnitTests() ? env('CACHE_DRIVER') : Config::get('football.cache.teams.driver');
-
-            return new TeamsCacheRepository(
-                $app['cache']->store($store),
-            );
+            return new TeamsCacheRepository($app['cache']->store());
         });
     }
 

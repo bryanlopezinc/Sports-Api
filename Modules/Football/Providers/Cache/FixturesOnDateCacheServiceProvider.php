@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Providers\Cache;
 
-use App\Utils\Config;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Module\Football\Cache\FixturesByDateCacheRepository;
@@ -15,12 +14,7 @@ final class FixturesOnDateCacheServiceProvider extends Provider implements Defer
     public function boot(): void
     {
         $this->app->singleton(FixturesByDateCacheInterface::class, function ($app) {
-
-            $store = $app->runningUnitTests()  ? env('CACHE_DRIVER') : Config::get('football.cache.fixturesOnDate.driver');
-
-            return new FixturesByDateCacheRepository(
-                $app['cache']->store($store),
-            );
+            return new FixturesByDateCacheRepository($app['cache']->store());
         });
     }
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Providers\Cache;
 
-use App\Utils\Config;
 use Module\Football\Cache\LeaguesCacheRepository;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
@@ -16,16 +15,9 @@ final class LeaguesCacheServiceProvider extends Provider implements DeferrablePr
     public function boot(): void
     {
         $this->app->singleton(LeaguesCacheInterface::class, function ($app) {
+            $leaguSeasonsCache = new LeaguesSeasonsCacheRepository($app['cache']->store());
 
-            $store = $app->runningUnitTests() ? env('CACHE_DRIVER') : Config::get('football.cache.leagues.driver');
-
-            $leaguSeasonsCache = new LeaguesSeasonsCacheRepository(
-                $app['cache']->store(
-                    $app->runningUnitTests() ? env('CACHE_DRIVER') : Config::get('football.cache.leaguesSeasons.driver')
-                )
-            );
-
-            return new LeaguesCacheRepository($app['cache']->store($store), $leaguSeasonsCache);
+            return new LeaguesCacheRepository($app['cache']->store(), $leaguSeasonsCache);
         });
     }
 
