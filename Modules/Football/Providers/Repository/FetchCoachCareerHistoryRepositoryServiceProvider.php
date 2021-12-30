@@ -6,6 +6,7 @@ namespace Module\Football\Providers\Repository;
 
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Module\Football\Cache\CoachesCareersCacheRepository;
 use Module\Football\Clients\ApiSports\V3\FetchCoachCareerHttpClient;
 use Module\Football\Contracts\Repositories\FetchCoachCareerHistoryRepositoryInterface;
 
@@ -13,7 +14,9 @@ class FetchCoachCareerHistoryRepositoryServiceProvider extends Provider implemen
 {
     public function boot(): void
     {
-        $this->app->bind(FetchCoachCareerHistoryRepositoryInterface::class, fn () => app(FetchCoachCareerHttpClient::class));
+        $this->app->bind(FetchCoachCareerHistoryRepositoryInterface::class, function ($app) {
+            return new CoachesCareersCacheRepository($app['cache']->store(), new FetchCoachCareerHttpClient);
+        });
     }
 
     /**

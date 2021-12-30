@@ -4,36 +4,26 @@ declare(strict_types=1);
 
 namespace Module\Football\Cache;
 
-use App\Utils\TimeToLive;
 use Module\Football\DTO\Coach;
 use Module\Football\ValueObjects\CoachId;
 use Illuminate\Contracts\Cache\Repository;
-use App\Exceptions\ItemNotInCacheException;
-use Module\Football\Contracts\Cache\CoachesCacheInterface;
+use App\Utils\Config;
+use Module\Football\Contracts\Repositories\FetchCoachRepositoryInterface;
 
-final class CoachesCacheRepository implements CoachesCacheInterface
+final class CoachesCacheRepository implements FetchCoachRepositoryInterface
 {
-    public function __construct(private Repository $repository)
-    {
+    public function __construct(
+        private Repository $repository,
+        private FetchCoachRepositoryInterface $fetchCoachRepository
+    ) {
     }
 
-    public function has(CoachId $coachId): bool
+    public function byId(CoachId $id): Coach
     {
-        return $this->repository->has($this->prepareKey($coachId));
-    }
+        $key = new CachePrefix($this) . $id->toInt();
 
-    public function get(CoachId $coachId): Coach
-    {
-        return $this->repository->get($this->prepareKey($coachId), fn () => throw new ItemNotInCacheException());
-    }
+        $ttl = now()->addDays(Config::get('football.cache.coaches.defaultTtl'));
 
-    private function prepareKey(CoachId $coachId): string
-    {
-        return new CachePrefix($this) . $coachId->toInt();
-    }
-
-    public function put(Coach $coach, TimeToLive $ttl): bool
-    {
-        return $this->repository->put($this->prepareKey($coach->id()), $coach, $ttl->ttl());
+        return $this->repository->remember($key, $ttl, fn () => $this->fetchCoachRepository->byId($id));
     }
 }

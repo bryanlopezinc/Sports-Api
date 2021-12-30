@@ -6,17 +6,17 @@ namespace Module\Football\Http\Controllers;
 
 use App\Utils\Config;
 use Illuminate\Http\JsonResponse;
+use Module\Football\Contracts\Repositories\FetchTeamSquadRepositoryInterface;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\Http\Requests\FetchTeamRequest;
-use Module\Football\Services\FetchTeamSquadService;
 use Module\Football\Http\Resources\TeamSquadResource;
 
 final class FetchTeamSquadController
 {
-    public function __invoke(FetchTeamRequest $request, FetchTeamSquadService $service): JsonResponse
+    public function __invoke(FetchTeamRequest $request, FetchTeamSquadRepositoryInterface $repository): JsonResponse
     {
         return response()
-            ->json(new TeamSquadResource($service->fetch(TeamId::fromRequest($request))))
+            ->json(new TeamSquadResource($repository->teamSquad(TeamId::fromRequest($request))))
             ->header('max-age', Config::get('football.teamSquadResponseMaxAge'));
     }
 }

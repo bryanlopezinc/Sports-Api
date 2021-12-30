@@ -4,36 +4,26 @@ declare(strict_types=1);
 
 namespace Module\Football\Cache;
 
-use App\Utils\TimeToLive;
+use App\Utils\Config;
 use Module\Football\ValueObjects\CoachId;
 use Illuminate\Contracts\Cache\Repository;
-use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\CoachCareerHistory;
-use Module\Football\Contracts\Cache\CoachesCareesHistoryCacheInterface;
+use Module\Football\Contracts\Repositories\FetchCoachCareerHistoryRepositoryInterface;
 
-final class CoachesCareersCacheRepository implements CoachesCareesHistoryCacheInterface
+final class CoachesCareersCacheRepository implements FetchCoachCareerHistoryRepositoryInterface
 {
-    public function __construct(private Repository $repository)
-    {
+    public function __construct(
+        private Repository $repository,
+        private FetchCoachCareerHistoryRepositoryInterface $fetchCoachCareerHistoryRepository
+    ) {
     }
 
-    public function has(CoachId $coachId): bool
+    public function byId(CoachId $id): CoachCareerHistory
     {
-        return $this->repository->has($this->prepareKey($coachId));
-    }
+        $key = new CachePrefix($this) . $id->toInt();
 
-    public function get(CoachId $coachId): CoachCareerHistory
-    {
-        return $this->repository->get($this->prepareKey($coachId), fn () => throw new ItemNotInCacheException());
-    }
+        $ttl = now()->addDays(Config::get('football.cache.coachesCareers.defaultTtl'));
 
-    private function prepareKey(CoachId $coachId): string
-    {
-        return new CachePrefix($this) . $coachId->toInt();
-    }
-
-    public function put(CoachId $id, CoachCareerHistory $history, TimeToLive $ttl): bool
-    {
-        return $this->repository->put($this->prepareKey($id), $history, $ttl->ttl());
+        return $this->repository->remember($key, $ttl, fn () => $this->fetchCoachCareerHistoryRepository->byId($id));
     }
 }

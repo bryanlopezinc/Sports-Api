@@ -4,39 +4,24 @@ declare(strict_types=1);
 
 namespace Module\Football\Cache;
 
-use App\Utils\TimeToLive;
 use Module\Football\ValueObjects\TeamId;
 use Illuminate\Contracts\Cache\Repository;
-use App\Exceptions\ItemNotInCacheException;
+use App\Utils\Config;
 use Module\Football\Collections\PlayersCollection;
-use Module\Football\Contracts\Cache\TeamsSquadsCacheInterface;
-use Module\Football\Exceptions\Cache\CannotCacheEmptyTeamSquadException;
+use Module\Football\Contracts\Repositories\FetchTeamSquadRepositoryInterface;
 
-final class TeamSquadCacheRepository implements TeamsSquadsCacheInterface
+final class TeamSquadCacheRepository implements FetchTeamSquadRepositoryInterface
 {
-    public function __construct(private Repository $repository)
+    public function __construct(private Repository $repository, private FetchTeamSquadRepositoryInterface $fetchTeamSquadRepository)
     {
     }
 
-    public function has(TeamId $teamId): bool
+    public function teamSquad(TeamId $teamId): PlayersCollection
     {
-        return $this->repository->has($this->prepareKey($teamId));
-    }
+        $key = new CachePrefix($this) . $teamId->toInt();
 
-    public function cache(TeamId $teamId, PlayersCollection $playersCollection, TimeToLive $ttl): void
-    {
-        throw_if($playersCollection->isEmpty(), new CannotCacheEmptyTeamSquadException());
+        $ttl = now()->addDays(Config::get('football.cache.teamsSquad.ttl'));
 
-        $this->repository->put($this->prepareKey($teamId), $playersCollection, $ttl->ttl());
-    }
-
-    private function prepareKey(TeamId $id): string
-    {
-        return new CachePrefix($this) . $id->toInt();
-    }
-
-    public function getTeamSquad(TeamId $teamId): PlayersCollection
-    {
-        return $this->repository->get($this->prepareKey($teamId), fn () => throw new ItemNotInCacheException());
+        return $this->repository->remember($key, $ttl, fn () => $this->fetchTeamSquadRepository->teamSquad($teamId));
     }
 }
