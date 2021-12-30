@@ -9,13 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 final class HandleDbTransactionsMiddleware
 {
-    public const METHODS = [
-        Request::METHOD_PATCH,
-        Request::METHOD_DELETE,
-        Request::METHOD_PUT,
-        Request::METHOD_POST,
-    ];
-
     /**
      * @param  \Illuminate\Http\Request $request
      * @param  \callable  $next
@@ -23,7 +16,12 @@ final class HandleDbTransactionsMiddleware
      */
     public function handle($request, $next)
     {
-        if (!$this->shouldApplyMiddlewareOn($request)) {
+        if (notInArray($request->method(), [
+            Request::METHOD_PATCH,
+            Request::METHOD_DELETE,
+            Request::METHOD_PUT,
+            Request::METHOD_POST,
+        ])) {
             return $next($request);
         }
 
@@ -39,10 +37,5 @@ final class HandleDbTransactionsMiddleware
         }
 
         return $response;
-    }
-
-    private function shouldApplyMiddlewareOn(Request $request): bool
-    {
-        return inArray($request->method(), self::METHODS);
     }
 }
