@@ -25,4 +25,5 @@ final class Name
     public const FETCH_FIXTURE_PREDICTIONS         = 'fixture.predictions';
     public const FETCH_COACH                       = 'coach.find';
     public const FETCH_COACH_CAREER_HISTORY        = 'coach.careerHistory';
+    public const FETCH_PLAYER                      = 'player.find';
 }

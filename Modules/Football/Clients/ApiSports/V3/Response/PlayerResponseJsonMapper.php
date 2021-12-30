@@ -34,6 +34,7 @@ final class PlayerResponseJsonMapper
             ->when($this->response->has('position'), fn (PlayerBuilder $b) => $b->setPosition($this->playerPositionMap[$this->response->get('position')]))
             ->when($this->response->has('number'), fn (PlayerBuilder $b) => $b->setNumberOnShirt($this->response->get('number')))
             ->when($this->response->has('photo'), fn (PlayerBuilder $b) => $b->setPhotoUrl($this->response->get('id')))
+            ->when($this->response->has('birth'), fn (PlayerBuilder $b) => $b->setDateOfBirth($this->response->get('birth.date')))
             ->when($this->response->has('nationality'), fn (PlayerBuilder $b) => $b->setNationality(new CountryNameNormalizerUsingSimilarText($this->response->get('nationality'))))
             ->when($this->response->has('height'), fn (PlayerBuilder $b) => $b->setHeight(floatval($this->response->get('height'))))
             ->build();

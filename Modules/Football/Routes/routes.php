@@ -80,4 +80,8 @@ Route::prefix('football')->group(function () {
             ->name(Name::FETCH_COACH_CAREER_HISTORY)
             ->middleware(Convert::keys('id'));
     });
+
+    Route::prefix('players')->group(function () {
+        Route::get('find', Controllers\FetchPlayerController::class)->name(Name::FETCH_PLAYER)->middleware(Convert::keys('id'));
+    });
 });

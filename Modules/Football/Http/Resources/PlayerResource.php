@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\MissingValue;
 use App\Utils\RescueInitializationException;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\CountryResource;
+use Module\Football\Routes\FetchPlayerRoute;
 
 class PlayerResource extends JsonResource
 {
@@ -30,7 +31,7 @@ class PlayerResource extends JsonResource
             'type'           => 'football_player',
             'attributes'     => [
                 'id'             => $this->player->getId()->asHashedId(),
-                'name'           => $this->player->name(),
+                'name'           => $this->player->name()->value(),
                 'photo_url'      => $rescuer->rescue(fn () => $this->player->photoUrl()->toString()),
                 'date_of_birth'  => $rescuer->rescue(fn () => $this->player->birthDate()->toCarbon()->toDateString()),
                 'height_cm'      => $rescuer->rescue(fn () => $this->player->height()->height()),
@@ -39,6 +40,9 @@ class PlayerResource extends JsonResource
                 'has_shirt_no'   => $rescuer->rescue(fn () => $this->player->JerseyNumber()->isKnown()),
                 'shirt_no'       => $rescuer->rescue(fn () => $this->when($this->player->JerseyNumber()->isKnown(), fn () => $this->player->JerseyNumber()->number())),
                 'age'            => $rescuer->rescue(fn () => $this->player->age()->toInt()),
+            ],
+            'links'              => [
+                'self'           => new FetchPlayerRoute($this->player->getId())
             ]
         ];
     }
