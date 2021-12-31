@@ -26,4 +26,5 @@ final class Name
     public const FETCH_COACH                       = 'coach.find';
     public const FETCH_COACH_CAREER_HISTORY        = 'coach.careerHistory';
     public const FETCH_PLAYER                      = 'player.find';
+    public const FETCH_PLAYER_TRANSFER_HISTORY     = 'player.transferHistory';
 }

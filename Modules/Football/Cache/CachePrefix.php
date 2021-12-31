@@ -32,7 +32,8 @@ final class CachePrefix
             TeamsHeadToHeadCacheRepository::class           => 's:T-H2H:',
             CoachesCacheRepository::class                   => 's:CO:',
             CoachesCareersCacheRepository::class            => 's:CO:C:',
-            PlayersCacheRepository::class                   => 's:pys:'
+            PlayersCacheRepository::class                   => 's:pys:',
+            PlayersTransferHistoryCacheRepository::class    => 's:pys:TH:'
         };
     }
 
