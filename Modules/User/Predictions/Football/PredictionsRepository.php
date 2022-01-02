@@ -6,11 +6,9 @@ namespace Module\User\Predictions\Football;
 
 use Module\User\ValueObjects\UserId;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Database\QueryException;
 use Module\Football\ValueObjects\FixtureId;
 use Module\User\Predictions\Football\Prediction;
 use Module\User\Predictions\Football\Models\PredictionCode;
-use Module\User\Exceptions\DuplicatePredictionEntryException;
 use Module\User\Predictions\Football\Models\Prediction as PredictionModel;
 use Module\User\Predictions\Football\Contracts\StoreUserPredictionRepositoryInterface;
 use Module\User\Predictions\Football\Contracts\FetchFixturePredictionsRepositoryInterface;
@@ -19,22 +17,22 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
 {
     public function create(FixtureId $fixtureId, UserId $userId, Prediction $prediction): bool
     {
-        try {
-            PredictionModel::create([
-                'fixture_id'    => $fixtureId->toInt(),
-                'user_id'       => $userId->toInt(),
-                'code_id'       => $this->getPredictionCodeIdFrom($prediction),
-                'predicted_on'  => now()
-            ]);
+        PredictionModel::create([
+            'fixture_id'    => $fixtureId->toInt(),
+            'user_id'       => $userId->toInt(),
+            'code_id'       => $this->getPredictionCodeIdFrom($prediction),
+            'predicted_on'  => now()
+        ]);
 
-            return true;
-        } catch (QueryException $exception) {
-            if ($exception->getCode() === '23000') {
-                throw new DuplicatePredictionEntryException();
-            }
+        return true;
+    }
 
-            throw $exception;
-        }
+    public function userHasPredictedFixture(UserId $userId, FixtureId $fixtureId): bool
+    {
+        return PredictionModel::where([
+            'fixture_id' => $fixtureId->toInt(),
+            'user_id'    => $userId->toInt(),
+        ])->exists();
     }
 
     private function getPredictionCodeIdFrom(Prediction $prediction): int

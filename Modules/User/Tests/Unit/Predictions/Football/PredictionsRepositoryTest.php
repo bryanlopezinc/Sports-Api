@@ -10,7 +10,6 @@ use Module\User\Factories\UserFactory;
 use Module\Football\ValueObjects\FixtureId;
 use Module\User\Predictions\Football\Prediction;
 use Module\User\Predictions\Football\PredictionsRepository;
-use Module\User\Exceptions\DuplicatePredictionEntryException;
 use Module\User\Predictions\Football\Models\Prediction as PredictionModel;
 
 class PredictionsRepositoryTest extends TestCase
@@ -23,15 +22,14 @@ class PredictionsRepositoryTest extends TestCase
         $this->assertTrue($repository->create(new FixtureId(23), new UserId($user->id), new Prediction(Prediction::AWAY_WIN)));
     }
 
-    public function test_will_throw_exception_when_user_already_predicted_fixture(): void
+    public function test_user_has_predicted_fixture(): void
     {
-        $this->expectException(DuplicatePredictionEntryException::class);
-
         $repository = new PredictionsRepository;
         $user = UserFactory::new()->create();
 
         $repository->create(new FixtureId(215662), new UserId($user->id), new Prediction(Prediction::AWAY_WIN));
-        $repository->create(new FixtureId(215662), new UserId($user->id), new Prediction(Prediction::HOME_WIN));
+
+        $this->assertTrue($repository->userHasPredictedFixture(new UserId($user->id), new FixtureId(215662)));
     }
 
     public function test_will_return_correct_predictions_data(): void

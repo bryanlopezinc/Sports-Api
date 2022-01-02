@@ -15,6 +15,7 @@ Route::prefix('predictions')
 
         Route::post('football/predict', Football\PredictFixtureController::class)
             ->middleware(ConvertHashedValuesToIntegerMiddleware::keys('fixture_id'))
+            ->middleware(Football\EnsureUserCanPredictFixtureMiddleware::class)
             ->middleware(Football\EnsureFixtureCanBePredictedMiddleware::class)
             ->name(RouteName::PREDICT_FOOTBALL_FIXTURE);
     });

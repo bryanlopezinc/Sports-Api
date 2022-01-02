@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Module\User\Predictions\Football;
 
 use Module\User\ValueObjects\UserId;
-use App\Exceptions\Http\HttpException;
 use Module\User\Dto\Builders\UserBuilder;
 use Module\Football\ValueObjects\FixtureId;
-use Symfony\Component\HttpFoundation\Response;
-use Module\User\Exceptions\DuplicatePredictionEntryException;
 use Module\User\Predictions\Football\FixturePredictionsCacheRepository;
 use Module\User\Predictions\Football\Contracts\StoreUserPredictionRepositoryInterface;
 
@@ -21,9 +18,6 @@ final class CreateUserPrediction
     ) {
     }
 
-    /**
-     * @throws DuplicatePredictionEntryException
-     */
     public function create(FixtureId $fixtureId, UserId $userId, Prediction $prediction): bool
     {
         $result = $this->repository->create($fixtureId, $userId, $prediction);
@@ -38,15 +32,11 @@ final class CreateUserPrediction
 
     public function FromRequest(PredictFixtureRequest $request): bool
     {
-        try {
-            return $this->create(
-                FixtureId::fromRequest($request, 'fixture_id'),
-                UserBuilder::fromAuthUser()->build()->getId(),
-                $this->getPredictionFromRequest($request)
-            );
-        } catch (DuplicatePredictionEntryException) {
-            throw new HttpException(Response::HTTP_CONFLICT, 'User can only predict a fixture once');
-        }
+        return $this->create(
+            FixtureId::fromRequest($request, 'fixture_id'),
+            UserBuilder::fromAuthUser()->build()->getId(),
+            $this->getPredictionFromRequest($request)
+        );
     }
 
     private function getPredictionFromRequest(PredictFixtureRequest $request): Prediction

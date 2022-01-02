@@ -10,8 +10,5 @@ use Module\User\Predictions\Football\Prediction;
 
 interface StoreUserPredictionRepositoryInterface
 {
-    /**
-     * @throws \Module\User\Exceptions\DuplicatePredictionEntryException
-     */
     public function create(FixtureId $fixtureId, UserId $userId, Prediction $prediction): bool;
 }
