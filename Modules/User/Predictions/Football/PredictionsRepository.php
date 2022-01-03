@@ -6,7 +6,6 @@ namespace Module\User\Predictions\Football;
 
 use Illuminate\Support\Facades\DB;
 use Module\User\ValueObjects\UserId;
-use Illuminate\Database\Query\Builder;
 use Module\Football\ValueObjects\FixtureId;
 use Module\User\Predictions\Football\Prediction;
 use Module\User\Predictions\Football\Models\PredictionCode;
@@ -18,13 +17,16 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
 {
     public function create(FixtureId $fixtureId, UserId $userId, Prediction $prediction): bool
     {
-        DB::statement(
-            "INSERT INTO football_predictions (fixture_id, user_id, code_id)
-             VALUES (?, ?, (SELECT id FROM football_prediction_codes WHERE code = ?))",
-            [$fixtureId->toInt(), $userId->toInt(), $this->getPredictionCodeFrom($prediction)]
-        );
+        $code =  [
+            $prediction::AWAY_WIN   => PredictionCode::AWAY_WIN,
+            $prediction::HOME_WIN   => PredictionCode::HOME_WIN,
+            $prediction::DRAW       => PredictionCode::DRAW
+        ][$prediction->prediction()];
 
-        return true;
+        return DB::statement(
+            "INSERT INTO football_predictions (fixture_id, user_id, code_id) VALUES (?, ?, (SELECT id FROM football_prediction_codes WHERE code = ?))",
+            [$fixtureId->toInt(), $userId->toInt(), $code]
+        );
     }
 
     public function userHasPredictedFixture(UserId $userId, FixtureId $fixtureId): bool
@@ -33,17 +35,6 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
             'fixture_id' => $fixtureId->toInt(),
             'user_id'    => $userId->toInt(),
         ])->exists();
-    }
-
-    private function getPredictionCodeFrom(Prediction $prediction): string
-    {
-        $lookUp = [
-            $prediction::AWAY_WIN   => PredictionCode::AWAY_WIN,
-            $prediction::HOME_WIN   => PredictionCode::HOME_WIN,
-            $prediction::DRAW       => PredictionCode::DRAW
-        ];
-
-        return $lookUp[$prediction->prediction()];
     }
 
     public function fetchPredictionsTotalsFor(FixtureId $fixtureId): FixturePredictionsTotals
