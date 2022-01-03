@@ -20,6 +20,11 @@ class PredictionsRepositoryTest extends TestCase
         $user = UserFactory::new()->create();
 
         $this->assertTrue($repository->create(new FixtureId(23), new UserId($user->id), new Prediction(Prediction::AWAY_WIN)));
+
+        $this->assertDatabaseHas(PredictionModel::class, [
+            'fixture_id' => 23,
+            'user_id'    => $user->id
+        ]);
     }
 
     public function test_user_has_predicted_fixture(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Predictions\Football;
 
+use Illuminate\Support\Facades\DB;
 use Module\User\ValueObjects\UserId;
 use Illuminate\Database\Query\Builder;
 use Module\Football\ValueObjects\FixtureId;
@@ -17,12 +18,11 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
 {
     public function create(FixtureId $fixtureId, UserId $userId, Prediction $prediction): bool
     {
-        PredictionModel::create([
-            'fixture_id'    => $fixtureId->toInt(),
-            'user_id'       => $userId->toInt(),
-            'code_id'       => $this->getPredictionCodeIdFrom($prediction),
-            'predicted_on'  => now()
-        ]);
+        DB::statement(
+            "INSERT INTO football_predictions (fixture_id, user_id, code_id)
+             VALUES (?, ?, (SELECT id FROM football_prediction_codes WHERE code = ?))",
+            [$fixtureId->toInt(), $userId->toInt(), $this->getPredictionCodeFrom($prediction)]
+        );
 
         return true;
     }
@@ -35,7 +35,7 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
         ])->exists();
     }
 
-    private function getPredictionCodeIdFrom(Prediction $prediction): int
+    private function getPredictionCodeFrom(Prediction $prediction): string
     {
         $lookUp = [
             $prediction::AWAY_WIN   => PredictionCode::AWAY_WIN,
@@ -43,24 +43,23 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
             $prediction::DRAW       => PredictionCode::DRAW
         ];
 
-        return PredictionCode::where('code', $lookUp[$prediction->prediction()])->first()->id;
+        return $lookUp[$prediction->prediction()];
     }
 
     public function fetchPredictionsTotalsFor(FixtureId $fixtureId): FixturePredictionsTotals
     {
-        $code = PredictionCode::all();
+        $query = <<<"SQL"
+                (SELECT COUNT(id) FROM football_predictions WHERE code_id = (SELECT id FROM football_prediction_codes WHERE code = ?) AND fixture_id = {$fixtureId->toInt()}) AS home_wins,
+                (SELECT COUNT(id) FROM football_predictions WHERE code_id = (SELECT id FROM football_prediction_codes WHERE code = ?) AND fixture_id = {$fixtureId->toInt()}) AS away_wins,
+                (SELECT COUNT(id) FROM football_predictions WHERE code_id = (SELECT id FROM football_prediction_codes WHERE code = ?) AND fixture_id = {$fixtureId->toInt()}) AS draws,
+                (SELECT COUNT(*) FROM football_predictions WHERE fixture_id = {$fixtureId->toInt()}) AS total
+        SQL;
 
-        $expression = "COUNT(id) FROM football_predictions WHERE code_id=? and fixture_id=?";
+        $bindings = [PredictionCode::HOME_WIN, PredictionCode::AWAY_WIN, PredictionCode::DRAW];
 
-        $codeId = fn (string $codeName): int => $code->where('code', $codeName)->first()->id;
+        $predictions = PredictionModel::selectRaw($query, $bindings)->first();
 
-        $predictions = PredictionModel::selectSub(fn (Builder $builder) => $builder->selectRaw($expression, [$codeId(PredictionCode::HOME_WIN), $fixtureId->toInt()]), 'home_wins')
-            ->selectSub(fn (Builder $builder) => $builder->selectRaw($expression, [$codeId(PredictionCode::AWAY_WIN), $fixtureId->toInt()]), 'away_wins')
-            ->selectSub(fn (Builder $builder) => $builder->selectRaw($expression, [$codeId(PredictionCode::DRAW), $fixtureId->toInt()]), 'draws')
-            ->selectSub(fn (Builder $builder) => $builder->selectRaw('COUNT(*) FROM football_predictions WHERE fixture_id=?', [$fixtureId->toInt()]), 'total')
-            ->first();
-
-        if ($predictions ===  null) {
+        if ($predictions === null) {
             return new FixturePredictionsTotals(0, 0, 0, 0);
         }
 
