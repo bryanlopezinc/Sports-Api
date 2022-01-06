@@ -13,7 +13,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.3",
         "hashids/hashids": "^4.1",
-        "laravel/framework": "^8.12",
+        "laravel/framework": "^8.78",
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5"
     },
