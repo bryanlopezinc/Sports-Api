@@ -6,6 +6,7 @@ namespace Module\Football\FixtureStatistic;
 
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\DTO\FixtureStatistics as FixtureStatisticsData;
+use Module\Football\ValueObjects\TeamId;
 
 final class FixtureStatistics
 {
@@ -56,5 +57,23 @@ final class FixtureStatistics
     public function teamTwo(): FixtureStatisticsData
     {
         return $this->teamTwo;
+    }
+
+    public function hasTeam(TeamId $teamId): bool
+    {
+        return $this->teamOne->team()->getId()->equals($teamId) ||
+               $this->teamTwo->team()->getId()->equals($teamId);
+    }
+
+    public function forTeam(TeamId $teamId): FixtureStatisticsData
+    {
+        if (!$this->hasTeam($teamId)) {
+            throw new \LogicException('The given team does not exists in statistics');
+        }
+
+        return collect([$this->teamOne])
+            ->push($this->teamTwo)
+            ->filter(fn (FixtureStatisticsData $stat): bool => $stat->team()->getId()->equals($teamId))
+            ->sole();
     }
 }

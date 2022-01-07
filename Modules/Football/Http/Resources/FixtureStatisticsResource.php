@@ -7,12 +7,14 @@ namespace Module\Football\Http\Resources;
 use Illuminate\Http\Request;
 use Module\Football\ValueObjects\FixtureId;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Module\Football\FixtureStatistic\FixtureStatistics;
-use Module\Football\DTO\FixtureStatistics as FixtureStatisticsDto;
+use Module\Football\DTO\FixtureStatistics;
 
 final class FixtureStatisticsResource extends JsonResource
 {
-    public function __construct(private FixtureStatistics $statistics)
+    /**
+     * @param array<FixtureStatistics> $statistics
+     */
+    public function __construct(private array $statistics)
     {
         parent::__construct($statistics);
     }
@@ -26,7 +28,7 @@ final class FixtureStatisticsResource extends JsonResource
         return [
             'type'             => 'football_fixture_statistics',
             'fixture_id'       => FixtureId::fromRequest($request)->asHashedId(),
-            'stats'            => collect([$this->statistics->teamOne(), $this->statistics->teamTwo()])->map(function (FixtureStatisticsDto $stat) {
+            'stats'            => collect($this->statistics)->map(function (FixtureStatistics $stat) {
                 return [
                     'team'      => new TeamResource($stat->team()),
                     'stats'     => [
@@ -47,7 +49,7 @@ final class FixtureStatisticsResource extends JsonResource
                         'ball_possession'   => $stat->ballPossession(),
                     ]
                 ];
-            })
+            })->all()
         ];
     }
 }

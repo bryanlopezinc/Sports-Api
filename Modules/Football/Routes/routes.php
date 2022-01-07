@@ -66,7 +66,7 @@ Route::prefix('football')->group(function () {
 
         Route::get('stats', Controllers\FetchFixtureStatisticsController::class)
             ->name(Name::FETCH_FIXTURE_STATS)
-            ->middleware([Convert::keys('id'), MW\CheckCoversFixtureStatisticsMiddleware::class]);
+            ->middleware([Convert::keys('id', 'team'), MW\CheckCoversFixtureStatisticsMiddleware::class]);
 
         Route::get('events', Controllers\FetchFixtureEventsController::class)
             ->name(Name::FETCH_FIXTURE_EVENTS)
