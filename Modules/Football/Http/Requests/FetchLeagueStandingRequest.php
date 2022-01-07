@@ -18,7 +18,7 @@ final class FetchLeagueStandingRequest extends FormRequest
             'league_id' => ['required', new ResourceIdRule()],
             'teams.*'   => ['sometimes', new ResourceIdRule()],
             'season'    => ['required', new SeasonRule],
-            'fields'    => ['sometimes', 'string', new PartialLeagueStandingFieldsRule]
+            'fields'    => ['sometimes', 'filled', 'string', new PartialLeagueStandingFieldsRule]
         ];
     }
 

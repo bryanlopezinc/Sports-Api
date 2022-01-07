@@ -20,7 +20,7 @@ final class TeamsHeadToHeadRequest extends FormRequest
             'team_id_2'     => $idRules,
             'timezone'      => ['sometimes', 'string', new TimeZoneRule],
             'limit'         => ['sometimes', 'int', 'min:1', 'max:50'],
-            'fields'        => ['sometimes', 'string', new PartialFixtureFieldsRule]
+            'fields'        => ['sometimes', 'filled', 'string', new PartialFixtureFieldsRule]
         ];
     }
 
