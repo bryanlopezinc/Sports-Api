@@ -40,7 +40,8 @@ class FetchFixturePlayersStatisticsTest extends TestCase
 
         $this->withoutExceptionHandling()
             ->getTestResponse(34)
-            ->assertSuccessful();
+            ->assertSuccessful()
+            ->assertJsonCount(40, 'data');
     }
 
     public function test_will_return_403_status_code_when_fixture_player_statistics_is_not_supported()

@@ -8,8 +8,9 @@ use Module\Football\DTO\PlayerStatistics;
 use Module\Football\DTO\Builders\TeamBuilder;
 use Module\Football\DTO\Builders\PlayerBuilder;
 use Module\Football\ValueObjects\PlayerPosition;
-use Module\Football\FixturePlayerStatistic\PlayerRating;
 use Module\Football\DTO\Builders\PlayerStatisticBuilder as builder;
+use Module\Football\DTO\Player;
+use Module\Football\DTO\Team;
 
 final class PlayerStatisticResponseJsonMapper
 {
@@ -20,103 +21,49 @@ final class PlayerStatisticResponseJsonMapper
      */
     public function __construct(
         array $data,
-        private ?TeamBuilder $teamBuilder = null,
-        private ?PlayerBuilder $playerBuilder = null,
-        private ?Builder $builder = null
+        private TeamBuilder $teamBuilder = new TeamBuilder,
+        private PlayerBuilder $playerBuilder = new PlayerBuilder(),
+        private Builder $builder = new Builder()
     ) {
-        $this->response = new Response($this->rekeyResponseDataForEasyAccess($data));
-        $this->playerBuilder = $playerBuilder ?: new PlayerBuilder();
-        $this->builder = $builder ?: new Builder();
+        $this->response = new Response($data);
     }
 
-    private function rekeyResponseDataForEasyAccess(array $response): array
+    /**
+     * @return array<PlayerStatistics>
+     */
+    public function toArray(): array
     {
-        $data = [];
+        $this->builder->team($this->mapTeam($this->response->get('team')));
 
-        $data['team'] = $response['team'];
-        $data['player'] = $response['players'][0]['player'];
-        $data['statistics'] = $response['players'][0]['statistics'][0];
+        $callback = function (array $data): PlayerStatistics {
+            $this->builder->player($this->mapPlayer($data['player'], $data['statistics'][0]['games']['position']));
 
-        return $data;
+            return (new MapPlayerStatistics($data['statistics'][0], $this->builder))
+                ->setStatisitcs()
+                ->build();
+        };
+
+        return array_map($callback, $this->response->get('players'));
     }
 
-    public function toDataTransferObject(): PlayerStatistics
+    private function mapTeam(array $data): Team
     {
-        $this->setTeam();
-        $this->setPlayer();
-        $this->setRating();
-        $this->setPasses();
-        $this->setGoalKeeperStats();
-
-        return $this->builder
-            ->cards($this->castValue('statistics.cards.red'), $this->castValue('statistics.cards.red'))
-            ->interceptions($this->castValue('statistics.tackles.interceptions'))
-            ->offsides($this->castValue('statistics.offsides'))
-            ->shots($this->castValue('statistics.shots.on'), $this->castValue('statistics.shots.total'))
-            ->minutesPlayed($this->castValue('statistics.games.minutes'))
-            ->goals($this->castValue('statistics.goals.total'), $this->castValue('statistics.goals.assists'))
-            ->dribbles($this->castValue('statistics.dribbles.attempts'), $this->castValue('statistics.dribbles.success'), $this->castValue('statistics.dribbles.past'))
-            ->build();
+        return (new TeamJsonMapper($data, $this->teamBuilder))->toDataTransferObject();
     }
 
-    private function castValue(string $key): int
+    private function mapPlayer(array $data, string $position): Player
     {
-        //Convert potential null value to zero as Apisports adore/worship null.
-        return (int) $this->response->get($key);
-    }
-
-    private function setGoalKeeperStats(): void
-    {
-        if (!$this->getPlayerPosition()->isGoalKeeper()) {
-            return;
-        }
-
-        $this->builder->goalKeeperGoalStat($this->castValue('statistics.goals.conceded'), $this->castValue('statistics.goals.saves'));
-    }
-
-    private function setPasses(): void
-    {
-        $passAccuracy = (string) $this->response->get('statistics.passes.accuracy');
-
-        $this->builder->passes($this->castValue('statistics.passes.key'), $this->castValue('statistics.passes.total'), intval($passAccuracy));
-    }
-
-    private function setRating(): void
-    {
-        $rating = floatval($this->response->get('statistics.games.rating'));
-
-        if ($rating < PlayerRating::LOWEST) {
-            $rating = PlayerRating::LOWEST;
-        }
-
-        $this->builder->rating($rating);
-    }
-
-    private function setTeam(): void
-    {
-        $this->builder->team(
-            (new TeamJsonMapper($this->response->get('team'), $this->teamBuilder))->toDataTransferObject()
-        );
-    }
-
-    private function setPlayer(): void
-    {
-        $builder = $this->playerBuilder->setPosition($this->getPlayerPosition()->position());
-
-        $this->builder->player(
-            (new PlayerResponseJsonMapper($this->response->get('player'), [], $builder))->toDataTransferObject()
-        );
-    }
-
-    private function getPlayerPosition(): PlayerPosition
-    {
-        return new PlayerPosition(
-            match ($this->response->get('statistics.games.position')) {
+        $playerPosition = new PlayerPosition(
+            match ($position) {
                 'G' => PlayerPosition::GOALIE,
                 'D' => PlayerPosition::DEFENDER,
                 'M' => PlayerPosition::MIDFIELDER,
                 'F' => PlayerPosition::ATTACKER
             }
         );
+
+        $builder = $this->playerBuilder->setPosition($playerPosition->position());
+
+        return (new PlayerResponseJsonMapper($data, [], $builder))->toDataTransferObject();
     }
 }
