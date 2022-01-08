@@ -11,14 +11,14 @@ final class FetchFixturePlayersStatisticsRoute implements JsonSerializable
 {
     use SerializeRoute;
 
-    public function __construct(private FixtureId $id)
+    public function __construct(private FixtureId $id, private array $query = [])
     {
     }
 
     public function __toString()
     {
-        return route(Name::FETCH_FIXTURES_PLAYERS_STAT, [
+        return route(Name::FETCH_FIXTURES_PLAYERS_STAT,array_merge([
             'id'    => $this->id->asHashedId()
-        ]);
+        ], $this->query));
     }
 }

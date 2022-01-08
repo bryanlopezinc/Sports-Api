@@ -12,7 +12,8 @@ final class FetchFixturePlayersStatisticsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', new ResourceIdRule],
+            'id'   => ['required', new ResourceIdRule],
+            'team' => ['sometimes', new ResourceIdRule]
         ];
     }
 }

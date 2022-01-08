@@ -15,12 +15,15 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixturePlayersStatisticsRespon
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 
+/**
+ * @group 190
+ */
 class FetchFixturePlayersStatisticsTest extends TestCase
 {
-    private function getTestResponse(int $id): TestResponse
+    private function getTestResponse(int $id, array $query = []): TestResponse
     {
         return $this->getJson(
-            (string) new FetchFixturePlayersStatisticsRoute(new FixtureId($id))
+            (string) new FetchFixturePlayersStatisticsRoute(new FixtureId($id), $query)
         );
     }
 
@@ -42,6 +45,37 @@ class FetchFixturePlayersStatisticsTest extends TestCase
             ->getTestResponse(34)
             ->assertSuccessful()
             ->assertJsonCount(40, 'data');
+    }
+
+    public function test_will_return_only_statistics_for_players_in_a_particular_team(): void
+    {
+        Http::fakeSequence()
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json())
+            ->push(FetchFixturePlayersStatisticsResponse::json())
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json());
+
+        $response = $this->getTestResponse(34, ['team' => $teamId = $this->hashId(157)]) //any team in json stub
+            ->assertSuccessful()
+            ->assertJsonCount(20, 'data');
+
+        foreach ($response->json('data') as $data) {
+            $this->assertEquals(Arr::get($data, 'attributes.team.attributes.id'), $teamId);
+        }
+    }
+
+    public function test_will_return_400_status_code_when_requested_team_is_not_a_team_in_fixture(): void
+    {
+        Http::fakeSequence()
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json())
+            ->push(FetchFixturePlayersStatisticsResponse::json())
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json());
+
+        $this->getTestResponse(34, ['team' => $this->hashId(1999)]) // team id that is not in json stub
+            ->assertStatus(400);
     }
 
     public function test_will_return_403_status_code_when_fixture_player_statistics_is_not_supported()
