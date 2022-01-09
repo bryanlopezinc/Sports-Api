@@ -16,21 +16,34 @@ final class PartialFixtureRequest
      */
     public function __construct(private array $requestedFields)
     {
-        $this->requestedFields = collect($requestedFields)->unique()->all();
-
-        $this->normalizeRequestData();
+        $this->requestedFields = $this->normalizeRequestData(collect($requestedFields)->unique()->all());
     }
 
-    private function normalizeRequestData(): void
+    private function normalizeRequestData(array $requestedAttributes): array
     {
-        $attributes = $this->requestedFields;
-
-        //Ignore period_goals if specific period_goals data is requested
-        if ($this->wantsSpecificPeriodGoalsData() && $this->wants('period_goals')) {
-            unset($attributes[array_search('period_goals', $attributes)]);
+        if (empty($requestedAttributes)) {
+            return [];
         }
 
-        $this->requestedFields = $attributes;
+        $extraAttributesMap = [
+            'venue'   => ['has_venue_info'],
+            'winner'  => ['has_winner'],
+            'score'   => ['score_is_available'],
+            'period_goals.first_half'  => ['period_goals.meta.has_first_half_score'],
+            'period_goals.second_half' => ['period_goals.meta.has_full_time_score'],
+            'period_goals.extra_time'  => ['period_goals.meta.has_extra_time_score'],
+            'period_goals.penalty'     => ['period_goals.meta.has_penalty_score']
+        ];
+
+        foreach ($extraAttributesMap as $name => $extraAttributes) {
+            if (notInArray($name, $requestedAttributes)) {
+                continue;
+            }
+
+            array_push($requestedAttributes, ...$extraAttributes);
+        }
+
+        return array_values($requestedAttributes);
     }
 
     public static function fromRequest(Request $request, string $key = 'filter'): self
@@ -50,48 +63,13 @@ final class PartialFixtureRequest
         return $this->requestedFields;
     }
 
-    public function wantsPartialResponse(): bool
+    public function isEmpty(): bool
     {
-        return !empty($this->requestedFields);
-    }
-
-    /**
-     * Determine if any of the given attributes is requested.
-     */
-    public function wantsAnyOf(array $attributes): bool
-    {
-        foreach ($attributes as $attribute) {
-            if (inArray($attribute, $this->requestedFields)) {
-                return true;
-            }
-        }
-
-        return false;
+        return empty($this->requestedFields);
     }
 
     public function wants(string $field): bool
     {
-        return $this->wantsAnyOf([$field]);
-    }
-
-    /**
-     * Return true if any of period_goals first_half, second_half, extra_time, penalty data is requested
-     */
-    public function wantsSpecificPeriodGoalsData(): bool
-    {
-        return !empty($this->getPeriodGoalsTypes());
-    }
-
-    /**
-     * Return any of period_goals first_half, second_half, extra_time, penalty data if requested
-     *
-     * @return array<string>
-     */
-    public function getPeriodGoalsTypes(): array
-    {
-        return collect($this->requestedFields)
-            ->filter(fn (string $field): bool => str_starts_with($field, 'period_goals.'))
-            ->map(fn (string $field): string => str_replace('period_goals.', '', $field))
-            ->all();
+        return inArray($field, $this->requestedFields);
     }
 }

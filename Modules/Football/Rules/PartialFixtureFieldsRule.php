@@ -29,6 +29,7 @@ final class PartialFixtureFieldsRule implements Rule
     ];
 
     private string $message;
+    public int $code;
 
     /**
      * @param  string  $attribute
@@ -43,6 +44,7 @@ final class PartialFixtureFieldsRule implements Rule
             return true;
         } catch (InvalidPartialResourceFieldsException $e) {
             $this->message = $e->getMessage();
+            $this->code = $e->getCode();
 
             return false;
         }
@@ -60,12 +62,25 @@ final class PartialFixtureFieldsRule implements Rule
     {
         // Only id cannot be requested
         if (count($requestedFields) === 1 && inArray('id', $requestedFields)) {
-            throw new InvalidPartialResourceFieldsException('Only id field cannot be requested');
+            throw new InvalidPartialResourceFieldsException('Only id field cannot be requested', 100);
         }
 
         foreach ($requestedFields as $field) {
-            if (!inArray($field, self::ALLOWED)) {
-                throw new InvalidPartialResourceFieldsException('The given partial resource fields are Invalid');
+            if (notInArray($field, self::ALLOWED)) {
+                throw new InvalidPartialResourceFieldsException("The given partial resource field $field is invalid", 101);
+            }
+        }
+
+        if (inArray('period_goals', $requestedFields)) {
+            foreach ($requestedFields as $field) {
+                if (inArray($field, [
+                    'period_goals.first_half',
+                    'period_goals.second_half',
+                    'period_goals.extra_time',
+                    'period_goals.penalty'
+                ])) {
+                    throw new InvalidPartialResourceFieldsException("Cannot request period_goals and $field field", 102);
+                }
             }
         }
     }

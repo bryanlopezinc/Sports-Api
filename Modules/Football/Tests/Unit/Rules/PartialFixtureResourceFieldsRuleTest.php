@@ -14,7 +14,7 @@ class PartialFixtureResourceFieldsRuleTest extends TestCase
         $rule = new PartialFixtureFieldsRule;
 
         $this->assertFalse($rule->passes('filter', 'id'));
-        $this->assertEquals($rule->message(), 'Only id field cannot be requested');
+        $this->assertEquals($rule->code, 100);
     }
 
     public function test_cannot_request_invalid_fields(): void
@@ -22,6 +22,21 @@ class PartialFixtureResourceFieldsRuleTest extends TestCase
         $rule = new PartialFixtureFieldsRule;
 
         $this->assertFalse($rule->passes('filter', 'foo,bar'));
-        $this->assertEquals($rule->message(), 'The given partial resource fields are Invalid');
+        $this->assertEquals($rule->code, 101);
+    }
+
+    public function test_cannot_request_period_goals_and_any_of_its_children(): void
+    {
+        $rule = new PartialFixtureFieldsRule;
+
+        foreach ([
+            'period_goals.first_half',
+            'period_goals.second_half',
+            'period_goals.extra_time',
+            'period_goals.penalty'
+        ] as $value) {
+            $this->assertFalse($rule->passes('filter', "period_goals,$value"));
+            $this->assertEquals($rule->code, 102);
+        }
     }
 }
