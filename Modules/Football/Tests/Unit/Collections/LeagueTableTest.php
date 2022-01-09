@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Tests\Unit\Collections;
 
-use LogicException;
 use Tests\TestCase;
 use InvalidArgumentException;
 use Module\Football\DTO\League;
@@ -23,19 +22,6 @@ class LeagueTableTest extends TestCase
         $standings = $this->generateStandings(5);
 
         $standings[] = LeagueStandingFactory::new()->withState(fn (LeagueStandingBuilder $b) => $b->setTeamRank(6)->setLeague(LeagueFactory::new()->toDto()))->toDto();
-
-        new LeagueTable($standings);
-    }
-
-    public function test_team_ranks_must_be_in_consecutive_order(): void
-    {
-        $this->expectException(LogicException::class);
-
-        $league = LeagueFactory::new()->toDto();
-
-        $standings = $this->generateStandings(5, $league);
-
-        $standings[] = LeagueStandingFactory::new()->withState(fn (LeagueStandingBuilder $b) => $b->setTeamRank(7)->setLeague($league))->toDto();
 
         new LeagueTable($standings);
     }

@@ -7,12 +7,17 @@ namespace Module\Football\Services;
 use App\Utils\Config;
 use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Stringable;
 use Module\Football\DTO\League;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Collections\LeagueTable;
+use Module\Football\Collections\TeamIdsCollection;
 use Module\Football\Contracts\Cache\LeaguesTablesCacheInterface;
 use Module\Football\Contracts\Repositories\FetchLeagueStandingRepositoryInterface;
+use Module\Football\Http\Requests\FetchLeagueStandingRequest;
+use Module\Football\ValueObjects\TeamId;
 
 final class FetchLeagueStandingService
 {
@@ -34,6 +39,30 @@ final class FetchLeagueStandingService
         $this->cache->cache($leagueTable, $season, $this->determineTimeToLiveFrom($leagueTable->getLeague()));
 
         return $leagueTable;
+    }
+
+    public function fromRequest(FetchLeagueStandingRequest $request): LeagueTable
+    {
+        $leagueTable = $this->fetch(new LeagueId($request->input('league_id')), Season::fromString($request->input('season')));
+
+        if ($request->filled('teams')) {
+            $leagueTable = $this->getCustomTeams($leagueTable, $request);
+        }
+
+        return $leagueTable;
+    }
+
+    private function getCustomTeams(LeagueTable $leagueTable, FetchLeagueStandingRequest $request): LeagueTable
+    {
+        $teamids = $leagueTable->teams()->pluckIds();
+
+        $requestedTeams = (new Stringable($request->input('teams')))
+            ->explode(',')
+            ->map(fn (string $id) => new TeamId((int) $id))
+            ->each(fn (TeamId $id) => abort_if(!$teamids->has($id), 400, sprintf('Team with id %s could not be found in league table', $id->asHashedId())))
+            ->pipe(fn (Collection $collection) => new TeamIdsCollection($collection->all()));
+
+        return $leagueTable->onlyTeams($requestedTeams);
     }
 
     private function determineTimeToLiveFrom(League $league): TimeToLive

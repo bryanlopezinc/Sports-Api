@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Football\Http;
 
 use Illuminate\Http\Request;
-use Module\Football\Exceptions\Http\InvalidPartialResourceFieldsHttpException;
 
 /**
  * Input Filters to return specific league standing fields in response.
@@ -23,16 +22,7 @@ final class PartialLeagueStandingRequest
             return;
         }
 
-        $this->requestedFields = collect($requestedFields)->values()->unique()->all();
-
-        $this->normalizeRequestData();
-    }
-
-    private function normalizeRequestData(): void
-    {
-        if (notInArray('team', $this->requestedFields)) {
-            $this->requestedFields[] = 'team';
-        }
+        $this->requestedFields = collect($requestedFields)->push('team')->unique()->values()->all();
     }
 
     public static function fromRequest(Request $request, string $key = 'filter'): self
@@ -52,9 +42,9 @@ final class PartialLeagueStandingRequest
         return $this->requestedFields;
     }
 
-    public function wantsPartialResponse(): bool
+    public function isEmpty(): bool
     {
-        return !empty($this->requestedFields);
+        return empty($this->requestedFields);
     }
 
     public function wants(string $field): bool

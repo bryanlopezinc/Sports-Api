@@ -6,11 +6,8 @@ namespace Module\Football\Http\Resources;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Module\Football\ValueObjects\TeamId;
 use Module\Football\Collections\LeagueTable;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Module\Football\Collections\TeamIdsCollection;
 use Module\Football\Http\PartialLeagueStandingRequest;
 
 final class PartialLeagueStandingResource extends JsonResource
@@ -46,22 +43,22 @@ final class PartialLeagueStandingResource extends JsonResource
      */
     public function toArray($request): array
     {
-        [$originalResponse, $partialResponse] = [(new LeagueStandingResource($this->leagueTable))->toArray($request), []];
-
+        $original = (new LeagueStandingResource($this->leagueTable))->toArray($request);
         $partialResponseRequest = PartialLeagueStandingRequest::fromRequest($request, $this->filterInputName);
 
-        if ($partialResponseRequest->wants('league') || !$partialResponseRequest->wantsPartialResponse()) {
-            $partialResponse['league'] = $this->getLeagueResource();
-        };
+        if ($partialResponseRequest->isEmpty()) {
+            return $original;
+        }
 
-        $requestedTeams = $this->getOnlyRequestedTeamsFrom($request);
+        $original['standings'] = array_map(fn (array $standing) => Arr::only($standing, $partialResponseRequest->all()), $original['standings']);
 
-        $partialResponse['standings'] = collect($originalResponse['standings'])
-            ->filter(fn (array $standing) => $requestedTeams->has($standing['team']->resource->getId()))
-            ->map(fn (array $standing) => $partialResponseRequest->wantsPartialResponse() ? Arr::only($standing, $partialResponseRequest->all()) : $standing)
-            ->all();
+        if (!$partialResponseRequest->wants('league')) {
+            Arr::forget($original, 'league');
+        } else {
+            $original['league'] = $this->getLeagueResource();
+        }
 
-        return $partialResponse;
+        return $original;
     }
 
     private function getLeagueResource(): JsonResource
@@ -71,28 +68,5 @@ final class PartialLeagueStandingResource extends JsonResource
         }
 
         return new PartialLeagueResource($this->leagueTable->getLeague(), $this->leagueFilterInputName);
-    }
-
-    /**
-     * Throws exception if a requested team id does not exists in league table
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
-     */
-    private function getOnlyRequestedTeamsFrom(Request $request): TeamIdsCollection
-    {
-        if (!$request->filled('teams')) {
-            return $this->leagueTable->teams()->pluckIds();
-        }
-
-        $teamIdsInTable = $this->leagueTable->teams()->pluckIds();
-
-        return collect(explode(',', $request->input('teams')))
-            ->map(fn ($id) => new TeamId((int)$id))
-            ->each(function (TeamId $teamId) use ($teamIdsInTable) {
-                if (!$teamIdsInTable->has($teamId)) {
-                    abort(400, sprintf('Team with id %s could not be found in league table', $teamId->toInt()));
-                }
-            })
-            ->pipe(fn (Collection $collection) => new TeamIdsCollection($collection->all()));
     }
 }

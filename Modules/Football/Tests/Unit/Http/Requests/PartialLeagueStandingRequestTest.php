@@ -23,10 +23,10 @@ class PartialLeagueStandingRequestTest extends TestCase
         $this->assertEquals(['points', 'team'], $request->all());
     }
 
-    public function test_wants_partial_response_will_return_false_when_no_fields_are_requested(): void
+    public function test_will_return_true_when_no_fields_are_requested(): void
     {
         $request = new PartialLeagueStandingRequest([]);
 
-        $this->assertFalse($request->wantsPartialResponse());
+        $this->assertTrue($request->isEmpty());
     }
 }

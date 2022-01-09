@@ -7,23 +7,23 @@ namespace Module\Football\Tests\Unit\Http\Resources;
 use Tests\TestCase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\TestResponse;
-use Module\Football\DTO\LeagueStanding;
 use Module\Football\Factories\TeamFactory;
 use Illuminate\Testing\AssertableJsonString;
 use Module\Football\Collections\LeagueTable;
 use Module\Football\Factories\LeagueFactory;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Module\Football\Factories\LeagueStandingFactory;
 use Module\Football\DTO\Builders\LeagueStandingBuilder;
 use Module\Football\Http\Resources\PartialLeagueStandingResource;
 
 class PartialLeagueStandingResourceTest extends TestCase
 {
-    private function makeFullResponseAssertions(TestResponse $testResponse): void
+    public function test_will_return_all_response_when_no_fields_are_requested(): void
     {
+        $testResponse = $this->getTestReponse([]);
+
         $testResponse->assertJsonCount(2, 'data');
 
-        foreach ($testResponse->decodeResponseJson()->json('data')['standings'] as $data) {
+        foreach ($testResponse->decodeResponseJson()->json('data.standings') as $data) {
             $assert = new AssertableJsonString($data);
 
             $assert->assertCount(13)
@@ -63,11 +63,6 @@ class PartialLeagueStandingResourceTest extends TestCase
                     'goals_against',
                 ]);
         }
-    }
-
-    public function test_will_return_all_response_when_no_fields_are_requested(): void
-    {
-        $this->makeFullResponseAssertions($this->getTestReponse([]));
     }
 
     public function test_will_return_points_and_team_fields(): void
@@ -254,27 +249,6 @@ class PartialLeagueStandingResourceTest extends TestCase
                     'team',
                 ]);
         }
-    }
-
-    public function test_will_return_only_specified_teams(): void
-    {
-        $table = $this->generateTable();
-
-        $teamIds = $table
-            ->toLaravelCollection()
-            ->take(2)
-            ->map(fn (LeagueStanding $standing) => $standing->getTeam()->getId()->toInt());
-
-        $this->getTestReponse(['teams' => $teamIds->implode(',')], $table)
-            ->assertJson(function (AssertableJson $assert) use ($teamIds) {
-
-                $assert->fromArray($assert->toArray()['data']['standings'])
-                    ->count(2)
-                    ->where('0.team.attributes.id', $this->hashId($teamIds->first()))
-                    ->where('1.team.attributes.id', $this->hashId($teamIds->last()));
-
-                $assert->etc();
-            });
     }
 
     public function test_will_apply_league_filters(): void

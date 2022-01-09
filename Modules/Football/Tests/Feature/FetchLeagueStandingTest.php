@@ -35,7 +35,7 @@ class FetchLeagueStandingTest extends TestCase
             ->push(FetchLeagueResponse::json())
             ->push(FetchFixtureByDateResponse::json());
 
-        $this->getTestResponse(400, 2018)->assertSuccessful();
+        $this->getTestResponse(400, 2018)->assertSuccessful()->assertJsonCount(20, 'data.standings');
     }
 
     public function test_will_return_validation_error_when_teams_are_invalid()
@@ -101,6 +101,7 @@ class FetchLeagueStandingTest extends TestCase
             'league_fields' => 'name'
         ])
             ->assertSuccessful()
+            ->assertJsonCount(2, 'data.standings')
             ->assertJsonCount(2, 'data.league')
             ->assertJsonCount(1, 'data.league.attributes')
             ->assertJsonCount(3, 'data.standings.0')
