@@ -9,45 +9,18 @@ use Module\Football\Http\PartialLeagueRequest;
 
 class PartialLeagueRequestTest extends TestCase
 {
-    public function test_wants_partial_response(): void
-    {
-        $request = new PartialLeagueRequest(['id', 'name']);
-
-        $this->assertTrue($request->wantsPartialResponse());
-    }
-
-    public function test_wantsSpecificCoverageData_returns_true_when_a_coverage_element_is_requested(): void
-    {
-        $request = new PartialLeagueRequest(['coverage.line_up']);
-
-        $this->assertTrue($request->wantsSpecificCoverageData());
-    }
-
-    public function test_wantsSpecificCoverageData_returns_false_when_coverage_element_is_not_requested(): void
-    {
-        $request = new PartialLeagueRequest(['coverage']);
-
-        $this->assertFalse($request->wantsSpecificCoverageData());
-    }
-
-    public function test_will_remove_coverage_if_request_has_coverage_and_specific_coverage_data(): void
-    {
-        $request = new PartialLeagueRequest(['coverage', 'coverage.line_up']);
-
-        $this->assertFalse($request->wants('coverage'));
-    }
-
-    public function test_will_remove_season_if_request_has_season_and_specific_season_data(): void
-    {
-        $request = new PartialLeagueRequest(['season', 'season.end']);
-
-        $this->assertFalse($request->wants('season'));
-    }
-
     public function test_will_return_unique_fields(): void
     {
-        $request = new PartialLeagueRequest(['coverage', 'coverage']);
+        $request = new PartialLeagueRequest(['name', 'name']);
 
-        $this->assertEquals(['coverage'], $request->all());
+        $this->assertEquals(['name'], $request->all());
+    }
+
+    public function test_all_will_return_correct_values(): void
+    {
+        $values = (new PartialLeagueRequest(['name', 'logo_url', 'country']))->all(['country', 'logo_url']);
+
+        $this->assertCount(1, $values);
+        $this->assertEquals('name', $values[0]);
     }
 }

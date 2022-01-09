@@ -14,7 +14,7 @@ class PartialLeagueResourceFieldsRuleTest extends TestCase
         $rule = new PartialLeagueFieldsRule;
 
         $this->assertFalse($rule->passes('filter', 'id'));
-        $this->assertEquals($rule->message(), 'Only id field cannot be requested');
+        $this->assertEquals($rule->code, 2000);
     }
 
     public function test_cannot_request_invalid_fields(): void
@@ -22,6 +22,37 @@ class PartialLeagueResourceFieldsRuleTest extends TestCase
         $rule = new PartialLeagueFieldsRule;
 
         $this->assertFalse($rule->passes('filter', 'foo,bar'));
-        $this->assertEquals($rule->message(), 'The given partial resource fields are Invalid');
+        $this->assertEquals($rule->code, 2001);
+
+        $this->assertFalse($rule->passes('filter', 'name,foo'));
+        $this->assertEquals($rule->code, 2001);
+    }
+
+    public function test_cannot_request_parent_with_child_attribute(): void
+    {
+        $rule = new PartialLeagueFieldsRule;
+
+        $parentChildrenMap = [
+            'season'     => [
+                'season.season',
+                'season.start',
+                'season.end',
+                'season.is_current_season',
+            ],
+            'coverage'  => [
+                'coverage.line_up',
+                'coverage.events',
+                'coverage.stats',
+                'coverage.top_scorers',
+                'coverage.top_assists',
+            ],
+        ];
+
+        foreach ($parentChildrenMap as $parent => $children) {
+            foreach ($children as $child) {
+                $this->assertFalse($rule->passes('filter', implode(',', [$parent, $child])));
+                $this->assertEquals($rule->code, 2002);
+            }
+        }
     }
 }

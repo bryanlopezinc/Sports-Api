@@ -16,26 +16,56 @@ final class PartialLeagueRequest
      */
     public function __construct(private array $requestedFields)
     {
-        $this->requestedFields = collect($requestedFields)->unique()->all();
-
-        $this->normalizeRequestData();
+        $this->requestedFields = $this->transform(collect($requestedFields)->unique()->all());
     }
 
-    private function normalizeRequestData(): void
+    private function transform(array $requestedAttributes): array
     {
-        $attributes = $this->requestedFields;
-
-        //Ignore coverage if specific coverage data is requested
-        if ($this->wantsSpecificCoverageData() && $this->wants('coverage')) {
-            unset($attributes[array_search('coverage', $attributes)]);
+        if (empty($requestedAttributes)) {
+            return [];
         }
 
-        //Ignore season if specific season data is requested
-        if ($this->wantsSpecificSeasonData() && $this->wants('season')) {
-            unset($attributes[array_search('season', $attributes)]);
+        $map = [
+            // coverage types and there corresponding position in LeagueResource
+            'coverage.stats'        => ['season.coverage.stats'],
+            'coverage.events'       => ['season.coverage.events'],
+            'coverage.line_up'      => ['season.coverage.line_up'],
+            'coverage.top_scorers'  => ['season.coverage.top_scorers'],
+            'coverage.top_assists'  => ['season.coverage.top_assists'],
+
+            //Attributes to be push to requestedFields when season is requested
+            //and their corresponding position in leagueResource
+            'season' => [
+                'season.season',
+                'season.start',
+                'season.end',
+                'season.is_current_season',
+            ],
+
+            //Attributes to be push to requestedFields when season coverage is requested
+            //and their corresponding position in leagueResource
+            'coverage' => [
+                'season.coverage.line_up',
+                'season.coverage.events',
+                'season.coverage.stats',
+                'season.coverage.top_scorers',
+                'season.coverage.top_assists',
+            ],
+        ];
+
+        foreach ($map as $key => $value) {
+            if (notInArray($key, $requestedAttributes)) {
+                continue;
+            }
+
+            array_push($requestedAttributes, ...$value);
+
+            //Remove the attribute after setting their corresponding positions
+            //to avoid putting it at the wrong position in the resource
+            unset($requestedAttributes[array_search($key, $requestedAttributes)]);
         }
 
-        $this->requestedFields = $attributes;
+        return array_values($requestedAttributes);
     }
 
     public static function fromRequest(Request $request, string $key = 'filter'): self
@@ -50,74 +80,18 @@ final class PartialLeagueRequest
     /**
      * @return array<string>
      */
-    public function all(): array
+    public function all(array $except = []): array
     {
-        return $this->requestedFields;
+        return array_filter($this->requestedFields, fn (string $field) => notInArray($field, $except));
     }
 
-    public function wantsPartialResponse(): bool
+    public function isEmpty(): bool
     {
-        return !empty($this->requestedFields);
+        return empty($this->requestedFields);
     }
 
-    /**
-     * Determine if any of the given attributes is requested.
-     */
-    public function wantsAnyOf(array $attributes): bool
+    public function has(string $field): bool
     {
-        foreach ($attributes as $attribute) {
-            if (inArray($attribute, $this->requestedFields)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function wants(string $field): bool
-    {
-        return $this->wantsAnyOf([$field]);
-    }
-
-    /**
-     * Return true if any of : coverage line_up, events, stats, top_scorers or top_assists data is requested
-     */
-    public function wantsSpecificCoverageData(): bool
-    {
-        return !empty($this->getCoverageTypes());
-    }
-
-    /**
-     * Return any of : coverage line_up, events, stats, top_scorers or top_assists data if requested
-     *
-     * @return array<string>
-     */
-    public function getCoverageTypes(): array
-    {
-        return collect($this->requestedFields)
-            ->filter(fn (string $field): bool => str_starts_with($field, 'coverage.'))
-            ->map(fn (string $field): string => str_replace('coverage.', '', $field))
-            ->all();
-    }
-
-    /**
-     * Return true if any of season(year), start, end or is_current_season is requested
-     */
-    public function wantsSpecificSeasonData(): bool
-    {
-        return !empty($this->getSeasonTypes());
-    }
-
-    /**
-     * Returns any of season(year), start, end or is_current_season if requested
-     *
-     * @return array<string>
-     */
-    public function getSeasonTypes(): array
-    {
-        return collect($this->requestedFields)
-            ->filter(fn (string $field): bool => str_starts_with($field, 'season.'))
-            ->map(fn (string $field): string => str_replace('season.', '', $field))
-            ->all();
+        return inArray($field, $this->requestedFields);
     }
 }

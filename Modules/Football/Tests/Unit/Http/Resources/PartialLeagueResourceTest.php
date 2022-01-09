@@ -14,9 +14,9 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class PartialLeagueResourceTest extends TestCase
 {
-    private function makeFullResponseAssertions(TestResponse $testResponse): void
+    public function test_will_return_all_response_when_no_fields_are_requested(): void
     {
-        $testResponse
+        $this->getTestReponse([])
             ->assertJsonCount(3, 'data')
             ->assertJsonCount(5, 'data.attributes')
             ->assertJsonCount(5, 'data.attributes.season')
@@ -52,11 +52,6 @@ class PartialLeagueResourceTest extends TestCase
             ]);
     }
 
-    public function test_will_return_all_response_when_no_fields_are_requested(): void
-    {
-        $this->makeFullResponseAssertions($this->getTestReponse([]));
-    }
-
     public function test_will_return_only_coverage_and_season_attributes(): void
     {
         $this->getTestReponse(['season', 'coverage'])
@@ -82,45 +77,6 @@ class PartialLeagueResourceTest extends TestCase
                             ]
                         ]
                     ],
-                ]
-            ]);
-    }
-
-    public function test_will_return_only_coverage_attribute_when_coverage_and_coverage_data_is_requested(): void
-    {
-        $this->getTestReponse(['coverage.stats', 'coverage'])
-            ->assertJsonCount(2, 'data')
-            ->assertJsonCount(1, 'data.attributes')
-            ->assertJsonCount(1, 'data.attributes.season')
-            ->assertJsonCount(1, 'data.attributes.season.coverage')
-            ->assertJsonStructure([
-                'data'  => [
-                    "type",
-                    "attributes" => [
-                        "season" => [
-                            "coverage" =>  [
-                                "stats",
-                            ]
-                        ]
-                    ],
-                ]
-            ]);
-    }
-
-    public function test_will_return_only_season_attribute_when_full_season_data_and_a_specific_season_attribute_is_requested(): void
-    {
-        $this->getTestReponse(['season', 'season.start'])
-            ->assertJsonCount(2, 'data')
-            ->assertJsonCount(1, 'data.attributes')
-            ->assertJsonCount(1, 'data.attributes.season')
-            ->assertJsonStructure([
-                'data'  => [
-                    "type",
-                    "attributes" => [
-                        "season" => [
-                            "start",
-                        ]
-                    ]
                 ]
             ]);
     }

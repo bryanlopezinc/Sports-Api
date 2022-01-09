@@ -26,68 +26,24 @@ final class PartialLeagueResource extends JsonResource
         $originalResponse  = (new LeagueResource($this->league))->toArray($httpRequest);
         $request = PartialLeagueRequest::fromRequest($httpRequest, $this->filterInputName);
 
-        $partialResponse = [];
-
-        if (!$request->wantsPartialResponse()) {
+        if ($request->isEmpty()) {
             return $originalResponse;
         }
 
-        $partialResponse['type'] = $originalResponse['type'];
+        //All the attributes that will be set in the attributes level.
+        $customAttributes = [];
 
-        //Set only the required keys needed at the attributes level
-        if ($request->wantsAnyOf($keys = $this->keysInTheAttributesLevel())) {
-            $partialResponse['attributes'] = Arr::only($originalResponse['attributes'], array_intersect($keys, $request->all()));
+        //Get all requested attributes except attributes not in the attributes level in league resource
+        foreach ($request->all(['links']) as $key) {
+            Arr::set($customAttributes, $key, Arr::get($originalResponse['attributes'], $key));
         }
 
-        if ($request->wants('links')) {
-            $partialResponse['links'] =  $originalResponse['links'];
+        Arr::set($originalResponse, 'attributes', $customAttributes);
+
+        if (!$request->has('links')) {
+            Arr::forget($originalResponse, 'links');
         }
 
-        //if request needs only season (or season data) set only required season data
-        if ($request->wants('season') || $request->wantsSpecificSeasonData()) {
-            Arr::set($partialResponse, 'attributes.season', $this->getSeasonData($request, $originalResponse));
-        }
-
-        //if request needs only coverage (or coverage data) set only required season coverage data
-        if ($request->wants('coverage') || $request->wantsSpecificCoverageData()) {
-            Arr::set($partialResponse, 'attributes.season.coverage', $this->getSeasonCoverageData($request, $originalResponse));
-        }
-
-        return $partialResponse;
-    }
-
-    /**
-     * @return array<string>
-     */
-    private function keysInTheAttributesLevel(): array
-    {
-        return [
-            'id',
-            'logo_url',
-            'name',
-            'country',
-        ];
-    }
-
-    private function getSeasonCoverageData(PartialLeagueRequest $request, array $originalResponse): array
-    {
-        $originalCoverageResponse = Arr::get($originalResponse, 'attributes.season.coverage');
-
-        if ($request->wants('coverage')) {
-            return $originalCoverageResponse;
-        }
-
-        return Arr::only($originalCoverageResponse, $request->getCoverageTypes());
-    }
-
-    private function getSeasonData(PartialLeagueRequest $request, array $originalResponse): array
-    {
-        $originalSeasonResponse = Arr::get($originalResponse, 'attributes.season');
-
-        if ($request->wants('season')) {
-            return Arr::except($originalSeasonResponse, 'coverage');
-        }
-
-        return Arr::only($originalSeasonResponse, $request->getSeasonTypes());
+        return $originalResponse;
     }
 }
