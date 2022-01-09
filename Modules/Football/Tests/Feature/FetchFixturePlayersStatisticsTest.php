@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Tests\Feature;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
@@ -15,9 +16,6 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixturePlayersStatisticsRespon
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 
-/**
- * @group 190
- */
 class FetchFixturePlayersStatisticsTest extends TestCase
 {
     private function getTestResponse(int $id, array $query = []): TestResponse
@@ -76,6 +74,34 @@ class FetchFixturePlayersStatisticsTest extends TestCase
 
         $this->getTestResponse(34, ['team' => $this->hashId(1999)]) // team id that is not in json stub
             ->assertStatus(400);
+    }
+
+    public function test_will_return_partial_resource_statistics_for_players_statistics(): void
+    {
+        Http::fakeSequence()
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json())
+            ->push(FetchFixturePlayersStatisticsResponse::json())
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json());
+
+        $response = $this->getTestResponse(34, ['filter' => 'cards'])->assertSuccessful();
+
+        foreach ($response->json('data') as $data) {
+            (new TestResponse(new Response($data)))
+                ->assertJsonCount(2, 'attributes')
+                ->assertJsonCount(3, 'attributes.cards')
+                ->assertJsonStructure([
+                    'attributes' => [
+                        'player',
+                        'cards' => [
+                            'yellow',
+                            'red',
+                            'total'
+                        ]
+                    ]
+                ]);
+        }
     }
 
     public function test_will_return_403_status_code_when_fixture_player_statistics_is_not_supported()

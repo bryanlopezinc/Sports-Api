@@ -45,6 +45,13 @@ final class PlayerFactory extends Factory
         });
     }
 
+    public function goalKeeper(): self
+    {
+        return $this->state(function (array $attributes) {
+            return (new PlayerBuilder($attributes))->setPosition(PlayerPosition::GOALIE)->toArray();
+        });
+    }
+
     public function toDto(): Player
     {
         return $this->mapToDto();
