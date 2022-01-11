@@ -12,4 +12,13 @@ final class FetchTopScorersResponse
 
         return file_get_contents(__DIR__ . $DS . 'json' . $DS . 'topscorers.json');
     }
+
+    public static function noContent(): string
+    {
+        $decoded = json_decode(static::json(), true);
+
+        $decoded['response'] = [];
+
+        return json_encode($decoded);
+    }
 }

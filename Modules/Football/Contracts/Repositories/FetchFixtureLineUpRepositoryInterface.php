@@ -16,7 +16,6 @@ interface FetchFixtureLineUpRepositoryInterface
      * only Id, name and photo is returned for each missing player.
      *
      * @throws \App\Exceptions\Http\ResourceNotFoundHttpException;
-     * @throws \Module\Football\Exceptions\Http\FixtureLineUpNotAvailableHttpException
      */
     public function fetchLineUp(FixtureId $id): FixtureLineUp;
 }

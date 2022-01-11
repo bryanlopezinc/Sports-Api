@@ -14,7 +14,6 @@ interface FetchLeagueTopScorersRepositoryInterface
      * only the player name, id, country, photo url and height is returned for each player
      *
      * @throws \App\Exceptions\Http\ResourceNotFoundHttpException
-     * @throws \Module\Football\Exceptions\Http\LeagueTopScorersNotAvailableHttpException
      */
     public function topScorerers(LeagueId $leagueId, Season $season): LeagueTopScorersCollection;
 }

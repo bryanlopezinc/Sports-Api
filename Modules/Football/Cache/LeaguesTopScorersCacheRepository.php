@@ -11,7 +11,6 @@ use Module\Football\ValueObjects\LeagueId;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\LeagueTopScorersCollection;
 use Module\Football\Contracts\Cache\LeaguesTopScorersCacheInterface;
-use Module\Football\Exceptions\Cache\CannotCacheEmptyTopScorersException;
 
 final class LeaguesTopScorersCacheRepository implements LeaguesTopScorersCacheInterface
 {
@@ -26,10 +25,6 @@ final class LeaguesTopScorersCacheRepository implements LeaguesTopScorersCacheIn
 
     public function cache(LeagueId $leagueId, Season $season, LeagueTopScorersCollection $collection, TimeToLive $ttl): bool
     {
-        if ($collection->isEmpty()) {
-            throw new CannotCacheEmptyTopScorersException();
-        }
-
         return $this->repository->put(
             $this->prepareKey($leagueId, $season),
             $collection,

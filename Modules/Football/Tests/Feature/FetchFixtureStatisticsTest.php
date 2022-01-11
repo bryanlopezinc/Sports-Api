@@ -149,4 +149,16 @@ class FetchFixtureStatisticsTest extends TestCase
             ->assertStatus(422)
             ->assertJsonValidationErrorFor('fields');
     }
+
+    public function test_empty_fixture_statistics_http_response(): void
+    {
+        Http::fakeSequence()
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json())
+            ->push(FetchFixtureStatisticsResponse::noContent())
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json());
+
+        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data');
+    }
 }

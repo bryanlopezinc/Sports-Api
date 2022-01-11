@@ -115,4 +115,16 @@ class FetchFixturePlayersStatisticsTest extends TestCase
 
         $this->getTestResponse(34)->assertStatus(403);
     }
+
+    public function test_empty_players_statistics_http_response(): void
+    {
+        Http::fakeSequence()
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json())
+            ->push(FetchFixturePlayersStatisticsResponse::noContent())
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json());
+
+        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data');
+    }
 }

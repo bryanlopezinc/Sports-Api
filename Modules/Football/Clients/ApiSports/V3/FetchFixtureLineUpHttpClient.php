@@ -6,15 +6,14 @@ namespace Module\Football\Clients\ApiSports\V3;
 
 use Illuminate\Support\Collection;
 use Module\Football\FixtureLineUp;
-use Illuminate\Http\Client\Response;
 use Module\Football\TeamMissingPlayer;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\DTO\Builders\TeamLineUpBuilder;
 use Module\Football\Collections\TeamMissingPlayersCollection;
-use Module\Football\Exceptions\Http\FixtureLineUpNotAvailableHttpException;
 use Module\Football\Clients\ApiSports\V3\Response\TeamLineUpResponseJsonMapper;
 use Module\Football\Clients\ApiSports\V3\Response\FixtureMissingPlayerJsonMapper;
 use Module\Football\Contracts\Repositories\FetchFixtureLineUpRepositoryInterface;
+use Module\Football\DTO\TeamLineUp;
 
 final class FetchFixtureLineUpHttpClient extends ApiSportsClient implements FetchFixtureLineUpRepositoryInterface
 {
@@ -28,26 +27,21 @@ final class FetchFixtureLineUpHttpClient extends ApiSportsClient implements Fetc
         $response = $this->pool($requests);
 
         $missingPlayers = $response['missingPlayers']->json('response');
+        $fixtureLineUpData = $response['lineUps']->collect('response')->all();
+
+        if (empty($fixtureLineUpData)) {
+            return new FixtureLineUp(new TeamLineUp([]), new TeamLineUp([]));
+        }
+
         $fixtureLineUp = [];
 
-        foreach ($this->getLineUpsDataFrom($response['lineUps']) as $data) {
+        foreach ($fixtureLineUpData as $data) {
             $builder = $this->setMissingPlayersForTeamLineUp($data, $missingPlayers);
 
             $fixtureLineUp[] = (new TeamLineUpResponseJsonMapper($data, teamLineUpBuilder: $builder))->toDataTransferObject();
         }
 
         return new FixtureLineUp(...$fixtureLineUp);
-    }
-
-    private function getLineUpsDataFrom(Response $response): array
-    {
-        $data = $response->collect('response');
-
-        if ($data->isEmpty()) {
-            throw new FixtureLineUpNotAvailableHttpException;
-        }
-
-        return $data->all();
     }
 
     private function setMissingPlayersForTeamLineUp(array $teamLineUp, array $missingPlayers): TeamLineUpBuilder

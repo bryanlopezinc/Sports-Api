@@ -14,7 +14,6 @@ use Module\Football\Factories\PlayerFactory;
 use Module\Football\ValueObjects\LeagueTopAssist;
 use Module\Football\Cache\LeaguesTopAsisstsCacheRepository;
 use Module\Football\Collections\LeagueTopAssistsCollection;
-use Module\Football\Exceptions\Cache\CannotCacheEmptyTopAssistsException;
 
 class LeaguesTopAssistsCacheRepositoryTest extends TestCase
 {
@@ -25,13 +24,6 @@ class LeaguesTopAssistsCacheRepositoryTest extends TestCase
         parent::setUp();
 
         $this->repository = new LeaguesTopAsisstsCacheRepository(Cache::store());
-    }
-
-    public function test_cannot_cache_empty_top_assists(): void
-    {
-        $this->expectException(CannotCacheEmptyTopAssistsException::class);
-
-        $this->repository->cache(new LeagueId(10), Season::make(2019), new LeagueTopAssistsCollection([]), TimeToLive::seconds(2));
     }
 
     public function test_throws_exception_when_top_assists_does_not_exists(): void

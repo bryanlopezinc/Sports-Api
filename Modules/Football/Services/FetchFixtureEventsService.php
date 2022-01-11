@@ -30,13 +30,8 @@ final class FetchFixtureEventsService
 
         $events = $this->repository->events($fixtureId);
 
-        $this->cache->cache($fixtureId, $events, $this->determineCacheTtlFrom($this->findFixtureService->fetchFixture($fixtureId)));
+        $this->cache->cache($fixtureId, $events, $this->determineFixtureTtl->for($this->findFixtureService->fetchFixture($fixtureId)));
 
         return $events;
-    }
-
-    private function determineCacheTtlFrom(Fixture $fixture): TimeToLive
-    {
-        return $this->determineFixtureTtl->for($fixture);
     }
 }

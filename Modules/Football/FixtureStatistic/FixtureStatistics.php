@@ -15,8 +15,17 @@ final class FixtureStatistics
         private FixtureStatisticsData $teamOne,
         private FixtureStatisticsData $teamTwo
     ) {
+        if ($this->isEmpty()) {
+            return;
+        }
+
         $this->ensureTeamsAreNotSame();
         $this->ensureValidBallPossesionSpread();
+    }
+
+    public function isEmpty(): bool
+    {
+        return $this->teamOne->isEmpty() && $this->teamTwo->isEmpty();
     }
 
     private function ensureTeamsAreNotSame(): void
@@ -62,7 +71,7 @@ final class FixtureStatistics
     public function hasTeam(TeamId $teamId): bool
     {
         return $this->teamOne->team()->getId()->equals($teamId) ||
-               $this->teamTwo->team()->getId()->equals($teamId);
+            $this->teamTwo->team()->getId()->equals($teamId);
     }
 
     public function forTeam(TeamId $teamId): FixtureStatisticsData

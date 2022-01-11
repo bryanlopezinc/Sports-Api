@@ -41,4 +41,16 @@ class FixtureEventsTest extends TestCase
 
         $this->getTestResponse(400)->assertSuccessful();
     }
+
+    public function test_empty_fixture_events_http_response(): void
+    {
+        Http::fakeSequence()
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json())
+            ->push(FetchFixtureEventsResponse::noContent())
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json());
+
+        $this->getTestResponse(400)->assertSuccessful()->assertJsonCount(0, 'data');
+    }
 }

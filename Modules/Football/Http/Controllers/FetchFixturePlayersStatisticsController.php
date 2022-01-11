@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Http\Controllers;
 
 use Module\Football\ValueObjects\FixtureId;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\Http\Requests\FetchFixturePlayersStatisticsRequest as Request;
 use Module\Football\Services\FetchFixturePlayersStatisticsService as Service;
 use Module\Football\Http\Resources\PartialFixturePlayersStatisticsResource;
@@ -15,9 +15,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class FetchFixturePlayersStatisticsController
 {
-    public function __invoke(Request $request, Service $service): AnonymousResourceCollection
+    public function __invoke(Request $request, Service $service): JsonResource
     {
         $playersStatistics = $service->fetch(FixtureId::fromRequest($request));
+
+        if ($playersStatistics->isEmpty()) {
+            return new JsonResource([]);
+        }
 
         if ($request->input('team')) {
             $playersStatistics = $playersStatistics->forTeam(TeamId::fromRequest($request, 'team'));

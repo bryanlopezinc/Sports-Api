@@ -10,7 +10,16 @@ final class FixtureLineUp
 {
     public function __construct(private TeamLineUp $homeTeam, private TeamLineUp $awayTeam)
     {
+        if ($this->isEmpty()) {
+            return;
+        }
+
         $this->ensureTeamsDontHaveSameCoach();
+    }
+
+    public function isEmpty(): bool
+    {
+        return $this->awayTeam->isEmpty() && $this->homeTeam->isEmpty();
     }
 
     private function ensureTeamsDontHaveSameCoach(): void

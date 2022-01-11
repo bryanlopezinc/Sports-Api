@@ -47,6 +47,11 @@ abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayab
         return $this->attributes;
     }
 
+    public function isEmpty(): bool
+    {
+        return empty($this->attributes);
+    }
+
     protected function set(string $key, mixed $value): void
     {
         if (property_exists($this, $key)) {

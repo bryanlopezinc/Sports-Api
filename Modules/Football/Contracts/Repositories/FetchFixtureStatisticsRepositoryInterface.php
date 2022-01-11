@@ -13,7 +13,6 @@ interface FetchFixtureStatisticsRepositoryInterface
      * only the team id, name, logo are returned for teams
      *
      * @throws \App\Exceptions\Http\ResourceNotFoundHttpException;
-     * @throws \Module\Football\Exceptions\Http\FixtureStatisticsNotAvailableHttpException
      */
     public function fetchStats(FixtureId $id): FixtureStatistics;
 }

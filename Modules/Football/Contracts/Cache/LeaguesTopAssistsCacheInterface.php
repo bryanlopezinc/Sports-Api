@@ -13,9 +13,6 @@ interface LeaguesTopAssistsCacheInterface
 {
     public function has(LeagueId $leagueId, Season $season): bool;
 
-    /**
-     * @throws \Module\Football\Exceptions\Cache\CannotCacheEmptyTopAssistsException
-     */
     public function cache(LeagueId $leagueId, Season $season, LeagueTopAssistsCollection $collection, TimeToLive $ttl): bool;
 
     /**

@@ -42,16 +42,6 @@ class FetchLeagueTopAssistsTest extends TestCase
             ->assertSuccessful();
     }
 
-    public function test_throws_exception_when_top_assists_is_not_yet_available(): void
-    {
-        Http::fakeSequence()
-            ->push(FetchLeagueResponse::json())
-            ->push(status: 204);
-
-        $this->getTestResponse(34, 2020)
-            ->assertNoContent();
-    }
-
     public function test_will_return_403_status_code_when_league_top_assists_is_not_supported()
     {
         $json = json_decode(FetchLeagueResponse::json(), true);
@@ -63,5 +53,15 @@ class FetchLeagueTopAssistsTest extends TestCase
 
         //season parameter should match edited season
         $this->getTestResponse(34, 2021)->assertStatus(403);
+    }
+
+    public function test_empty_league_top_assists_http_response(): void
+    {
+        Http::fakeSequence()
+            ->push(FetchLeagueResponse::json())
+            ->push(FetchTopAssistsResponse::noContent())
+            ->push(FetchLeagueFixturesByDateResponse::json());
+
+        $this->getTestResponse(34, 2020)->assertSuccessful()->assertJsonCount(0, 'data');
     }
 }
