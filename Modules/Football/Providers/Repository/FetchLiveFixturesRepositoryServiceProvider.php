@@ -6,6 +6,7 @@ namespace Module\Football\Providers\Repository;
 
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Module\Football\Cache\LiveFixturesCacheRepository;
 use Module\Football\Clients\ApiSports\V3\FetchLiveFixturesHttpClient;
 use Module\Football\Contracts\Repositories\FetchLiveFixturesRepositoryInterface;
 
@@ -13,7 +14,9 @@ class FetchLiveFixturesRepositoryServiceProvider extends Provider implements Def
 {
     public function boot(): void
     {
-        $this->app->bind(FetchLiveFixturesRepositoryInterface::class, fn () => app(FetchLiveFixturesHttpClient::class));
+        $this->app->bind(FetchLiveFixturesRepositoryInterface::class, function ($app) {
+            return new LiveFixturesCacheRepository($app['cache']->store(), new FetchLiveFixturesHttpClient);
+        });
     }
 
     /**

@@ -33,7 +33,8 @@ final class CachePrefix
             CoachesCacheRepository::class                   => 's:CO:',
             CoachesCareersCacheRepository::class            => 's:CO:C:',
             PlayersCacheRepository::class                   => 's:pys:',
-            PlayersTransferHistoryCacheRepository::class    => 's:pys:TH:'
+            PlayersTransferHistoryCacheRepository::class    => 's:pys:TH:',
+            LiveFixturesCacheRepository::class              => 's:F-Live:',
         };
     }
 
