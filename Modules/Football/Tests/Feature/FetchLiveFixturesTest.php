@@ -7,14 +7,15 @@ namespace Module\Football\Tests\Feature;
 use Tests\TestCase;
 use Module\Football\Routes\Name;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLiveFixturesResponse;
 
 class FetchLiveFixturesTest extends TestCase
 {
-    private function getTestResponse(): TestResponse
+    private function getTestResponse(array $query = []): TestResponse
     {
-        return $this->getJson(route(Name::FETCH_LIVE_FIXTURES));
+        return $this->getJson(route(Name::FETCH_LIVE_FIXTURES, $query));
     }
 
     /**
@@ -28,5 +29,27 @@ class FetchLiveFixturesTest extends TestCase
             ->getTestResponse()
             ->assertSuccessful()
             ->assertHeader('max-age');
+    }
+
+    public function test_will_return_partial_resource_if_requested(): void
+    {
+        Http::fakeSequence()->push(FetchLiveFixturesResponse::json());
+
+        $response = $this->getTestResponse(['filter' => 'score,minutes_elapsed'])->assertSuccessful();
+
+        foreach ($response->json() as $data) {
+            (new AssertableJsonString($data))
+                ->assertCount(3, 'attributes')
+                ->assertStructure([
+                    'attributes' => [
+                        'minutes_elapsed',
+                        'score_is_available',
+                        'score' => [
+                            'home',
+                            'away'
+                        ]
+                    ]
+                ]);
+        }
     }
 }
