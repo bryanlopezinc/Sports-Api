@@ -25,10 +25,11 @@ class FetchLiveFixturesTest extends TestCase
     {
         Http::fakeSequence()->push(FetchLiveFixturesResponse::json());
 
-        $this->withoutExceptionHandling()
+        $response = $this->withoutExceptionHandling()
             ->getTestResponse()
-            ->assertSuccessful()
-            ->assertHeader('max-age');
+            ->assertSuccessful();
+
+        $this->assertEquals(60, $response->baseResponse->headers->getCacheControlDirective('max-age'));
     }
 
     public function test_will_return_partial_resource_if_requested(): void
@@ -37,7 +38,7 @@ class FetchLiveFixturesTest extends TestCase
 
         $response = $this->getTestResponse(['filter' => 'score,minutes_elapsed'])->assertSuccessful();
 
-        foreach ($response->json() as $data) {
+        foreach ($response->json('data') as $data) {
             (new AssertableJsonString($data))
                 ->assertCount(3, 'attributes')
                 ->assertStructure([

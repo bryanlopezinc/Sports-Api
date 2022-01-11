@@ -22,9 +22,6 @@ return [
     /** Max age a fetch league response should be cached by the client */
     'fetchLeagueResponseMaxAge' => 1800,
 
-    /** Max age a fetch live fixtures response should be cached by the client */
-    'fetchLiveFixturesResponseMaxAge' => 60,
-
     /** Cache Configurations */
     'cache' => require 'cache.php',
 ];
