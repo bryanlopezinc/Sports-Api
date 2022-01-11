@@ -80,11 +80,7 @@ abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayab
         return $this->toArray();
     }
 
-    /**
-     * @param  mixed  $offset
-     * @return bool
-     */
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return array_key_exists($offset, $this->attributes);
     }
@@ -98,13 +94,7 @@ abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayab
         return $this->offsetExists($offset) ? $this->attributes[$offset] : null;
     }
 
-    /**
-     * @param  mixed  $offset
-     * @param  mixed  $value
-     * @throws ChangeAttributeException
-     * @return void
-     */
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if ($this->offsetExists($offset)) {
             throw new ChangeAttributeException($offset, static::class);
@@ -113,12 +103,7 @@ abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayab
         $this->set($offset, $value);
     }
 
-    /**
-     * @param  mixed  $offset
-     * @throws UnsetAttributeException
-     * @return void
-     */
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         throw new UnsetAttributeException($offset, static::class);
     }
