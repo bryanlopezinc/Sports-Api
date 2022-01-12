@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football;
 
 use Module\Football\DTO\Fixture;
-use Module\User\Predictions\Football\FixturePredictionsTotals as Predictions;
+use Module\User\Predictions\Football\FixturePredictionsResult as Predictions;
 
 final class FixturePredictions
 {

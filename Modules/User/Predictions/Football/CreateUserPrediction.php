@@ -7,13 +7,13 @@ namespace Module\User\Predictions\Football;
 use Module\User\ValueObjects\UserId;
 use Module\User\Dto\Builders\UserBuilder;
 use Module\Football\ValueObjects\FixtureId;
-use Module\User\Predictions\Football\FixturePredictionsCacheRepository;
+use Module\User\Predictions\Football\FixturePredictionsResultCacheRepository;
 use Module\User\Predictions\Football\Contracts\StoreUserPredictionRepositoryInterface;
 
 final class CreateUserPrediction
 {
     public function __construct(
-        private FixturePredictionsCacheRepository $cache,
+        private FixturePredictionsResultCacheRepository $cache,
         private StoreUserPredictionRepositoryInterface $repository,
     ) {
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\User\Tests\Unit\Predictions\Football;
 
 use Tests\TestCase;
-use Module\User\Predictions\Football\FixturePredictionsTotals;
+use Module\User\Predictions\Football\FixturePredictionsResult;
 
 class FixturePredictionsTest extends TestCase
 {
@@ -13,6 +13,6 @@ class FixturePredictionsTest extends TestCase
     {
         $this->expectExceptionCode(988);
 
-        new FixturePredictionsTotals(1, 0, 0, 0);
+        new FixturePredictionsResult(1, 0, 0, 0);
     }
 }

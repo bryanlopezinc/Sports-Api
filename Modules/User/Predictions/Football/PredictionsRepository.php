@@ -37,7 +37,7 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
         ])->exists();
     }
 
-    public function fetchPredictionsTotalsFor(FixtureId $fixtureId): FixturePredictionsTotals
+    public function fetchPredictionsResultFor(FixtureId $fixtureId): FixturePredictionsResult
     {
         $query = <<<"SQL"
                 (SELECT COUNT(id) FROM football_predictions WHERE code_id = (SELECT id FROM football_prediction_codes WHERE code = ?) AND fixture_id = {$fixtureId->toInt()}) AS home_wins,
@@ -51,10 +51,10 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
         $predictions = PredictionModel::selectRaw($query, $bindings)->first();
 
         if ($predictions === null) {
-            return new FixturePredictionsTotals(0, 0, 0, 0);
+            return new FixturePredictionsResult(0, 0, 0, 0);
         }
 
-        return new FixturePredictionsTotals(
+        return new FixturePredictionsResult(
             $predictions['home_wins'],
             $predictions['away_wins'],
             $predictions['draws'],

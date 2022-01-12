@@ -12,7 +12,7 @@ class FixturePredictionsCacheServiceProvider extends Provider implements Deferra
 {
     public function boot(): void
     {
-        $this->app->bind(FixturePredictionsCacheRepository::class, fn () => new FixturePredictionsCacheRepository(Cache::store()));
+        $this->app->bind(FixturePredictionsResultCacheRepository::class, fn () => new FixturePredictionsResultCacheRepository(Cache::store()));
     }
 
     /**
@@ -23,7 +23,7 @@ class FixturePredictionsCacheServiceProvider extends Provider implements Deferra
     public function provides()
     {
         return [
-            FixturePredictionsCacheRepository::class,
+            FixturePredictionsResultCacheRepository::class,
         ];
     }
 }

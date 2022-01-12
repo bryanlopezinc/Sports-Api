@@ -9,7 +9,7 @@ use Illuminate\Contracts\Cache\Repository;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\ValueObjects\FixtureId;
 
-final class FixturePredictionsCacheRepository
+final class FixturePredictionsResultCacheRepository
 {
     public function __construct(private Repository $repository)
     {
@@ -20,7 +20,7 @@ final class FixturePredictionsCacheRepository
         return $this->repository->has($this->buildkeyFor($fixtureId));
     }
 
-    public function get(FixtureId $fixtureId): FixturePredictionsTotals
+    public function get(FixtureId $fixtureId): FixturePredictionsResult
     {
         return $this->repository->get($this->buildkeyFor($fixtureId), fn () => throw new ItemNotInCacheException());
     }
@@ -30,7 +30,7 @@ final class FixturePredictionsCacheRepository
         return $this->repository->forget($this->buildkeyFor($fixtureId));
     }
 
-    public function put(FixtureId $fixtureId, FixturePredictionsTotals $predictions, TimeToLive $ttl): bool
+    public function put(FixtureId $fixtureId, FixturePredictionsResult $predictions, TimeToLive $ttl): bool
     {
         return $this->repository->put($this->buildkeyFor($fixtureId), $predictions, $ttl->ttl());
     }

@@ -6,7 +6,7 @@ namespace Module\User\Predictions\Football;
 
 use App\ValueObjects\NonNegativeNumber;
 
-final class FixturePredictionsTotals
+final class FixturePredictionsResult
 {
     public function __construct(private int $homeWins, private int $awayWins, private int $draws, private int $total)
     {

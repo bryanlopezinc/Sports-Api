@@ -56,7 +56,7 @@ class PredictionsRepositoryTest extends TestCase
             $repository->create($fixtureId, new UserId($user->id), new Prediction(Prediction::DRAW));
         }
 
-        $predictions = $repository->fetchPredictionsTotalsFor($fixtureId);
+        $predictions = $repository->fetchPredictionsResultFor($fixtureId);
 
         $this->assertEquals($usersCount, $predictions->total());
         $this->assertEquals(10, $predictions->awayWins());
@@ -71,7 +71,7 @@ class PredictionsRepositoryTest extends TestCase
         $repository = new PredictionsRepository;
         $fixtureId = new FixtureId(40);
 
-        $predictions = $repository->fetchPredictionsTotalsFor($fixtureId);
+        $predictions = $repository->fetchPredictionsResultFor($fixtureId);
 
         $this->assertEquals(0, $predictions->total());
         $this->assertEquals(0, $predictions->awayWins());
