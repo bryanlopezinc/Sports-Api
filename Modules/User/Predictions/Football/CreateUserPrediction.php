@@ -7,7 +7,7 @@ namespace Module\User\Predictions\Football;
 use Module\User\ValueObjects\UserId;
 use Module\User\Dto\Builders\UserBuilder;
 use Module\Football\ValueObjects\FixtureId;
-use Module\User\Predictions\Football\FixturePredictionsResultCacheRepository;
+use Module\User\Predictions\Football\Cache\FixturePredictionsResultCacheRepository;
 use Module\User\Predictions\Football\Contracts\StoreUserPredictionRepositoryInterface;
 
 final class CreateUserPrediction
@@ -22,10 +22,7 @@ final class CreateUserPrediction
     {
         $result = $this->repository->create($fixtureId, $userId, $prediction);
 
-        //Remove predictions in cache to avoid stale data
-        if ($this->cache->has($fixtureId)) {
-            $this->cache->forgetPredictionFor($fixtureId);
-        }
+        FixturePredictedEvent::dispatch($fixtureId, $userId);
 
         return $result;
     }

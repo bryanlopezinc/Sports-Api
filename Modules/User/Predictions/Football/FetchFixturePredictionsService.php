@@ -6,7 +6,7 @@ namespace Module\User\Predictions\Football;
 
 use App\Utils\TimeToLive;
 use Module\Football\ValueObjects\FixtureId;
-use Module\User\Predictions\Football\FixturePredictionsResultCacheRepository;
+use Module\User\Predictions\Football\Cache\FixturePredictionsResultCacheRepository;
 use Module\User\Predictions\Football\Contracts\FetchFixturePredictionsRepositoryInterface;
 
 final class FetchFixturePredictionsService

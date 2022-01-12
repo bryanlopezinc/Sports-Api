@@ -9,7 +9,7 @@ use App\Utils\TimeToLive;
 use Illuminate\Support\Facades\Cache;
 use Module\Football\ValueObjects\FixtureId;
 use Module\User\Predictions\Football\FixturePredictionsResult;
-use Module\User\Predictions\Football\FixturePredictionsResultCacheRepository;
+use Module\User\Predictions\Football\Cache\FixturePredictionsResultCacheRepository;
 
 class FixturePredictionsCacheRepositoryTest extends TestCase
 {

@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\User\Predictions\Football;
+namespace Module\User\Predictions\Football\Cache;
 
 use App\Utils\TimeToLive;
 use Illuminate\Contracts\Cache\Repository;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\ValueObjects\FixtureId;
+use Module\User\Predictions\Football\FixturePredictionsResult;
 
 final class FixturePredictionsResultCacheRepository
 {
