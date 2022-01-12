@@ -9,6 +9,8 @@ use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
 final class PartialFixtureStatisticsFieldsRule implements Rule
 {
+    use RetrievePartialResourceField;
+
     private const ALLOWED = [
         'shots_on_target',
         'shots_off_target',
@@ -37,7 +39,7 @@ final class PartialFixtureStatisticsFieldsRule implements Rule
     public function passes($attribute, $value)
     {
         try {
-            $this->validate(explode(',', $value));
+            $this->validate(explode(',', $this->getValue($value)));
 
             return true;
         } catch (InvalidPartialResourceFieldsException $e) {

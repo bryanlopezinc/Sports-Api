@@ -150,6 +150,17 @@ class FetchFixtureStatisticsTest extends TestCase
             ->assertJsonValidationErrorFor('fields');
     }
 
+    public function test_will_return_validation_error_when_partial_resource_field_is_an_array(): void
+    {
+        Http::fakeSequence()
+            ->push(FetchFixtureResponse::json())
+            ->push(FetchLeagueResponse::json());
+
+        $this->getTestResponse(215622, ['fields[]=shots', 'fields[]=cards'])
+            ->assertStatus(422)
+            ->assertJsonValidationErrorFor('fields');
+    }
+
     public function test_empty_fixture_statistics_http_response(): void
     {
         Http::fakeSequence()

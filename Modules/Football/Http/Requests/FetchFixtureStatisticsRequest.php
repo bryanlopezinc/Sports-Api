@@ -15,7 +15,7 @@ final class FetchFixtureStatisticsRequest extends FormRequest
         return [
             'id'     => ['required', new ResourceIdRule],
             'team'   => ['sometimes', 'filled', new ResourceIdRule],
-            'fields' => ['sometimes', 'bail', 'filled', 'string', new PartialFixtureStatisticsFieldsRule],
+            'fields' => ['sometimes', 'filled', new PartialFixtureStatisticsFieldsRule],
         ];
     }
 }

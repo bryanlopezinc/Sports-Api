@@ -9,6 +9,8 @@ use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
 final class PartialFixtureFieldsRule implements Rule
 {
+    use RetrievePartialResourceField;
+
     private const ALLOWED = [
         'id',
         'referee',
@@ -39,7 +41,7 @@ final class PartialFixtureFieldsRule implements Rule
     public function passes($attribute, $value)
     {
         try {
-            $this->validate(explode(',', $value));
+            $this->validate(explode(',', $this->getValue($value)));
 
             return true;
         } catch (InvalidPartialResourceFieldsException $e) {
