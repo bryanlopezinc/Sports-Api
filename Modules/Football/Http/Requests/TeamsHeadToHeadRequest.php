@@ -32,6 +32,7 @@ final class TeamsHeadToHeadRequest extends FormRequest
         $validator->after(function (Validator $validator) {
 
             //Run validation if all other validation passes
+            //to ensure team ids are valid
             if (!empty($validator->failed())) {
                 return;
             }
