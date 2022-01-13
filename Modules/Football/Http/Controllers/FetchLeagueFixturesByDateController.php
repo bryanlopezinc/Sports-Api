@@ -10,6 +10,7 @@ use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Services\FetchLeagueFixturesByDateService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Module\Football\Http\Requests\FetchLeagueFixturesByDateRequest;
+use Module\Football\Http\Resources\FixtureResource;
 use Module\Football\Http\Resources\PartialFixtureResource;
 
 final class FetchLeagueFixturesByDateController
@@ -22,7 +23,7 @@ final class FetchLeagueFixturesByDateController
             Season::fromString($request->input('season'))
         );
 
-        $resource = PartialFixtureResource::collection($fixtures->toLaravelCollection());
+        $resource = PartialFixtureResource::collection(FixtureResource::collection($fixtures->toLaravelCollection()));
 
         return tap($resource, function (AnonymousResourceCollection $value): void {
             $value->collection = $value->collection->map(function (PartialFixtureResource $resource) {

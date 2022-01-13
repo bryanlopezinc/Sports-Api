@@ -30,16 +30,20 @@ class FetchFixtureTest extends TestCase
         $this->getTestResponse(12)
             ->assertSuccessful()
             ->assertHeader('max-age')
-            ->assertJsonCount(3, 'data')
+            ->assertJsonCount(4, 'data')
             ->assertJsonCount(14, 'data.attributes')
             ->assertJsonCount(2, 'data.attributes.referee')
             ->assertJsonCount(2, 'data.attributes.score')
             ->assertJsonCount(2, 'data.attributes.teams')
             ->assertJsonCount(5, 'data.links')
             ->assertJsonCount(4, 'data.attributes.period_goals.meta')
+            ->assertJsonCount(1, 'data.user')
             ->assertJsonStructure([
                 'data'  => [
                     'type',
+                    'user' => [
+                        'has_predicted'
+                    ],
                     'attributes' => [
                         'id',
                         'referee'   => [

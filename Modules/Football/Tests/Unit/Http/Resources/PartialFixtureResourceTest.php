@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Factories\FixtureFactory;
+use Module\Football\Http\Resources\FixtureResource;
 use Module\Football\Http\Resources\PartialFixtureResource;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
@@ -417,7 +418,11 @@ class PartialFixtureResourceTest extends TestCase
 
         $request->setMethod(SymfonyRequest::METHOD_GET);
 
-        $resource = (new PartialFixtureResource(FixtureFactory::new()->toDto()))->setFilterInputName('filter');
+        $resource = new PartialFixtureResource(
+            new FixtureResource(FixtureFactory::new()->toDto())
+        );
+
+        $resource->setFilterInputName('filter');
 
         return new TestResponse(new Response(
             $resource->toResponse(Request::createFromBase($request))->content()

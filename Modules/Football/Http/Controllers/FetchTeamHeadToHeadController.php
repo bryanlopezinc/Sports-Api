@@ -11,6 +11,7 @@ use Module\Football\Services\FetchTeamsHeadToHeadService;
 use Module\Football\Http\Resources\PartialFixtureResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Collection;
+use Module\Football\Http\Resources\FixtureResource;
 
 final class FetchTeamHeadToHeadController
 {
@@ -25,7 +26,7 @@ final class FetchTeamHeadToHeadController
             ->take((int)$request->input('limit', $fixtures->count()))
             ->pipe(fn (Collection $collection) => new FixturesCollection($collection->all()));
 
-        $resourceCollection = PartialFixtureResource::collection($fixtures->toLaravelCollection());
+        $resourceCollection = PartialFixtureResource::collection(FixtureResource::collection($fixtures->toLaravelCollection()));
 
         $resourceCollection->collection = $resourceCollection->collection->map(function (PartialFixtureResource $resource) {
             return $resource->setFilterInputName('fields');

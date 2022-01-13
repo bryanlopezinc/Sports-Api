@@ -28,9 +28,9 @@ final class PartialFixtureResource extends JsonResource
      */
     public string $leagueResource = LeagueResource::class;
 
-    public function __construct(private Fixture $fixture)
+    public function __construct(private JsonResource $jsonResource)
     {
-        parent::__construct($fixture);
+        parent::__construct($jsonResource->resource);
     }
 
     public function setFilterInputName(string $name): self
@@ -60,7 +60,10 @@ final class PartialFixtureResource extends JsonResource
      */
     public function toArray($request)
     {
-        $original = (new FixtureResource($this->fixture))->toArray($request);
+        /** @var Fixture */
+        $fixture = $this->resource;
+
+        $original = $this->jsonResource->toArray($request);
 
         $partialResourceRequest = PartialFixtureRequest::fromRequest($request, $this->filterInputName);
 
@@ -77,7 +80,7 @@ final class PartialFixtureResource extends JsonResource
         Arr::set($original, 'attributes', $customAttributes);
 
         if ($partialResourceRequest->wants('league')) {
-            Arr::set($original, 'attributes.league', $this->getLeagueResource($this->fixture->league()));
+            Arr::set($original, 'attributes.league', $this->getLeagueResource($fixture->league()));
         }
 
         if (!$partialResourceRequest->wants('links')) {

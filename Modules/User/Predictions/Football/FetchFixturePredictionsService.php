@@ -8,6 +8,8 @@ use App\Utils\TimeToLive;
 use Module\Football\ValueObjects\FixtureId;
 use Module\User\Predictions\Football\Cache\FixturePredictionsResultCacheRepository;
 use Module\User\Predictions\Football\Contracts\FetchFixturePredictionsRepositoryInterface;
+use Module\User\Routes\Config;
+use Module\User\ValueObjects\UserId;
 
 final class FetchFixturePredictionsService
 {
@@ -26,5 +28,16 @@ final class FetchFixturePredictionsService
         $this->cache->put($fixtureId, $predictions = $this->repository->fetchPredictionsResultFor($fixtureId), TimeToLive::hours(1));
 
         return $predictions;
+    }
+
+    public function authUserHasPredictedFixture(FixtureId $fixtureId): bool
+    {
+        $auth = auth(Config::GUARD);
+
+        if (!$auth->check()) {
+            return false;
+        }
+
+        return  $this->repository->userHasPredictedFixture(new UserId($auth->id()), $fixtureId);
     }
 }

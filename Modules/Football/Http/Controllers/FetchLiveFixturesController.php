@@ -7,6 +7,7 @@ namespace Module\Football\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Module\Football\Contracts\Repositories\FetchLiveFixturesRepositoryInterface;
+use Module\Football\Http\Resources\FixtureResource;
 use Module\Football\Http\Resources\PartialFixtureResource;
 use Module\Football\Rules\PartialFixtureFieldsRule;
 
@@ -18,7 +19,7 @@ final class FetchLiveFixturesController
             'filter' => ['sometimes', 'filled', new PartialFixtureFieldsRule]
         ]);
 
-        $resource = PartialFixtureResource::collection($client->FetchLiveFixtures()->toLaravelCollection());
+        $resource = PartialFixtureResource::collection(FixtureResource::collection($client->FetchLiveFixtures()->toLaravelCollection()));
 
         return tap($resource, function (AnonymousResourceCollection $value): void {
             $value->collection = $value->collection->map(function (PartialFixtureResource $resource) {

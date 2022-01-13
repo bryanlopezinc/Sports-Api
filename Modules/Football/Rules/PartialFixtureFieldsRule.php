@@ -23,6 +23,7 @@ final class PartialFixtureFieldsRule implements Rule
         'teams',
         'score',
         'links',
+        'user.has_predicted',
         'period_goals',
         'period_goals.first_half',
         'period_goals.second_half',
