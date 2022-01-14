@@ -11,6 +11,7 @@ use Illuminate\Testing\TestResponse;
 use Module\Football\DTO\Fixture;
 use Module\Football\Factories\FixtureFactory;
 use Module\Football\Http\FetchFixtureResource\SetUserHasPredictionFixture;
+use Module\Football\Http\Resources\FixtureJsonResourceInterface;
 
 class SetUserHasPredictionFixtureTest extends TestCase
 {
@@ -52,13 +53,13 @@ class SetUserHasPredictionFixtureTest extends TestCase
         ));
     }
 
-    private function getBaseResourceInstance(): JsonResource
+    private function getBaseResourceInstance(): JsonResource&FixtureJsonResourceInterface
     {
         $fixture = FixtureFactory::new()->toDto();
 
-        return new class($fixture) extends JsonResource
+        return new class($fixture) extends JsonResource implements FixtureJsonResourceInterface
         {
-            public function __construct(Fixture $fixture)
+            public function __construct(private Fixture $fixture)
             {
                 parent::__construct($fixture);
             }
@@ -66,6 +67,11 @@ class SetUserHasPredictionFixtureTest extends TestCase
             public function toArray($request)
             {
                 return [];
+            }
+
+            public function getFixture(): Fixture
+            {
+                return $this->fixture;
             }
         };
     }

@@ -19,7 +19,7 @@ use Module\Football\Routes\FetchFixtureLineUpRoute;
 use Module\Football\Routes\FetchFixturePlayersStatisticsRoute;
 use Module\Football\Routes\FetchFixtureStatisticsRoute;
 
-final class FixtureResource extends JsonResource
+final class FixtureResource extends JsonResource implements FixtureJsonResourceInterface
 {
     public function __construct(private Fixture $fixture)
     {
@@ -159,5 +159,10 @@ final class FixtureResource extends JsonResource
             FixtureStatus::WALK_OVER                    => $value('WalkOver', 'WO'),
             FixtureStatus::NO_COVERAGE                  => $value('NO Coverage', 'NCOV'),
         };
+    }
+
+    public function getFixture(): Fixture
+    {
+        return $this->fixture;
     }
 }

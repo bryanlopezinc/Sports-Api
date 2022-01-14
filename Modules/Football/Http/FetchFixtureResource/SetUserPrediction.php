@@ -8,19 +8,21 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Module\Football\Http\PartialFixtureRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Module\Football\DTO\Fixture;
+use Module\Football\Http\Resources\FixtureJsonResourceInterface;
 use Module\Football\ValueObjects\FixtureId;
 use Module\User\Predictions\Football\FetchFixturePredictionsService;
 use Module\User\Predictions\Football\Prediction;
 
-final class SetUserPrediction extends JsonResource
+final class SetUserPrediction extends JsonResource implements FixtureJsonResourceInterface
 {
     private FetchFixturePredictionsService $service;
 
-    public function __construct(private JsonResource $jsonResource, FetchFixturePredictionsService $service = null)
+    public function __construct(private JsonResource&FixtureJsonResourceInterface $jsonResource, FetchFixturePredictionsService $service = null)
     {
         $this->service = $service ?? app(FetchFixturePredictionsService::class);
 
-        parent::__construct($jsonResource->resource);
+        parent::__construct($jsonResource->getFixture());
     }
 
     /**
@@ -29,8 +31,7 @@ final class SetUserPrediction extends JsonResource
      */
     public function toArray($request)
     {
-        /** @var FixtureId */
-        $fixtureId = $this->jsonResource->resource->id();
+        $fixtureId = $this->getFixture()->id();
 
         $attributes = $this->jsonResource->toArray($request);
 
@@ -58,5 +59,10 @@ final class SetUserPrediction extends JsonResource
             Prediction::HOME_WIN  => 'home2win',
             Prediction::DRAW      => 'draw'
         };
+    }
+
+    public function getFixture(): Fixture
+    {
+        return $this->jsonResource->getFixture();
     }
 }

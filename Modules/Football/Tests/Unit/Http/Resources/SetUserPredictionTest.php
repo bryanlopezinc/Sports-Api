@@ -12,6 +12,7 @@ use Laravel\Passport\Passport;
 use Module\Football\DTO\Fixture;
 use Module\Football\Factories\FixtureFactory;
 use Module\Football\Http\FetchFixtureResource\SetUserPrediction;
+use Module\Football\Http\Resources\FixtureJsonResourceInterface;
 use Module\User\Factories\UserFactory;
 use Module\User\Predictions\Football\Contracts\FetchFixturePredictionsRepositoryInterface;
 use Module\User\Predictions\Football\Prediction;
@@ -84,13 +85,13 @@ class SetUserPredictionTest extends TestCase
         ));
     }
 
-    private function getBaseResourceInstance(): JsonResource
+    private function getBaseResourceInstance(): JsonResource&FixtureJsonResourceInterface
     {
         $fixture = FixtureFactory::new()->toDto();
 
-        return new class($fixture) extends JsonResource
+        return new class($fixture) extends JsonResource implements FixtureJsonResourceInterface
         {
-            public function __construct(Fixture $fixture)
+            public function __construct(private Fixture $fixture)
             {
                 parent::__construct($fixture);
             }
@@ -98,6 +99,11 @@ class SetUserPredictionTest extends TestCase
             public function toArray($request)
             {
                 return [];
+            }
+
+            public function getFixture(): Fixture
+            {
+                return $this->fixture;
             }
         };
     }

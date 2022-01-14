@@ -7,7 +7,6 @@ namespace Module\Football\Http\Resources;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Module\Football\DTO\League;
-use Module\Football\DTO\Fixture;
 use Module\Football\Http\PartialFixtureRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,9 +27,9 @@ final class PartialFixtureResource extends JsonResource
      */
     public string $leagueResource = LeagueResource::class;
 
-    public function __construct(private JsonResource $jsonResource)
+    public function __construct(private JsonResource&FixtureJsonResourceInterface $jsonResource)
     {
-        parent::__construct($jsonResource->resource);
+        parent::__construct($jsonResource->getFixture());
     }
 
     public function setFilterInputName(string $name): self
@@ -60,9 +59,6 @@ final class PartialFixtureResource extends JsonResource
      */
     public function toArray($request)
     {
-        /** @var Fixture */
-        $fixture = $this->resource;
-
         $original = $this->jsonResource->toArray($request);
 
         $partialResourceRequest = PartialFixtureRequest::fromRequest($request, $this->filterInputName);
@@ -80,7 +76,7 @@ final class PartialFixtureResource extends JsonResource
         Arr::set($original, 'attributes', $customAttributes);
 
         if ($partialResourceRequest->wants('league')) {
-            Arr::set($original, 'attributes.league', $this->getLeagueResource($fixture->league()));
+            Arr::set($original, 'attributes.league', $this->getLeagueResource($this->jsonResource->getFixture()->league()));
         }
 
         if (!$partialResourceRequest->wants('links')) {

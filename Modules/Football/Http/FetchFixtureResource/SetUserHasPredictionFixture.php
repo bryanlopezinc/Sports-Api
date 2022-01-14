@@ -6,20 +6,21 @@ namespace Module\Football\Http\FetchFixtureResource;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use Module\Football\DTO\Fixture;
 use Module\Football\Http\PartialFixtureRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Module\Football\DTO\Fixture;
+use Module\Football\Http\Resources\FixtureJsonResourceInterface;
 use Module\User\Predictions\Football\FetchFixturePredictionsService;
 
-final class SetUserHasPredictionFixture extends JsonResource
+final class SetUserHasPredictionFixture extends JsonResource implements FixtureJsonResourceInterface
 {
     private FetchFixturePredictionsService $service;
 
-    public function __construct(private JsonResource $jsonResource, FetchFixturePredictionsService $service = null)
+    public function __construct(private JsonResource&FixtureJsonResourceInterface $jsonResource, FetchFixturePredictionsService $service = null)
     {
         $this->service = $service ?? app(FetchFixturePredictionsService::class);
 
-        parent::__construct($jsonResource->resource);
+        parent::__construct($jsonResource->getFixture());
     }
 
     /**
@@ -28,9 +29,6 @@ final class SetUserHasPredictionFixture extends JsonResource
      */
     public function toArray($request)
     {
-        /** @var Fixture */
-        $fixture = $this->jsonResource->resource;
-
         $attributes = $this->jsonResource->toArray($request);
 
         $partialResource = PartialFixtureRequest::fromRequest($request, 'filter');
@@ -41,8 +39,13 @@ final class SetUserHasPredictionFixture extends JsonResource
             return $attributes;
         }
 
-        Arr::set($attributes, 'user.has_predicted', $this->service->authUserHasPredictedFixture($fixture->id()));
+        Arr::set($attributes, 'user.has_predicted', $this->service->authUserHasPredictedFixture($this->getFixture()->id()));
 
         return $attributes;
+    }
+
+    public function getFixture(): Fixture
+    {
+        return $this->jsonResource->getFixture();
     }
 }
