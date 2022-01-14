@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Unit\Rules;
 
 use Tests\TestCase;
-use Module\Football\Rules\PartialFixtureFieldsRuleForFetchFixtureRequest;
+use Module\Football\Rules\FixtureFieldsRuleForFetchFixtureRequest;
 
-class PartialFixtureFieldsRuleForFetchFixtureRequestTest extends TestCase
+class FixtureFieldsRuleForFetchFixtureRequestTest extends TestCase
 {
     public function test_can_request_valid_user_attributes(): void
     {
-        $rule = new PartialFixtureFieldsRuleForFetchFixtureRequest;
+        $rule = new FixtureFieldsRuleForFetchFixtureRequest;
 
         foreach ([
             'user.has_predicted',

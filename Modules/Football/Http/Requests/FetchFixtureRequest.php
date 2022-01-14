@@ -7,8 +7,8 @@ namespace Module\Football\Http\Requests;
 use App\Rules\ResourceIdRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Module\Football\Rules\TimeZoneRule;
-use Module\Football\Rules\PartialFixtureFieldsRuleForFetchFixtureRequest;
-use Module\Football\Rules\PartialLeagueFieldsRule;
+use Module\Football\Rules\FixtureFieldsRuleForFetchFixtureRequest;
+use Module\Football\Rules\LeagueFieldsRule;
 
 final class FetchFixtureRequest extends FormRequest
 {
@@ -17,8 +17,8 @@ final class FetchFixtureRequest extends FormRequest
         return [
             'id'            => ['required', new ResourceIdRule()],
             'timezone'      => ['sometimes', 'string', new TimeZoneRule],
-            'filter'        => ['sometimes', 'filled', 'string', new PartialFixtureFieldsRuleForFetchFixtureRequest],
-            'league_filter' => ['sometimes', 'filled', 'string', new PartialLeagueFieldsRule]
+            'filter'        => ['sometimes', 'filled', 'string', new FixtureFieldsRuleForFetchFixtureRequest],
+            'league_filter' => ['sometimes', 'filled', 'string', new LeagueFieldsRule]
         ];
     }
 }

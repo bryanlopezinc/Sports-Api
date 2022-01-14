@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Unit\Rules;
 
 use Tests\TestCase;
-use Module\Football\Rules\PartialFixtureFieldsRule;
+use Module\Football\Rules\FixtureFieldsRule;
 
-class PartialFixtureResourceFieldsRuleTest extends TestCase
+class FixtureResourceFieldsRuleTest extends TestCase
 {
     public function test_cannot_request_only_id(): void
     {
-        $rule = new PartialFixtureFieldsRule;
+        $rule = new FixtureFieldsRule;
 
         $this->assertFalse($rule->passes('filter', 'id'));
         $this->assertEquals($rule->code, 100);
@@ -19,7 +19,7 @@ class PartialFixtureResourceFieldsRuleTest extends TestCase
 
     public function test_cannot_request_invalid_fields(): void
     {
-        $rule = new PartialFixtureFieldsRule;
+        $rule = new FixtureFieldsRule;
 
         $this->assertFalse($rule->passes('filter', 'foo,bar'));
         $this->assertEquals($rule->code, 101);
@@ -27,7 +27,7 @@ class PartialFixtureResourceFieldsRuleTest extends TestCase
 
     public function test_cannot_request_period_goals_and_any_of_its_children(): void
     {
-        $rule = new PartialFixtureFieldsRule;
+        $rule = new FixtureFieldsRule;
 
         foreach ([
             'period_goals.first_half',
@@ -42,7 +42,7 @@ class PartialFixtureResourceFieldsRuleTest extends TestCase
 
     public function test_cannot_request_valid_user_attributes(): void
     {
-        $rule = new PartialFixtureFieldsRule;
+        $rule = new FixtureFieldsRule;
 
         foreach ([
             'user.has_predicted',

@@ -6,9 +6,9 @@ namespace Module\Football\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-final class PartialFixtureFieldsRuleForFetchFixtureRequest implements Rule
+final class FixtureFieldsRuleForFetchFixtureRequest implements Rule
 {
-    public function __construct(private PartialFixtureFieldsRule $mainRule = new PartialFixtureFieldsRule)
+    public function __construct(private FixtureFieldsRule $mainRule = new FixtureFieldsRule)
     {
         $this->mainRule->addAllowedFields([
             'user.has_predicted',

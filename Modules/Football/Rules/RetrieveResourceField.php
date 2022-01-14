@@ -6,7 +6,7 @@ namespace Module\Football\Rules;
 
 use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
-trait RetrievePartialResourceField
+trait RetrieveResourceField
 {
     protected function getValue(mixed $value): string
     {

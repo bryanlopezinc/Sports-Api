@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Module\Football\Rules\TimeZoneRule;
 use Module\Football\ValueObjects\TeamId;
-use Module\Football\Rules\PartialFixtureFieldsRule;
+use Module\Football\Rules\FixtureFieldsRule;
 
 final class TeamsHeadToHeadRequest extends FormRequest
 {
@@ -20,7 +20,7 @@ final class TeamsHeadToHeadRequest extends FormRequest
             'team_id_2'     => $idRules,
             'timezone'      => ['sometimes', 'string', new TimeZoneRule],
             'limit'         => ['sometimes', 'int', 'min:1', 'max:50'],
-            'fields'        => ['sometimes', 'filled', 'string', new PartialFixtureFieldsRule]
+            'fields'        => ['sometimes', 'filled', 'string', new FixtureFieldsRule]
         ];
     }
 

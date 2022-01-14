@@ -6,7 +6,7 @@ namespace Module\Football\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\ResourceIdRule;
-use Module\Football\Rules\PartialFixtureStatisticsFieldsRule;
+use Module\Football\Rules\FixtureStatisticsFieldsRule;
 
 final class FetchFixtureStatisticsRequest extends FormRequest
 {
@@ -15,7 +15,7 @@ final class FetchFixtureStatisticsRequest extends FormRequest
         return [
             'id'     => ['required', new ResourceIdRule],
             'team'   => ['sometimes', 'filled', new ResourceIdRule],
-            'fields' => ['sometimes', 'filled', new PartialFixtureStatisticsFieldsRule],
+            'fields' => ['sometimes', 'filled', new FixtureStatisticsFieldsRule],
         ];
     }
 }

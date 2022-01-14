@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Unit\Rules;
 
 use Tests\TestCase;
-use Module\Football\Rules\PartialLeagueFieldsRule;
+use Module\Football\Rules\LeagueFieldsRule;
 
-class PartialLeagueResourceFieldsRuleTest extends TestCase
+class LeagueResourceFieldsRuleTest extends TestCase
 {
     public function test_cannot_request_only_id(): void
     {
-        $rule = new PartialLeagueFieldsRule;
+        $rule = new LeagueFieldsRule;
 
         $this->assertFalse($rule->passes('filter', 'id'));
         $this->assertEquals($rule->code, 2000);
@@ -19,7 +19,7 @@ class PartialLeagueResourceFieldsRuleTest extends TestCase
 
     public function test_cannot_request_invalid_fields(): void
     {
-        $rule = new PartialLeagueFieldsRule;
+        $rule = new LeagueFieldsRule;
 
         $this->assertFalse($rule->passes('filter', 'foo,bar'));
         $this->assertEquals($rule->code, 2001);
@@ -30,7 +30,7 @@ class PartialLeagueResourceFieldsRuleTest extends TestCase
 
     public function test_cannot_request_parent_with_child_attribute(): void
     {
-        $rule = new PartialLeagueFieldsRule;
+        $rule = new LeagueFieldsRule;
 
         $parentChildrenMap = [
             'season'     => [

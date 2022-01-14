@@ -8,7 +8,7 @@ use App\Rules\ResourceIdRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 use Module\Football\Rules\SeasonRule;
-use Module\Football\Rules\PartialLeagueStandingFieldsRule;
+use Module\Football\Rules\LeagueStandingFieldsRule;
 
 final class FetchLeagueStandingRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ final class FetchLeagueStandingRequest extends FormRequest
             'league_id' => ['required', new ResourceIdRule()],
             'teams.*'   => ['sometimes', new ResourceIdRule()],
             'season'    => ['required', new SeasonRule],
-            'fields'    => ['sometimes', 'filled', 'string', new PartialLeagueStandingFieldsRule]
+            'fields'    => ['sometimes', 'filled', 'string', new LeagueStandingFieldsRule]
         ];
     }
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Unit\Rules;
 
 use Tests\TestCase;
-use Module\Football\Rules\PartialFixturePlayersStatisticsFieldsRule as Rule;
+use Module\Football\Rules\FixturePlayersStatisticsFieldsRule as Rule;
 
-class PartialFixturePlayersStatisticsFieldsRuleTest extends TestCase
+class FixturePlayersStatisticsFieldsRuleTest extends TestCase
 {
     public function test_cannot_request_invalid_field(): void
     {

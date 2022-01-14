@@ -7,7 +7,7 @@ namespace Module\Football\Http\Requests;
 use App\Rules\ResourceIdRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Module\Football\Rules\SeasonRule;
-use Module\Football\Rules\PartialLeagueFieldsRule;
+use Module\Football\Rules\LeagueFieldsRule;
 
 final class FetchLeagueRequest extends FormRequest
 {
@@ -16,7 +16,7 @@ final class FetchLeagueRequest extends FormRequest
         return [
             'id'       => ['required', new ResourceIdRule()],
             'season'   => ['nullable', new SeasonRule],
-            'filter'   => ['sometimes', 'filled', 'string', new PartialLeagueFieldsRule]
+            'filter'   => ['sometimes', 'filled', 'string', new LeagueFieldsRule]
         ];
     }
 }

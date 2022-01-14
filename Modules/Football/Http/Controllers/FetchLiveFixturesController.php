@@ -9,14 +9,14 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Module\Football\Contracts\Repositories\FetchLiveFixturesRepositoryInterface;
 use Module\Football\Http\Resources\FixtureResource;
 use Module\Football\Http\Resources\PartialFixtureResource;
-use Module\Football\Rules\PartialFixtureFieldsRule;
+use Module\Football\Rules\FixtureFieldsRule;
 
 final class FetchLiveFixturesController
 {
     public function __invoke(FetchLiveFixturesRepositoryInterface $client, Request $request): AnonymousResourceCollection
     {
         $request->validate([
-            'filter' => ['sometimes', 'filled', new PartialFixtureFieldsRule]
+            'filter' => ['sometimes', 'filled', new FixtureFieldsRule]
         ]);
 
         $resource = PartialFixtureResource::collection(FixtureResource::collection($client->FetchLiveFixtures()->toLaravelCollection()));

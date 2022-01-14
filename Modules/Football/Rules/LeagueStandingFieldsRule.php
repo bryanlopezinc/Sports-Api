@@ -7,26 +7,25 @@ namespace Module\Football\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
-final class PartialFixtureStatisticsFieldsRule implements Rule
+final class LeagueStandingFieldsRule implements Rule
 {
-    use RetrievePartialResourceField;
+    use RetrieveResourceField;
 
     private const ALLOWED = [
-        'shots_on_target',
-        'shots_off_target',
-        'shots_inside_box',
-        'shots_outside_box',
-        'shots',
-        'blocked_shots',
-        'fouls',
-        'corners',
-        'offsides',
-        'yellow_cards',
-        'red_cards',
-        'keeper_saves',
-        'passes',
-        'accurate_passes',
-        'ball_possession',
+        'points',
+        'position',
+        'team',
+        'team_form',
+        'played',
+        'won',
+        'lost',
+        'draws',
+        'home_record',
+        'away_record',
+        'goal_difference',
+        'goals_found',
+        'goals_against',
+        'league'
     ];
 
     private string $message;
@@ -59,8 +58,13 @@ final class PartialFixtureStatisticsFieldsRule implements Rule
 
     private function validate(array $requestedFields): void
     {
+        //Only the TEAM field cannot be requested
+        if (count($requestedFields) === 1 && $requestedFields[0] === 'team') {
+            throw new InvalidPartialResourceFieldsException('Only team field cannot be requested');
+        }
+
         foreach ($requestedFields as $field) {
-            if (notInArray($field, self::ALLOWED)) {
+            if (!inArray($field, self::ALLOWED)) {
                 throw new InvalidPartialResourceFieldsException('The given partial resource fields are Invalid');
             }
         }

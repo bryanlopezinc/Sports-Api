@@ -7,9 +7,9 @@ namespace Module\Football\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
-final class PartialFixtureFieldsRule implements Rule
+final class FixtureFieldsRule implements Rule
 {
-    use RetrievePartialResourceField;
+    use RetrieveResourceField;
 
     private array $allowed = [
         'id',

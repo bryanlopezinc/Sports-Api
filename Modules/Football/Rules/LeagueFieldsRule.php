@@ -7,9 +7,9 @@ namespace Module\Football\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
-final class PartialLeagueFieldsRule implements Rule
+final class LeagueFieldsRule implements Rule
 {
-    use RetrievePartialResourceField;
+    use RetrieveResourceField;
 
     private const ALLOWED = [
         'logo_url',
