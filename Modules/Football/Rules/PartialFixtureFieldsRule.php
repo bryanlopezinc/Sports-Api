@@ -11,7 +11,7 @@ final class PartialFixtureFieldsRule implements Rule
 {
     use RetrievePartialResourceField;
 
-    private const ALLOWED = [
+    private array $allowed = [
         'id',
         'referee',
         'date',
@@ -23,7 +23,6 @@ final class PartialFixtureFieldsRule implements Rule
         'teams',
         'score',
         'links',
-        'user.has_predicted',
         'period_goals',
         'period_goals.first_half',
         'period_goals.second_half',
@@ -61,6 +60,11 @@ final class PartialFixtureFieldsRule implements Rule
         return $this->message;
     }
 
+    public function addAllowedFields(array $fields): void
+    {
+        array_push($this->allowed, ...$fields);
+    }
+
     private function validate(array $requestedFields): void
     {
         // Only id cannot be requested
@@ -69,7 +73,7 @@ final class PartialFixtureFieldsRule implements Rule
         }
 
         foreach ($requestedFields as $field) {
-            if (notInArray($field, self::ALLOWED)) {
+            if (notInArray($field, $this->allowed)) {
                 throw new InvalidPartialResourceFieldsException("The given partial resource field $field is invalid", 101);
             }
         }

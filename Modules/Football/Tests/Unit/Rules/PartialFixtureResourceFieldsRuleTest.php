@@ -39,4 +39,17 @@ class PartialFixtureResourceFieldsRuleTest extends TestCase
             $this->assertEquals($rule->code, 102);
         }
     }
+
+    public function test_cannot_request_valid_user_attributes(): void
+    {
+        $rule = new PartialFixtureFieldsRule;
+
+        foreach ([
+            'user.has_predicted',
+            'user.prediction',
+        ] as $field) {
+            $this->assertFalse($rule->passes('filter', $field));
+            $this->assertEquals($rule->code, 101);
+        }
+    }
 }
