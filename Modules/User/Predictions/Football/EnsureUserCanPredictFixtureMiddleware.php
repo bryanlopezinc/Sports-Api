@@ -8,9 +8,8 @@ use Illuminate\Http\Request;
 use App\Exceptions\Http\HttpException;
 use Module\Football\ValueObjects\FixtureId;
 use Symfony\Component\HttpFoundation\Response;
-use Module\Football\ValueObjects\FixtureStatus;
-use Module\User\Dto\Builders\UserBuilder;
 use Module\User\Predictions\Football\Contracts\FetchFixturePredictionsRepositoryInterface;
+use Module\User\ValueObjects\UserId;
 
 final class EnsureUserCanPredictFixtureMiddleware
 {
@@ -28,9 +27,7 @@ final class EnsureUserCanPredictFixtureMiddleware
         //Ensure all attributes needed for validation are present and valid.
         app(PredictFixtureRequest::class);
 
-        $userId = UserBuilder::fromAuthUser()->build()->getId();
-
-        if ($this->repository->userHasPredictedFixture($userId, FixtureId::fromRequest($request, 'fixture_id'))) {
+        if ($this->repository->userHasPredictedFixture(UserId::fromAuthUser(), FixtureId::fromRequest($request, 'fixture_id'))) {
             throw new HttpException(Response::HTTP_CONFLICT, 'User can only predict a fixture once');
         }
 

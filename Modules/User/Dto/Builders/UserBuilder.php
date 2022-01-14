@@ -7,7 +7,6 @@ namespace Module\User\Dto\Builders;
 use App\DTO\Builder;
 use Module\User\Dto\User;
 use App\ValueObjects\Email;
-use Module\User\Routes\Config;
 use Module\User\Database\Column;
 use Module\User\ValueObjects\UserId;
 use Module\User\ValueObjects\Username;
@@ -15,11 +14,6 @@ use Module\User\Models\User as UserModel;
 
 final class UserBuilder extends Builder
 {
-    public static function fromAuthUser(): self
-    {
-        return self::fromModel(auth(Config::GUARD)->user());
-    }
-
     public static function fromModel(UserModel $model): self
     {
         $attributes = $model->getAttributes();
