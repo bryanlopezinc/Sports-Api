@@ -9,10 +9,11 @@ use Illuminate\Contracts\Cache\Repository;
 use Module\Football\ValueObjects\FixtureId;
 use Module\User\Predictions\Football\FixturePredictionsResult;
 use Module\User\Predictions\Football\Contracts\FetchFixturePredictionsRepositoryInterface as BaseRepository;
+use Module\User\Predictions\Football\Prediction;
 
 final class FixturePredictionsCacheRepository implements BaseRepository
 {
-    private const KEY = 'Fixture:user:predictions';
+    private const KEY = 'Fixture:user:Haspredictions';
 
     /**
      * Array of fixtures ids that have been predicted by different users.
@@ -52,6 +53,10 @@ final class FixturePredictionsCacheRepository implements BaseRepository
         return $hasPredicted;
     }
 
+    /**
+     * Remove prediction record from cache when a user predicts a fixture
+     * to prevent returning false negative when a user has predicted the fixture.
+     */
     public function forget(UserId $userId, FixtureId $fixtureId): void
     {
         unset($this->predictions[$fixtureId->toInt()][$userId->toInt()]);
@@ -67,5 +72,10 @@ final class FixturePredictionsCacheRepository implements BaseRepository
     public function fetchPredictionsResultFor(FixtureId $fixtureId): FixturePredictionsResult
     {
         return $this->baseRepository->fetchPredictionsResultFor($fixtureId);
+    }
+
+    public function fetchUserPrediction(FixtureId $fixtureId, UserId $userId): Prediction
+    {
+        return $this->baseRepository->fetchUserPrediction($fixtureId, $userId);
     }
 }

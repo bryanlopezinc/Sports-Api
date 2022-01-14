@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Http\Controllers;
 
 use Module\Football\Http\FetchFixtureResource\SetUserHasPredictionFixture;
+use Module\Football\Http\FetchFixtureResource\SetUserPrediction;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Services\FetchFixtureService;
 use Module\Football\Http\Requests\FetchFixtureRequest;
@@ -16,8 +17,10 @@ final class FetchFixtureController
 {
     public function __invoke(FetchFixtureRequest $request, FetchFixtureService $service): PartialFixtureResource
     {
-        $resource = new SetUserHasPredictionFixture(
-            new FixtureResource($service->fetchFixture(FixtureId::fromRequest($request)))
+        $resource = new SetUserPrediction(
+            new SetUserHasPredictionFixture(
+                new FixtureResource($service->fetchFixture(FixtureId::fromRequest($request)))
+            )
         );
 
         return (new PartialFixtureResource($resource))

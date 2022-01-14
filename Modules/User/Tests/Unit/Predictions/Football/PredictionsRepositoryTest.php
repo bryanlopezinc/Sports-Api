@@ -37,6 +37,26 @@ class PredictionsRepositoryTest extends TestCase
         $this->assertTrue($repository->userHasPredictedFixture(new UserId($user->id), new FixtureId(215662)));
     }
 
+    public function test_fetch_user_prediction(): void
+    {
+        $repository = new PredictionsRepository;
+        $userId = new UserId(UserFactory::new()->create()->id);
+
+        $repository->create(new FixtureId(12), $userId, new Prediction(Prediction::HOME_WIN));
+        $repository->create(new FixtureId(13), $userId, new Prediction(Prediction::AWAY_WIN));
+        $repository->create(new FixtureId(14), $userId, new Prediction(Prediction::DRAW));
+
+        [$homeToWin, $awayToWin, $draw] = [
+            $repository->fetchUserPrediction(new FixtureId(12), $userId)->prediction(),
+            $repository->fetchUserPrediction(new FixtureId(13), $userId)->prediction(),
+            $repository->fetchUserPrediction(new FixtureId(14), $userId)->prediction()
+        ];
+
+        $this->assertEquals($homeToWin, Prediction::HOME_WIN);
+        $this->assertEquals($awayToWin, Prediction::AWAY_WIN);
+        $this->assertEquals($draw, Prediction::DRAW);
+    }
+
     public function test_will_return_correct_predictions_data(): void
     {
         PredictionModel::truncate();

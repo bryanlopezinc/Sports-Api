@@ -17,11 +17,7 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
 {
     public function create(FixtureId $fixtureId, UserId $userId, Prediction $prediction): bool
     {
-        $code =  [
-            $prediction::AWAY_WIN   => PredictionCode::AWAY_WIN,
-            $prediction::HOME_WIN   => PredictionCode::HOME_WIN,
-            $prediction::DRAW       => PredictionCode::DRAW
-        ][$prediction->prediction()];
+        $code = $this->predictionTypeMap()[$prediction->prediction()];
 
         return DB::statement(
             "INSERT INTO football_predictions (fixture_id, user_id, code_id) VALUES (?, ?, (SELECT id FROM football_prediction_codes WHERE code = ?))",
@@ -35,6 +31,33 @@ final class PredictionsRepository implements StoreUserPredictionRepositoryInterf
             'fixture_id' => $fixtureId->toInt(),
             'user_id'    => $userId->toInt(),
         ])->exists();
+    }
+
+    public function fetchUserPrediction(FixtureId $fixtureId, UserId $userId): Prediction
+    {
+        $result = PredictionModel::select('code')
+            ->join('football_prediction_codes', 'code_id', '=', 'football_prediction_codes.id')
+            ->where('fixture_id', $fixtureId->toInt())
+            ->where('user_id', $userId->toInt())
+            ->first();
+
+        $prediction =  array_flip($this->predictionTypeMap())[$result->code];
+
+        return new Prediction($prediction);
+    }
+
+    /**
+     * Map of prediction type and corresponding predictionCode name
+     *
+     * @return array<string, string>
+     */
+    private function predictionTypeMap(): array
+    {
+        return [
+            Prediction::AWAY_WIN   => PredictionCode::AWAY_WIN,
+            Prediction::HOME_WIN   => PredictionCode::HOME_WIN,
+            Prediction::DRAW       => PredictionCode::DRAW
+        ];
     }
 
     public function fetchPredictionsResultFor(FixtureId $fixtureId): FixturePredictionsResult

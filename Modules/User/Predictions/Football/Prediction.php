@@ -10,7 +10,7 @@ final class Prediction
     public const AWAY_WIN  = 'awayWins';
     public const DRAW      = 'draw';
 
-    public function __construct(public string $prediction)
+    public function __construct(private string $prediction)
     {
         if (notInArray($prediction, [self::AWAY_WIN, self::DRAW, self::HOME_WIN])) {
             throw new \InvalidArgumentException('Invalid prediction type ' . $prediction);
