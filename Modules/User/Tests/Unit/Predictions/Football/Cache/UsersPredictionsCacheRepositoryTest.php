@@ -18,9 +18,9 @@ class UsersPredictionsCacheRepositoryTest extends TestCase
         $repositoryMock = $this->getMockBuilder(FetchFixturePredictionsRepositoryInterface::class)->getMock();
 
         [$home, $away, $draw] = [
-            new Prediction(Prediction::HOME_WIN),
-            new Prediction(Prediction::AWAY_WIN),
-            new Prediction(Prediction::DRAW),
+            Prediction::HOME_WIN,
+            Prediction::AWAY_WIN,
+            Prediction::DRAW,
         ];
 
         $repositoryMock->expects($this->exactly(4))->method('fetchUserPrediction')->willReturn($away, $away, $draw, $home);

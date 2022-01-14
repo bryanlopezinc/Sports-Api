@@ -24,7 +24,7 @@ class SetUserPredictionTest extends TestCase
         $repository = $this->getMockBuilder(FetchFixturePredictionsRepositoryInterface::class)->getMock();
 
         $repository->method('userHasPredictedFixture')->willReturn(true);
-        $repository->method('fetchUserPrediction')->willReturn(new Prediction(Prediction::AWAY_WIN));
+        $repository->method('fetchUserPrediction')->willReturn(Prediction::AWAY_WIN);
         Passport::actingAs(UserFactory::new()->create());
 
         $this->swap(FetchFixturePredictionsRepositoryInterface::class, $repository);
@@ -43,7 +43,7 @@ class SetUserPredictionTest extends TestCase
         $repository = $this->getMockBuilder(FetchFixturePredictionsRepositoryInterface::class)->getMock();
 
         $repository->method('userHasPredictedFixture')->willReturn(true);
-        $repository->method('fetchUserPrediction')->willReturn(new Prediction(Prediction::AWAY_WIN));
+        $repository->method('fetchUserPrediction')->willReturn(Prediction::AWAY_WIN);
         Passport::actingAs(UserFactory::new()->create());
 
         $this->swap(FetchFixturePredictionsRepositoryInterface::class, $repository);

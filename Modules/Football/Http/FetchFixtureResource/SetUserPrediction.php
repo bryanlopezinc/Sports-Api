@@ -54,10 +54,12 @@ final class SetUserPrediction extends JsonResource implements FixtureJsonResourc
 
     private function transformPrediction(FixtureId $fixtureId): string
     {
-        return match ($this->service->fetchAuthUserHasPrediction($fixtureId)->prediction()) {
-            Prediction::AWAY_WIN  => 'away2win',
-            Prediction::HOME_WIN  => 'home2win',
-            Prediction::DRAW      => 'draw'
+        $prediction = $this->service->fetchAuthUserHasPrediction($fixtureId);
+
+        return match (true) {
+            $prediction->isAwayToWin()  => 'away2win',
+            $prediction->isHomeToWin()  => 'home2win',
+            $prediction->isDraw()      => 'draw'
         };
     }
 

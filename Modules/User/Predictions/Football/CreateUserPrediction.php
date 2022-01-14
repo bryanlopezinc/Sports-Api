@@ -32,18 +32,7 @@ final class CreateUserPrediction
         return $this->create(
             FixtureId::fromRequest($request, 'fixture_id'),
             UserBuilder::fromAuthUser()->build()->getId(),
-            $this->getPredictionFromRequest($request)
+            Prediction::fromRequest($request, 'prediction')
         );
-    }
-
-    private function getPredictionFromRequest(PredictFixtureRequest $request): Prediction
-    {
-        $prediction = match ($request->input('prediction')) {
-            $request::VALID_PREDICTIONS['1W'] => Prediction::HOME_WIN,
-            $request::VALID_PREDICTIONS['2W'] => Prediction::AWAY_WIN,
-            $request::VALID_PREDICTIONS['D']  => Prediction::DRAW,
-        };
-
-        return new Prediction($prediction);
     }
 }

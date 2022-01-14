@@ -4,21 +4,53 @@ declare(strict_types=1);
 
 namespace Module\User\Predictions\Football;
 
-final class Prediction
-{
-    public const HOME_WIN  = 'homeWins';
-    public const AWAY_WIN  = 'awayWins';
-    public const DRAW      = 'draw';
+use Module\User\Predictions\Football\Models\PredictionCode;
 
-    public function __construct(private string $prediction)
+enum Prediction
+{
+    case HOME_WIN;
+    case AWAY_WIN;
+    case DRAW;
+
+    public function isDraw(): bool
     {
-        if (notInArray($prediction, [self::AWAY_WIN, self::DRAW, self::HOME_WIN])) {
-            throw new \InvalidArgumentException('Invalid prediction type ' . $prediction);
-        }
+        return $this == self::DRAW;
     }
 
-    public function prediction(): string
+    public function isHomeToWin(): bool
     {
-        return $this->prediction;
+        return $this == self::HOME_WIN;
+    }
+
+    public function isAwayToWin(): bool
+    {
+        return $this == self::AWAY_WIN;
+    }
+
+    public static function fromCode(string $code): self
+    {
+        return match ($code) {
+            PredictionCode::AWAY_WIN => self::AWAY_WIN,
+            PredictionCode::HOME_WIN => self::HOME_WIN,
+            PredictionCode::DRAW     => self::DRAW
+        };
+    }
+
+    public static function fromRequest(PredictFixtureRequest $request, string $key): self
+    {
+        return match ($request->input($key)) {
+            $request::VALID_PREDICTIONS['1W'] => self::HOME_WIN,
+            $request::VALID_PREDICTIONS['2W'] => self::AWAY_WIN,
+            $request::VALID_PREDICTIONS['D']  => self::DRAW,
+        };
+    }
+
+    public function toCode(): string
+    {
+        return match (true) {
+            $this->isAwayToWin() => PredictionCode::AWAY_WIN,
+            $this->isHomeToWin() => PredictionCode::HOME_WIN,
+            $this->isDraw()      => PredictionCode::DRAW
+        };
     }
 }

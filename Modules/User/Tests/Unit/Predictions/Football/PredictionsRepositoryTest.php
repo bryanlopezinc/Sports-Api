@@ -19,7 +19,7 @@ class PredictionsRepositoryTest extends TestCase
         $repository = new PredictionsRepository;
         $user = UserFactory::new()->create();
 
-        $this->assertTrue($repository->create(new FixtureId(23), new UserId($user->id), new Prediction(Prediction::AWAY_WIN)));
+        $this->assertTrue($repository->create(new FixtureId(23), new UserId($user->id), Prediction::AWAY_WIN));
 
         $this->assertDatabaseHas(PredictionModel::class, [
             'fixture_id' => 23,
@@ -32,7 +32,7 @@ class PredictionsRepositoryTest extends TestCase
         $repository = new PredictionsRepository;
         $user = UserFactory::new()->create();
 
-        $repository->create(new FixtureId(215662), new UserId($user->id), new Prediction(Prediction::AWAY_WIN));
+        $repository->create(new FixtureId(215662), new UserId($user->id), Prediction::AWAY_WIN);
 
         $this->assertTrue($repository->userHasPredictedFixture(new UserId($user->id), new FixtureId(215662)));
     }
@@ -42,19 +42,19 @@ class PredictionsRepositoryTest extends TestCase
         $repository = new PredictionsRepository;
         $userId = new UserId(UserFactory::new()->create()->id);
 
-        $repository->create(new FixtureId(12), $userId, new Prediction(Prediction::HOME_WIN));
-        $repository->create(new FixtureId(13), $userId, new Prediction(Prediction::AWAY_WIN));
-        $repository->create(new FixtureId(14), $userId, new Prediction(Prediction::DRAW));
+        $repository->create(new FixtureId(12), $userId, Prediction::HOME_WIN);
+        $repository->create(new FixtureId(13), $userId, Prediction::AWAY_WIN);
+        $repository->create(new FixtureId(14), $userId, Prediction::DRAW);
 
         [$homeToWin, $awayToWin, $draw] = [
-            $repository->fetchUserPrediction(new FixtureId(12), $userId)->prediction(),
-            $repository->fetchUserPrediction(new FixtureId(13), $userId)->prediction(),
-            $repository->fetchUserPrediction(new FixtureId(14), $userId)->prediction()
+            $repository->fetchUserPrediction(new FixtureId(12), $userId),
+            $repository->fetchUserPrediction(new FixtureId(13), $userId),
+            $repository->fetchUserPrediction(new FixtureId(14), $userId)
         ];
 
-        $this->assertEquals($homeToWin, Prediction::HOME_WIN);
-        $this->assertEquals($awayToWin, Prediction::AWAY_WIN);
-        $this->assertEquals($draw, Prediction::DRAW);
+        $this->assertTrue($homeToWin->isHomeToWin());
+        $this->assertTrue($awayToWin->isAwayToWin());
+        $this->assertTrue($draw->isDraw());
     }
 
     public function test_will_return_correct_predictions_data(): void
@@ -67,13 +67,15 @@ class PredictionsRepositoryTest extends TestCase
         $fixtureId = new FixtureId(40);
 
         foreach ($users->slice(0, 20) as $key => $user) {
-            $repository->create($fixtureId, new UserId($user->id), new Prediction(
+            $repository->create(
+                $fixtureId,
+                new UserId($user->id),
                 $key % 2 === 0 ? Prediction::AWAY_WIN : Prediction::HOME_WIN
-            ));
+            );
         }
 
         foreach ($users->slice(20, 10) as $user) {
-            $repository->create($fixtureId, new UserId($user->id), new Prediction(Prediction::DRAW));
+            $repository->create($fixtureId, new UserId($user->id), Prediction::DRAW);
         }
 
         $predictions = $repository->fetchPredictionsResultFor($fixtureId);
