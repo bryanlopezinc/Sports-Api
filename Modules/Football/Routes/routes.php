@@ -12,8 +12,8 @@ use Module\Football\Http\Middleware\ConvertLeagueStandingTeamsMiddleware;
 Route::prefix('football')->group(function () {
 
     Route::prefix('teams')->group(function () {
-        Route::get('find', Controllers\FetchTeamConttroller::class)->name(Name::FETCH_TEAM)->middleware(Convert::keys('id'));
-        Route::get('squad_list', Controllers\FetchTeamSquadController::class)->name(Name::FETCH_TEAM_SQUAD)->middleware(Convert::keys('id'));
+        Route::get('find', Controllers\FetchTeamConttroller::class)->name(Name::FETCH_TEAM)->middleware(Convert::keys('id'), 'cache.headers:max_age=86400');
+        Route::get('squad_list', Controllers\FetchTeamSquadController::class)->name(Name::FETCH_TEAM_SQUAD)->middleware(Convert::keys('id'), 'cache.headers:max_age=604800');
 
         Route::get('head_to_head', Controllers\FetchTeamHeadToHeadController::class)
             ->name(Name::FETCH_TEAM_HEAD_TO_HEAD)
@@ -25,7 +25,7 @@ Route::prefix('football')->group(function () {
             ->middleware(Convert::keys('league_id'))
             ->name(Name::FETCH_LEAGUE_FIXTURE_BY_DATE);
 
-        Route::get('find', Controllers\FetchLeagueController::class)->name(Name::FETCH_LEAGUE)->middleware(Convert::keys('id'));
+        Route::get('find', Controllers\FetchLeagueController::class)->name(Name::FETCH_LEAGUE)->middleware(Convert::keys('id'), 'cache.headers:max_age=1800');
 
         Route::get('standing', Controllers\FetchLeagueStandingController::class)
             ->name(Name::FETCH_LEAGUE_STANDING)
@@ -53,7 +53,7 @@ Route::prefix('football')->group(function () {
 
         Route::get('predictions', Controllers\FetchFixturePredictionsController::class)
             ->name(Name::FETCH_FIXTURE_PREDICTIONS)
-            ->middleware(Convert::keys('id'));
+            ->middleware(Convert::keys('id'), 'cache.headers:max_age=600');
 
         Route::get('players/statistics', Controllers\FetchFixturePlayersStatisticsController::class)
             ->middleware([Convert::keys('id', 'team'), MW\EnsureCoversPlayerStatisticsMiddleware::class])
@@ -77,18 +77,18 @@ Route::prefix('football')->group(function () {
     });
 
     Route::prefix('coachs')->group(function () {
-        Route::get('find', Controllers\FetchCoachConttroller::class)->name(Name::FETCH_COACH)->middleware(Convert::keys('id'));
+        Route::get('find', Controllers\FetchCoachConttroller::class)->name(Name::FETCH_COACH)->middleware(Convert::keys('id'), 'cache.headers:max_age=86400');
 
         Route::get('team_history', Controllers\FetchCoachCareerHistoryController::class)
             ->name(Name::FETCH_COACH_CAREER_HISTORY)
-            ->middleware(Convert::keys('id'));
+            ->middleware(Convert::keys('id'), 'cache.headers:max_age=86400');
     });
 
     Route::prefix('players')->group(function () {
-        Route::get('find', Controllers\FetchPlayerController::class)->name(Name::FETCH_PLAYER)->middleware(Convert::keys('id'));
+        Route::get('find', Controllers\FetchPlayerController::class)->name(Name::FETCH_PLAYER)->middleware(Convert::keys('id'), 'cache.headers:max_age=86400');
 
         Route::get('transfer_history', Controllers\FetchPlayerTransferHistoryController::class)
             ->name(Name::FETCH_PLAYER_TRANSFER_HISTORY)
-            ->middleware(Convert::keys('id'));
+            ->middleware(Convert::keys('id'), 'cache.headers:max_age=86400');
     });
 });
