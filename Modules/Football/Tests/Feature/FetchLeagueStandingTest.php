@@ -6,7 +6,7 @@ namespace Module\Football\Tests\Feature;
 
 use Illuminate\Support\Arr;
 use Tests\TestCase;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
@@ -22,7 +22,7 @@ class FetchLeagueStandingTest extends TestCase
             'season'        => $season
         ]);
 
-        return $this->getJson(route(Name::FETCH_LEAGUE_STANDING, $parameters));
+        return $this->getJson(route(RouteName::LEAGUE_STANDING, $parameters));
     }
 
     public function test_success_response(): void
@@ -56,7 +56,7 @@ class FetchLeagueStandingTest extends TestCase
 
     public function test_will_throw_validation_error_when_atributes_are_missing()
     {
-        $this->getJson(route(Name::FETCH_LEAGUE_STANDING))->assertStatus(422)->assertJsonValidationErrors(['league_id', 'season']);
+        $this->getJson(route(RouteName::LEAGUE_STANDING))->assertStatus(422)->assertJsonValidationErrors(['league_id', 'season']);
     }
 
     public function test_will_return_validation_error_if_a_requested_team_id_does_not_exists_in_league_table()

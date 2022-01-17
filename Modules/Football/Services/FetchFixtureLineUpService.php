@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
-use App\Utils\Config;
 use App\Utils\TimeToLive;
 use Module\Football\DTO\Fixture;
 use Module\Football\FixtureLineUp;

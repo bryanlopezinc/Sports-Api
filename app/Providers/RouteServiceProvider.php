@@ -12,29 +12,23 @@ class RouteServiceProvider extends ServiceProvider
 {
     public const HOME = '/home';
 
-    public function boot()
+    public function boot(): void
     {
         //$this->configureRateLimiting();
 
         $this->routes(function () {
-            $this->mapApiRoutes();
-
             $this->mapWebRoutes();
         });
     }
 
-    protected function mapWebRoutes()
+    protected function mapWebRoutes(): void
     {
         Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
     }
 
-    protected function mapApiRoutes()
-    {
-    }
-
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());

@@ -7,7 +7,6 @@ namespace Module\Football\Cache;
 use Module\Football\DTO\Coach;
 use Module\Football\ValueObjects\CoachId;
 use Illuminate\Contracts\Cache\Repository;
-use App\Utils\Config;
 use Module\Football\Contracts\Repositories\FetchCoachRepositoryInterface;
 
 final class CoachesCacheRepository implements FetchCoachRepositoryInterface
@@ -22,8 +21,6 @@ final class CoachesCacheRepository implements FetchCoachRepositoryInterface
     {
         $key = new CachePrefix($this) . $id->toInt();
 
-        $ttl = now()->addDays(Config::get('football.cache.coaches.defaultTtl'));
-
-        return $this->repository->remember($key, $ttl, fn () => $this->fetchCoachRepository->byId($id));
+        return $this->repository->remember($key, now()->addDays(7), fn () => $this->fetchCoachRepository->byId($id));
     }
 }

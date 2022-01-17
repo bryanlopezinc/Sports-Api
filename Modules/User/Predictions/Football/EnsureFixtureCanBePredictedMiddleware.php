@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Exceptions\Http\HttpException;
 use Module\Football\ValueObjects\FixtureId;
 use Symfony\Component\HttpFoundation\Response;
-use Module\Football\ValueObjects\FixtureStatus;
 use Module\Football\Services\FetchFixtureService;
 
 final class EnsureFixtureCanBePredictedMiddleware
@@ -29,7 +28,7 @@ final class EnsureFixtureCanBePredictedMiddleware
 
         $status = $this->service->fetchFixture(FixtureId::fromRequest($request, 'fixture_id'))->status();
 
-        if ($status->code() === FixtureStatus::NOT_STARTED) {
+        if ($status->isNotStarted()) {
             return $next($request);
         }
 

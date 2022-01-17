@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
-use App\Utils\Config;
 use App\Utils\TimeToLive;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\Collections\FixturesCollection;
@@ -39,7 +38,7 @@ final class FetchTeamsHeadToHeadService
     private function determineTimeToLiveIncacheFrom(FixturesCollection $collection): TimeToLive
     {
         if ($collection->anyFixtureIsInProgress()) {
-            return TimeToLive::seconds(Config::get('football.cache.teamH2H.ttl.inProgress'));
+            return TimeToLive::seconds(120);
         }
 
         if ($collection->allFixturesArefinished()) {

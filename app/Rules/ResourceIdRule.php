@@ -32,7 +32,7 @@ final class ResourceIdRule implements Rule
             new ResourceId((int) $value);
 
             return true;
-        } catch (InvalidResourceIdException) { // @phpstan-ignore-line
+        } catch (InvalidResourceIdException) {
             $this->message = sprintf('The %s attribute is invalid', $attribute);
 
             return false;

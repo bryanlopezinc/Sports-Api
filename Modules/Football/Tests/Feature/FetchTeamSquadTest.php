@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Feature;
 
 use Tests\TestCase;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchTeamSquadResponse;
@@ -14,7 +14,7 @@ class FetchTeamSquadTest extends TestCase
 {
     private function getTestResponse(int $id): TestResponse
     {
-        return $this->getJson(route(Name::FETCH_TEAM_SQUAD, [
+        return $this->getJson(route(RouteName::TEAM_SQUAD, [
             'id'     => $this->hashId($id),
         ]));
     }
@@ -26,16 +26,17 @@ class FetchTeamSquadTest extends TestCase
         $this->withoutExceptionHandling()
             ->getTestResponse(900)
             ->assertSuccessful()
-            ->assertHeader('max-age')
             ->assertJsonStructure([
-                'type',
-                'team_id',
-                'total',
-                'squad' => [
-                    'goal_keepers',
-                    'defenders',
-                    'midfielders',
-                    'attackers'
+                'data' => [
+                    'type',
+                    'team_id',
+                    'total',
+                    'squad' => [
+                        'goal_keepers',
+                        'defenders',
+                        'midfielders',
+                        'attackers'
+                    ]
                 ]
             ]);
     }

@@ -18,7 +18,7 @@ final class FetchLeagueTopAssistsRoute implements JsonSerializable
 
     public function __toString()
     {
-        return route(Name::FETCH_LEAGUE_TOP_ASSISTS, [
+        return route(RouteName::LEAGUE_TOP_ASSISTS, [
             'id'     => $this->id->asHashedId(),
             'season' => $this->season->toInt()
         ]);

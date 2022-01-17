@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
-use App\Utils\Config;
 use App\Utils\TimeToLive;
 use Module\Football\DTO\League;
 use Module\Football\Collections\LeaguesCollection;
@@ -24,7 +23,7 @@ final class CacheLeagueService
     public function cacheMany(LeaguesCollection $collection): void
     {
         $collection->toLaravelCollection()->each(function (League $league): void {
-            $this->cache->cache($league, TimeToLive::days(Config::get('football.cache.leagues.ttl')));
+            $this->cache->cache($league, TimeToLive::days(1));
         });
     }
 }

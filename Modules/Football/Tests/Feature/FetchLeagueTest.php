@@ -28,37 +28,37 @@ class FetchLeagueTest extends TestCase
 
         $this->getTestRespone(234)
             ->assertSuccessful()
-            ->assertHeader('max-age')
-            ->assertJsonCount(3)
-            ->assertJsonCount(5, 'attributes')
-            ->assertJsonCount(5, 'attributes.season')
-            ->assertJsonCount(5, 'attributes.season.coverage')
+            ->assertJsonCount(5, 'data.attributes')
+            ->assertJsonCount(5, 'data.attributes.season')
+            ->assertJsonCount(5, 'data.attributes.season.coverage')
             ->assertJsonStructure(
                 [
-                    "type",
-                    "attributes" => [
-                        "id",
-                        "logo_url",
-                        "name",
-                        "country",
-                        "season" => [
-                            "season",
-                            "start",
-                            "end",
-                            "is_current_season",
-                            "coverage" =>  [
-                                "line_up",
-                                "events",
-                                "stats",
-                                "top_scorers",
-                                "top_assists",
+                    'data' => [
+                        "type",
+                        "attributes" => [
+                            "id",
+                            "logo_url",
+                            "name",
+                            "country",
+                            "season" => [
+                                "season",
+                                "start",
+                                "end",
+                                "is_current_season",
+                                "coverage" =>  [
+                                    "line_up",
+                                    "events",
+                                    "stats",
+                                    "top_scorers",
+                                    "top_assists",
+                                ]
                             ]
+                        ],
+                        "links" =>  [
+                            "self",
+                            "top_scorers",
+                            "top_assists",
                         ]
-                    ],
-                    "links" =>  [
-                        "self",
-                        "top_scorers",
-                        "top_assists",
                     ]
                 ]
             );
@@ -72,15 +72,17 @@ class FetchLeagueTest extends TestCase
 
         $this->getTestRespone(234, ['filter' => 'name,country'])
             ->assertSuccessful()
-            ->assertJsonCount(2)
-            ->assertJsonCount(2, 'attributes')
+            ->assertJsonCount(1)
+            ->assertJsonCount(2, 'data.attributes')
             ->assertJsonStructure(
                 [
-                    "type",
-                    "attributes" => [
-                        "name",
-                        "country",
-                    ],
+                    'data' => [
+                        "type",
+                        "attributes" => [
+                            "name",
+                            "country",
+                        ],
+                    ]
                 ]
             );
     }

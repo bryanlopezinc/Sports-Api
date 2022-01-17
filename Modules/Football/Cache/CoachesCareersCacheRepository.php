@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Cache;
 
-use App\Utils\Config;
 use Module\Football\ValueObjects\CoachId;
 use Illuminate\Contracts\Cache\Repository;
 use Module\Football\Collections\CoachCareerHistory;
@@ -22,8 +21,6 @@ final class CoachesCareersCacheRepository implements FetchCoachCareerHistoryRepo
     {
         $key = new CachePrefix($this) . $id->toInt();
 
-        $ttl = now()->addDays(Config::get('football.cache.coachesCareers.defaultTtl'));
-
-        return $this->repository->remember($key, $ttl, fn () => $this->fetchCoachCareerHistoryRepository->byId($id));
+        return $this->repository->remember($key, now()->addDays(5), fn () => $this->fetchCoachCareerHistoryRepository->byId($id));
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Feature;
 
 use Tests\TestCase;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureByDateResponse;
@@ -14,7 +14,7 @@ class FetchFixturesByDateTest extends TestCase
 {
     private function getTestResponse(): TestResponse
     {
-        return $this->getJson(route(Name::FETCH_FIXTURES_BY_DATE, [
+        return $this->getJson(route(RouteName::FIXTURES_BY_DATE, [
             'date'  => today()->toDateString()
         ]));
     }

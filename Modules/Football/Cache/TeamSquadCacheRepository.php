@@ -6,7 +6,6 @@ namespace Module\Football\Cache;
 
 use Module\Football\ValueObjects\TeamId;
 use Illuminate\Contracts\Cache\Repository;
-use App\Utils\Config;
 use Module\Football\Collections\PlayersCollection;
 use Module\Football\Contracts\Repositories\FetchTeamSquadRepositoryInterface;
 
@@ -20,7 +19,7 @@ final class TeamSquadCacheRepository implements FetchTeamSquadRepositoryInterfac
     {
         $key = new CachePrefix($this) . $teamId->toInt();
 
-        $ttl = now()->addDays(Config::get('football.cache.teamsSquad.ttl'));
+        $ttl = now()->addDays(7);
 
         return $this->repository->remember($key, $ttl, fn () => $this->fetchTeamSquadRepository->teamSquad($teamId));
     }

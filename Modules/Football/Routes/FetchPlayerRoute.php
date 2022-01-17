@@ -17,6 +17,6 @@ final class FetchPlayerRoute implements JsonSerializable
 
     public function __toString()
     {
-        return route(Name::FETCH_PLAYER, ['id' => $this->id->asHashedId()]);
+        return route(RouteName::FIND_PLAYER, ['id' => $this->id->asHashedId()]);
     }
 }

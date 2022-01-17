@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football;
 
-use App\Utils\Config;
 use App\Utils\TimeToLive;
 use Module\Football\DTO\Fixture;
 
@@ -16,12 +15,12 @@ final class DetermineFixtureTimeToLiveInCache
 
         return match (true) {
             $status->isFinished()                    => $this->determineTimeToLiveWhenFixtureIsFinished($fixture),
-            $status->isInProgress()                  => TimeToLive::seconds(Config::get('football.cache.fixtures.ttl.inProgress')),
+            $status->isInProgress()                  => TimeToLive::seconds(60),
             $status->isNotStarted()                  => $this->determineTimeToLiveWhenFixtureIsNotStarted($fixture),
-            $status->timeIsYetToBeDefined()          => TimeToLive::seconds(Config::get('football.cache.fixtures.ttl.whenIsTBD')),
+            $status->timeIsYetToBeDefined()          => TimeToLive::seconds(600),
             $status->didNotStartForVariousReasons()  => $this->determineTimeToLiveWhenFixtureIsCancelledForVariousReasons($fixture),
-            $status->isSuspended()                   => TimeToLive::seconds(Config::get('football.cache.fixtures.ttl.suspended')),
-            $status->isAbandoned()                   => TimeToLive::seconds(Config::get('football.cache.fixtures.ttl.abandoned')),
+            $status->isSuspended()                   => TimeToLive::seconds(600),
+            $status->isAbandoned()                   => TimeToLive::seconds(600),
         };
     }
 
@@ -33,7 +32,7 @@ final class DetermineFixtureTimeToLiveInCache
             return TimeToLive::hours(1);
         }
 
-        return TimeToLive::days(Config::get('football.cache.fixtures.ttl.finished'));
+        return TimeToLive::days(3);
     }
 
     private function determineTimeToLiveWhenFixtureIsCancelledForVariousReasons(Fixture $fixture): TimeToLive
@@ -43,8 +42,8 @@ final class DetermineFixtureTimeToLiveInCache
         $fixtureWasToBePlayedToday = $fixture->date()->toCarbon()->isToday();
 
         $timeToLive = match (true) {
-            $status->isPostponed()     => Config::get('football.cache.fixtures.ttl.postponed'),
-            $status->isCancelled()     => Config::get('football.cache.fixtures.ttl.cancelled'),
+            $status->isPostponed()     => 10,
+            $status->isCancelled()     => 10,
         };
 
         $seconds = $fixtureWasToBePlayedToday ? minutesUntilTommorow() : $timeToLive;

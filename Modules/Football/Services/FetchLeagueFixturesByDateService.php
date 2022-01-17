@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
-use App\Utils\Config;
 use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
 use Module\Football\ValueObjects\Season;
@@ -48,6 +47,6 @@ final class FetchLeagueFixturesByDateService
             return TimeToLive::minutes(minutesUntilTommorow());
         }
 
-        return TimeToLive::minutes(Config::get('football.cache.leaguesFixturesByDate.defaultTtl'));
+        return TimeToLive::minutes(30);
     }
 }

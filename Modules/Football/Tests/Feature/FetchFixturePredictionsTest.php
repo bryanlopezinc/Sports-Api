@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Feature;
 
 use Tests\TestCase;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
@@ -16,7 +16,7 @@ class FetchFixturePredictionsTest extends TestCase
     private function getTestResponse(int $id): TestResponse
     {
         return $this->getJson(
-            route(Name::FETCH_FIXTURE_PREDICTIONS, ['id' => $this->hashId($id)])
+            route(RouteName::FIXTURE_PREDICTIONS, ['id' => $this->hashId($id)])
         );
     }
 

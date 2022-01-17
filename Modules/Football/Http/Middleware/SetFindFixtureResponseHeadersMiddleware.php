@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Http\Middleware;
 
-use App\Utils\Config;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Module\Football\DTO\Fixture;
@@ -36,11 +35,11 @@ final class SetFindFixtureResponseHeadersMiddleware
     private function caclculateMaxAgeFrom(Fixture $fixture): ?int
     {
         if ($fixture->status()->isFinished()) {
-            return Config::get('football.finishedFixtureMaxAge');
+            return 432_000;
         }
 
         if ($fixture->status()->isInProgress()) {
-            return Config::get('football.FixtureInProgressMaxAge');
+            return 60;
         }
 
         return null;

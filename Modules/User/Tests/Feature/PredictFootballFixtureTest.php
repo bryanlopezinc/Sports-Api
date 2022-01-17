@@ -7,7 +7,7 @@ namespace Module\User\Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Support\Arr;
 use Laravel\Passport\Passport;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName as FootballRoute;
 use Module\User\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
@@ -112,7 +112,7 @@ class PredictFootballFixtureTest extends TestCase
         $fixturePredictionsResponse = function () {
             Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
-            return $this->getJson(route(Name::FETCH_FIXTURE_PREDICTIONS, ['id' => $this->hashId(215662)]));
+            return $this->getJson(route(FootballRoute::FIXTURE_PREDICTIONS, ['id' => $this->hashId(215662)]));
         };
 
         $predictFixture = function ($user) use ($fixtureJson) {

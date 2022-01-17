@@ -6,11 +6,11 @@ namespace Module\Football\FixtureEvents;
 
 use LogicException;
 use Module\Football\DTO\Player;
+use Module\Football\DTO\Team;
+use Module\Football\ValueObjects\TimeElapsed;
 
-final class SubstitutionEvent implements TeamEventInterface
+final class SubstitutionEvent implements EventInterface
 {
-    use HasTeamEvent;
-
     public function __construct(
         private Player $playerIn,
         private Player $playerOut,
@@ -36,5 +36,15 @@ final class SubstitutionEvent implements TeamEventInterface
     public function playerOut(): Player
     {
         return $this->playerOut;
+    }
+
+    public function team(): Team
+    {
+        return $this->teamEvent->getTeam();
+    }
+
+    public function time(): TimeElapsed
+    {
+        return $this->teamEvent->time();
     }
 }

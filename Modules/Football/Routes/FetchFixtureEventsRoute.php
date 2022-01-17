@@ -17,7 +17,7 @@ final class FetchFixtureEventsRoute implements JsonSerializable
 
     public function __toString()
     {
-        return route(Name::FETCH_FIXTURE_EVENTS, [
+        return route(RouteName::FIXTURE_EVENTS, [
             'id' => $this->id->asHashedId()
         ]);
     }

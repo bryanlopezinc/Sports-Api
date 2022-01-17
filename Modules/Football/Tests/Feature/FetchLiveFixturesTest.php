@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Feature;
 
 use Tests\TestCase;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
@@ -15,7 +15,7 @@ class FetchLiveFixturesTest extends TestCase
 {
     private function getTestResponse(array $query = []): TestResponse
     {
-        return $this->getJson(route(Name::FETCH_LIVE_FIXTURES, $query));
+        return $this->getJson(route(RouteName::LIVE_FIXTURES, $query));
     }
 
     /**

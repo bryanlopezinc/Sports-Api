@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Feature;
 
 use Tests\TestCase;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
@@ -20,7 +20,7 @@ class FetchTeamHeadToHeadTest extends TestCase
             'team_id_2'     => $this->hashId($teamTwo),
         ], $query);
 
-        return $this->getJson(route(Name::FETCH_TEAM_HEAD_TO_HEAD, $parameters));
+        return $this->getJson(route(RouteName::TEAMS_H2H, $parameters));
     }
 
     public function test_success_response(): void

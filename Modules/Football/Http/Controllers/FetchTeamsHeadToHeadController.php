@@ -13,7 +13,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Collection;
 use Module\Football\Http\Resources\FixtureResource;
 
-final class FetchTeamHeadToHeadController
+final class FetchTeamsHeadToHeadController
 {
     public function __invoke(TeamsHeadToHeadRequest $request, FetchTeamsHeadToHeadService $service): AnonymousResourceCollection
     {

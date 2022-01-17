@@ -17,7 +17,7 @@ final class FetchFixtureLineUpRoute implements JsonSerializable
 
     public function __toString()
     {
-        return route(Name::FETCH_FIXTURE_LINEUP, [
+        return route(RouteName::FIXTURE_LINEUP, [
             'id' => $this->id->asHashedId()
         ]);
     }

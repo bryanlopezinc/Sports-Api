@@ -11,7 +11,7 @@ final class HandleDbTransactionsMiddleware
 {
     /**
      * @param  \Illuminate\Http\Request $request
-     * @param  \callable  $next
+     * @param  \Closure  $next
      * @return \Illuminate\Http\Response
      */
     public function handle($request, $next)

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Football\FixtureEvents;
 
 use Module\Football\DTO\Player;
+use Module\Football\DTO\Team;
+use Module\Football\ValueObjects\TimeElapsed;
 
-final class GoalEvent implements TeamEventInterface
+final class GoalEvent implements EventInterface
 {
-    use HasTeamEvent;
-
     public const OWN_GOAL        = 'Own Goal';
     public const PENALTY         = 'Penalty';
     public const NORMAL_GOAL     = 'Normal Goal';
@@ -82,5 +82,15 @@ final class GoalEvent implements TeamEventInterface
     public function goalAssistedBy(): Player
     {
         return $this->assistedBy;
+    }
+
+    public function team(): Team
+    {
+        return $this->teamEvent->getTeam();
+    }
+
+    public function time(): TimeElapsed
+    {
+        return $this->teamEvent->time();
     }
 }

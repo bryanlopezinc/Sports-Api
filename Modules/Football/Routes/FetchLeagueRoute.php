@@ -17,7 +17,7 @@ final class FetchLeagueRoute implements JsonSerializable
 
     public function __toString()
     {
-        return route(Name::FETCH_LEAGUE, array_merge([
+        return route(RouteName::FIND_LEAGUE, array_merge([
             'id' => $this->id->asHashedId()
         ], $this->query));
     }

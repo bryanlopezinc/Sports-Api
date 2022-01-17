@@ -27,19 +27,20 @@ class FetchTeamTest extends TestCase
         $this->withoutExceptionHandling()
             ->getTestResponse(400)
             ->assertSuccessful()
-            ->assertHeader('max-age')
             ->assertJsonStructure([
-                'type',
-                'attributes'        => [
-                    'id',
-                    'name',
-                    'logo_url',
-                    'year_founded',
-                    'country',
-                    'venue',
-                ],
-                'links'     => [
-                    'self'
+                'data' => [
+                    'type',
+                    'attributes'        => [
+                        'id',
+                        'name',
+                        'logo_url',
+                        'year_founded',
+                        'country',
+                        'venue',
+                    ],
+                    'links'     => [
+                        'self'
+                    ]
                 ]
             ]);
     }

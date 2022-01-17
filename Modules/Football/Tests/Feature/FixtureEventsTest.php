@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Routes\FetchFixtureEventsRoute;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureEventsResponse;
@@ -25,7 +25,7 @@ class FixtureEventsTest extends TestCase
 
     public function test_will_throw_validation_error_when_required_fields_are_missing()
     {
-        $this->getJson(route(Name::FETCH_FIXTURE_EVENTS))->assertStatus(422)->assertJsonValidationErrors(['id']);
+        $this->getJson(route(RouteName::FIXTURE_EVENTS))->assertStatus(422)->assertJsonValidationErrors(['id']);
     }
 
     public function test_success_response(): void

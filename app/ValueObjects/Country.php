@@ -274,7 +274,7 @@ final class Country
 
     private function validate(): void
     {
-        if (inArray($this->name, static::$checked)) {
+        if (inArray($this->name, self::$checked)) {
             return;
         }
 
@@ -284,7 +284,7 @@ final class Country
             );
         }
 
-        static::$checked[] = $this->name;
+        self::$checked[] = $this->name;
     }
 
     public function name(): string

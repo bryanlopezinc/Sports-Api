@@ -12,7 +12,7 @@ use Module\Football\FixtureEvents\GoalEvent;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\FixtureEvents\SubstitutionEvent;
 use Module\Football\FixtureEvents\MissedPenaltyEvent;
-use Module\Football\FixtureEvents\TeamEventInterface;
+use Module\Football\FixtureEvents\EventInterface;
 use Module\Football\Collections\FixtureEventsCollection;
 
 final class FixtureEventsResource extends JsonResource
@@ -61,7 +61,7 @@ final class FixtureEventsResource extends JsonResource
     /**
      * @return array<string, mixed>
      */
-    private function mergeTeamEvent(TeamEventInterface $event, array $with): array
+    private function mergeTeamEvent(EventInterface $event, array $with): array
     {
         return array_merge([
             'minute'    => $event->time()->minutes(),

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Football\FixtureEvents;
 
-final class VarEvent implements TeamEventInterface
-{
-    use HasTeamEvent;
+use Module\Football\DTO\Team;
+use Module\Football\ValueObjects\TimeElapsed;
 
+final class VarEvent implements EventInterface
+{
     public const GOAL_CANCELLED     = 'Penalty Cancelled';
     public const PENALTY_AWARDED    = 'Penalty Awarded';
 
@@ -31,5 +32,15 @@ final class VarEvent implements TeamEventInterface
     public function type(): string
     {
         return $this->type;
+    }
+
+    public function team(): Team
+    {
+        return $this->teamEvent->getTeam();
+    }
+
+    public function time(): TimeElapsed
+    {
+        return $this->teamEvent->time();
     }
 }

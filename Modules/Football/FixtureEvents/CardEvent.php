@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Football\FixtureEvents;
 
 use Module\Football\DTO\Player;
+use Module\Football\DTO\Team;
+use Module\Football\ValueObjects\TimeElapsed;
 
-final class CardEvent implements TeamEventInterface
+final class CardEvent implements EventInterface
 {
-    use HasTeamEvent;
-
     public const YELLOW_CARD    = 'yellow';
     public const SECOND_YELLOW  = 'second yellow';
     public const RED_CARD       = 'Red card';
@@ -47,5 +47,15 @@ final class CardEvent implements TeamEventInterface
     public function type(): string
     {
         return $this->type;
+    }
+
+    public function team(): Team
+    {
+        return $this->teamEvent->getTeam();
+    }
+
+    public function time(): TimeElapsed
+    {
+        return $this->teamEvent->time();
     }
 }

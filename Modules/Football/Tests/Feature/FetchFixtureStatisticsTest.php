@@ -11,7 +11,7 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Testing\TestResponse;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Routes\FetchFixtureStatisticsRoute;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureStatisticsResponse;
@@ -27,7 +27,7 @@ class FetchFixtureStatisticsTest extends TestCase
 
     public function test_will_throw_validation_error_when_required_fields_are_missing()
     {
-        $this->getJson(route(Name::FETCH_FIXTURE_STATS))->assertStatus(422)->assertJsonValidationErrors(['id']);
+        $this->getJson(route(RouteName::FIXTURE_STATS))->assertStatus(422)->assertJsonValidationErrors(['id']);
     }
 
     /**

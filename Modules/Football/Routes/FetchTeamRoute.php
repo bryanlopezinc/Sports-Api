@@ -17,7 +17,7 @@ final class FetchTeamRoute implements JsonSerializable
 
     public function __toString()
     {
-        return route(Name::FETCH_TEAM, [
+        return route(RouteName::FIND_TEAM, [
             'id' => $this->id->asHashedId()
         ]);
     }

@@ -7,7 +7,7 @@ namespace Module\Football\FixtureEvents;
 use Module\Football\DTO\Team;
 use Module\Football\ValueObjects\TimeElapsed;
 
-interface TeamEventInterface
+interface EventInterface
 {
     public function team(): Team;
 

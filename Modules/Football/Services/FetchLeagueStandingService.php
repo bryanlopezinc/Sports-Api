@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
-use App\Utils\Config;
 use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
 use Illuminate\Support\Collection;
@@ -69,7 +68,7 @@ final class FetchLeagueStandingService
     {
         //Cache league table for shorter period if it's not for current season
         if (!$league->getSeason()->isCurrentSeason()) {
-            return TimeToLive::minutes(Config::get('football.cache.leaguesStandings.ttlWhenNotCurrentSeason'));
+            return TimeToLive::minutes(30);
         }
 
         $leaguesFixturesForToday = $this->fetchFixturesByDate->fetch(
@@ -88,7 +87,7 @@ final class FetchLeagueStandingService
         }
 
         if ($leaguesFixturesForToday->anyFixtureIsInProgress()) {
-            return TimeToLive::minutes(Config::get('football.cache.leaguesStandings.ttlWhenHasFixtureInProgress'));
+            return TimeToLive::minutes(10);
         }
 
         //Cache league until next upcomming fixture

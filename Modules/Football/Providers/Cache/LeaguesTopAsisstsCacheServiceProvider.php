@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Providers\Cache;
 
-use App\Utils\Config;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Module\Football\Cache\LeaguesTopAsisstsCacheRepository;

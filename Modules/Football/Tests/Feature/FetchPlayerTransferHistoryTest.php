@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Feature;
 
 use Tests\TestCase;
-use Module\Football\Routes\Name;
+use Module\Football\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 
 class FetchPlayerTransferHistoryTest extends TestCase
@@ -17,7 +17,7 @@ class FetchPlayerTransferHistoryTest extends TestCase
         Http::fake(fn () => Http::response($json));
 
         $this->withoutExceptionHandling()
-            ->getJson(route(Name::FETCH_PLAYER_TRANSFER_HISTORY, ['id' => $this->hashId(20)]))
+            ->getJson(route(RouteName::PLAYER_TRANSFER_HISTORY, ['id' => $this->hashId(20)]))
             ->assertSuccessful();
     }
 }
