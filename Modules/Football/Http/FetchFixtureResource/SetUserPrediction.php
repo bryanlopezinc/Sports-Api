@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\DTO\Fixture;
 use Module\Football\Http\Resources\FixtureJsonResourceInterface;
 use Module\Football\ValueObjects\FixtureId;
-use Module\User\Predictions\Football\FetchFixturePredictionsService;
+use Module\Football\Prediction\Services\FetchFixturePredictionsService;
 use Module\User\Predictions\Football\Prediction;
 
 final class SetUserPrediction extends JsonResource implements FixtureJsonResourceInterface

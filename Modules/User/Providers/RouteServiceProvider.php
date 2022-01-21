@@ -26,7 +26,6 @@ class RouteServiceProvider extends ServiceProvider
         $routeRegistrar = Route::prefix('v1/users')->middleware(['api']);
 
         $routeRegistrar->group(base_path('Modules\User\Routes\routes.php'));
-        $routeRegistrar->group(base_path('Modules\User\Routes\predictions.php'));
         $routeRegistrar->group(base_path('Modules\User\Routes\favourites.php'));
     }
 

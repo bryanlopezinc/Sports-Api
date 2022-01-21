@@ -187,8 +187,6 @@ return [
         Module\User\Providers\AuthServiceProvider::class,
         Module\User\Providers\UserRepositoryServiceProvider::class,
         Module\User\Favourites\UserFavouritesResourcesServiceProvider::class,
-        Module\User\Predictions\Football\Providers\ServiceProvider::class,
-        Module\User\Predictions\Football\Providers\EventServiceProvider::class,
     ],
 
     /*

@@ -13,9 +13,9 @@ use Module\Football\DTO\Fixture;
 use Module\Football\Factories\FixtureFactory;
 use Module\Football\Http\FetchFixtureResource\SetUserPrediction;
 use Module\Football\Http\Resources\FixtureJsonResourceInterface;
+use Module\Football\Prediction\Contracts\FetchFixturePredictionsRepositoryInterface;
 use Module\User\Factories\UserFactory;
-use Module\User\Predictions\Football\Contracts\FetchFixturePredictionsRepositoryInterface;
-use Module\User\Predictions\Football\Prediction;
+use Module\Football\Prediction\Prediction;
 
 class SetUserPredictionTest extends TestCase
 {

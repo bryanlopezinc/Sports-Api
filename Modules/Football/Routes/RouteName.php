@@ -26,4 +26,5 @@ final class RouteName
     public const COACH_CAREER_HISTORY        = 'soccer:coachCareerHistory';
     public const FIND_PLAYER                 = 'soccer:findPlayer';
     public const PLAYER_TRANSFER_HISTORY     = 'soccer:playerTransferHistory';
+    public const PREDICT_FIXTURE             = 'soccer:predictFixture';
 }

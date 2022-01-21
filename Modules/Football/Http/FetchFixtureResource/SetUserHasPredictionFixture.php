@@ -10,7 +10,7 @@ use Module\Football\Http\PartialFixtureRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\DTO\Fixture;
 use Module\Football\Http\Resources\FixtureJsonResourceInterface;
-use Module\User\Predictions\Football\FetchFixturePredictionsService;
+use Module\Football\Prediction\Services\FetchFixturePredictionsService;
 
 final class SetUserHasPredictionFixture extends JsonResource implements FixtureJsonResourceInterface
 {

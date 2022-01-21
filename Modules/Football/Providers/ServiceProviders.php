@@ -9,6 +9,13 @@ use Symfony\Component\Finder\SplFileInfo;
 
 final class ServiceProviders
 {
+    protected array $merge = [
+        \Module\Football\Prediction\Providers\ServiceProvider::class,
+        \Module\Football\Prediction\Providers\EventServiceProvider::class,
+        \Module\Football\Prediction\Providers\MigrationsServiceProvider::class,
+        \Module\Football\Prediction\Providers\FixturePredictionsContextualBindingServiceProvider::class,
+    ];
+
     /**
      * @return array<string>
      */
@@ -18,6 +25,7 @@ final class ServiceProviders
 
         return collect($filesystem->allFiles(__DIR__))
             ->map(fn (SplFileInfo $file): string => __NAMESPACE__ . '\\' . str_replace('.php', '', $file->getRelativePathname()))
+            ->merge($this->merge)
             ->reject(__CLASS__)
             ->all();
     }
