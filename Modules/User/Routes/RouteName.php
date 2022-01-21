@@ -15,4 +15,5 @@ final class RouteName
     public const LOGIN                              = 'user.login';
     public const CREATE                             = 'user.create';
     public const PREDICT_FOOTBALL_FIXTURE           = 'user.predict.footballFixture';
+    public const USER_FAVOURITES_FIXTURES           = 'userFavouritesFixtures';
 }

@@ -23,6 +23,7 @@ Route::middleware([Middleware\HandleDbTransactionsMiddleware::class])
                     ->middleware(ConvertHashedValuesToIntegerMiddleware::keys('id'));
 
                 Route::get('auth/favourites', Favourites\MyFavouritesController::class)->name(RouteName::AUTH_USER_FAVOURITES);
+                Route::get('favourites/fixtures', Favourites\FetchFixturesForUserFavouritesController::class)->name(RouteName::USER_FAVOURITES_FIXTURES);
             });
 
         Route::get('favourites', Favourites\FetchFavouritesController::class)->name(RouteName::FAVOURITES);

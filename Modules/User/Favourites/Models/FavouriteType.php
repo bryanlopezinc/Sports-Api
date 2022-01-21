@@ -15,6 +15,5 @@ final class FavouriteType extends Model
     public const SPORTS_TYPE_FOOTBALL = 'football';
 
     protected $table = 'user_favourite_type';
-    
     public $timestamps = false;
 }

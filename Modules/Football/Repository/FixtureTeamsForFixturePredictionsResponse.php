@@ -6,6 +6,8 @@ namespace Module\Football\Repository;
 
 use Module\Football\DTO\Fixture;
 use Illuminate\Contracts\Cache\Repository;
+use Module\Football\Collections\FixtureIdsCollection;
+use Module\Football\Collections\FixturesCollection;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\DTO\Builders\FixtureBuilder;
 use Module\Football\Contracts\Repositories\FetchFixtureRepositoryInterface;
@@ -43,5 +45,10 @@ final class FixtureTeamsForFixturePredictionsResponse implements FetchFixtureRep
         $this->cache->put($key, $fixtureTeams, now()->addMonth());
 
         return $fixture;
+    }
+
+    public function findManyById(FixtureIdsCollection $fixtureIds): FixturesCollection
+    {
+        return $this->repository->findManyById($fixtureIds);
     }
 }

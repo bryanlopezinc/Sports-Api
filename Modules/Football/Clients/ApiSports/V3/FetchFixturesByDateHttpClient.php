@@ -16,11 +16,14 @@ final class FetchFixturesByDateHttpClient extends ApiSportsClient implements Fet
      */
     public function asGroup(Date $date): array
     {
-        return $this->groupByLegueFixturesCount(
-            new LazyCollection(function () use ($date) {
-                return $this->get('fixtures', ['date' => $date->toCarbon()->toDateString()])->collect('response');
-            })
-        );
+        return $this->groupByLegueFixturesCount($this->fetchFixturesByDate($date));
+    }
+
+    public function fetchFixturesByDate(Date $date): LazyCollection
+    {
+        return new LazyCollection(function () use ($date) {
+            yield from $this->get('fixtures', ['date' => $date->toCarbon()->toDateString()])->collect('response');
+        });
     }
 
     /**

@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Cache;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Factories\FixtureFactory;
 use Module\Football\Cache\FixturesCacheRepository;
+use Module\Football\DTO\Fixture;
+use Module\Football\ValueObjects\FixtureId;
 
 class FixturesCacheRepositoryTest extends TestCase
 {
     private FixturesCacheRepository $repository;
 
-    protected function setUp():void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -64,5 +66,22 @@ class FixturesCacheRepositoryTest extends TestCase
         $fixture = FixtureFactory::new()->toDto();
 
         $this->assertFalse($this->repository->has($fixture->id()));
+    }
+
+    public function test_get_many_will_return_correct_values(): void
+    {
+        $fixtures = FixtureFactory::new()->count(5)->toCollection()->each(fn (Fixture $fixture) => $this->repository->cache($fixture, TimeToLive::minutes(1)));
+
+        $result = $this->repository->getMany($fixtures->ids());
+
+        $this->assertCount(5, $result);
+
+        $ids = $fixtures->ids()->toLaravelCollection()->map(fn (FixtureId $fixtureId) => $fixtureId->toInt())->all();
+
+        $result->each(function (Fixture $fixture) use ($ids) {
+            $this->assertTrue(inArray($fixture->id()->toInt(), $ids));
+        });
+
+        $this->assertTrue($this->repository->getMany(FixtureFactory::new()->count(5)->toCollection()->ids())->isEmpty());
     }
 }
