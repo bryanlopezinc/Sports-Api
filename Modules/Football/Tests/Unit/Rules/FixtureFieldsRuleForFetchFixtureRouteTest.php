@@ -7,7 +7,7 @@ namespace Module\Football\Tests\Unit\Rules;
 use Tests\TestCase;
 use Module\Football\Rules\FixtureFieldsRuleForFetchFixtureRequest;
 
-class FixtureFieldsRuleForFetchFixtureRequestTest extends TestCase
+class FixtureFieldsRuleForFetchFixtureRouteTest extends TestCase
 {
     public function test_can_request_valid_user_attributes(): void
     {

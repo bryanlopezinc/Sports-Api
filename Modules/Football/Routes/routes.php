@@ -8,7 +8,13 @@ use Module\Football\Http\Controllers;
 use Module\Football\Http\Middleware as MW;
 use App\HashId\ConvertHashedValuesToIntegerMiddleware as Convert;
 use Module\Football\Http\Middleware\ConvertLeagueStandingTeamsMiddleware;
+use App\Http\Middleware\HandleDbTransactionsMiddleware as TransactionMiddleware;
+use Module\Football\Favourites\Controllers as FC;
+use Module\User\Routes\Config;
+use Module\Football\Prediction\Controllers as PC;
+use Module\Football\Prediction\Middleware as PCM;
 
+//Teams Routes
 Route::prefix('teams')->group(function () {
     Route::get('find', Controllers\FetchTeamConttroller::class)
         ->name(RouteName::FIND_TEAM)
@@ -23,6 +29,7 @@ Route::prefix('teams')->group(function () {
         ->middleware(Convert::keys('team_id_1', 'team_id_2'));
 });
 
+//Leagues Routes
 Route::prefix('leagues')->group(function () {
     Route::get('fixtures/date', Controllers\FetchLeagueFixturesByDateController::class)
         ->middleware(Convert::keys('league_id'))
@@ -49,6 +56,7 @@ Route::prefix('leagues')->group(function () {
         ->middleware([Convert::keys('id'), Mw\CheckCoversLeagueTopAssistsMiddleware::class]);
 });
 
+//FIxtures Routes
 Route::prefix('fixtures')->group(function () {
     Route::get('live', Controllers\FetchLiveFixturesController::class)
         ->name(RouteName::LIVE_FIXTURES)
@@ -75,8 +83,21 @@ Route::prefix('fixtures')->group(function () {
     Route::get('events', Controllers\FetchFixtureEventsController::class)
         ->name(RouteName::FIXTURE_EVENTS)
         ->middleware([Convert::keys('id'), MW\CheckCoversEventsMiddleware::class]);
+
+    Route::post('predict', PC\PredictFixtureController::class)->middleware([
+        TransactionMiddleware::class,
+        'auth:' . Config::GUARD,
+        Convert::keys('fixture_id'),
+        PCM\EnsureUserCanPredictFixtureMiddleware::class,
+        PCM\EnsureFixtureCanBePredictedMiddleware::class
+    ])->name(RouteName::PREDICT_FIXTURE);
+
+    Route::get('predictions', PC\FetchFixturePredictionsController::class)
+        ->name(RouteName::FIXTURE_PREDICTIONS)
+        ->middleware(Convert::keys('id'), 'cache.headers:max_age=600');
 });
 
+//Coaches routes
 Route::prefix('coachs')->group(function () {
     Route::get('find', Controllers\FetchCoachConttroller::class)
         ->name(RouteName::FIND_COACH)
@@ -87,6 +108,7 @@ Route::prefix('coachs')->group(function () {
         ->middleware(Convert::keys('id'), 'cache.headers:max_age=86400');
 });
 
+//Players routes
 Route::prefix('players')->group(function () {
     Route::get('find', Controllers\FetchPlayerController::class)
         ->name(RouteName::FIND_PLAYER)
@@ -95,4 +117,16 @@ Route::prefix('players')->group(function () {
     Route::get('transfer_history', Controllers\FetchPlayerTransferHistoryController::class)
         ->name(RouteName::PLAYER_TRANSFER_HISTORY)
         ->middleware(Convert::keys('id'), 'cache.headers:max_age=86400');
+});
+
+//Favourites routes
+Route::middleware([TransactionMiddleware::class, 'auth:' . Config::GUARD])->group(function () {
+
+    Route::post('favourites/team', FC\AddTeamTofavouritesController::class)
+        ->name(RouteName::ADD_TEAM_TO_FAVOURITES)
+        ->middleware(Convert::keys('id'));
+
+    Route::post('favourites/league', FC\AddLeagueToFavouritesController::class)
+        ->name(RouteName::ADD_LEAGUE_TO_FAVOURITES)
+        ->middleware(Convert::keys('id'));
 });

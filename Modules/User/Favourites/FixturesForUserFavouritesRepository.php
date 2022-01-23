@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Module\Football\Collections\FixtureIdsCollection;
+use Module\Football\Favourites\Models\Favourite;
 use Module\Football\Services\FetchFixtureService;
 use Module\Football\ValueObjects\FixtureId;
-use Module\User\Favourites\Models\FavouriteType;
 use Module\User\ValueObjects\UserId;
 
 final class FixturesForUserFavouritesRepository
@@ -36,32 +36,18 @@ final class FixturesForUserFavouritesRepository
     {
         /** @var Builder */
         $query = $this->model()->select('fixture_id')
-            ->join('users_favourites', 'favourite_id', '=', 'home_team_id')
-            ->where('type_id', function (Builder $query) {
-                $query->select('id')
-                    ->from('user_favourite_type')
-                    ->where('type', FavouriteType::TEAM_TYPE)
-                    ->where('sports_type', FavouriteType::SPORTS_TYPE_FOOTBALL);
-            });
+            ->join('users_favourites_football', 'favourite_id', '=', 'home_team_id')
+            ->where('type', Favourite::TEAM_TYPE);
 
         $query->union($this->model()->select('fixture_id')
-            ->join('users_favourites', 'favourite_id', '=', 'away_team_id')
-            ->where('type_id', function (Builder $query) {
-                $query->select('id')
-                    ->from('user_favourite_type')
-                    ->where('type', FavouriteType::TEAM_TYPE)
-                    ->where('sports_type', FavouriteType::SPORTS_TYPE_FOOTBALL);
-            }));
+            ->join('users_favourites_football', 'favourite_id', '=', 'away_team_id')
+            ->where('type', Favourite::TEAM_TYPE));
 
         $query->union($this->model()->select('fixture_id')
-            ->join('users_favourites', 'favourite_id', '=', 'league_id')
-            ->where('type_id', function (Builder $query) {
-                $query->select('id')
-                    ->from('user_favourite_type')
-                    ->where('type', FavouriteType::LEAGUE_TYPE)
-                    ->where('sports_type', FavouriteType::SPORTS_TYPE_FOOTBALL);
-            }))
-            ->where('users_favourites.user_id', $userId->toInt())
+            ->join('users_favourites_football', 'favourite_id', '=', 'league_id')
+            ->where('type', Favourite::LEAGUE_TYPE));
+
+        $query->where('users_favourites_football.user_id', $userId->toInt())
             ->where('date', $date->toCarbon()->toDateString());
 
         return $query->get()->pluck('fixture_id')->all();

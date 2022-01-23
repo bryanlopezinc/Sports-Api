@@ -12,10 +12,6 @@
             <directory suffix="Test.php">./Modules/Football/Tests/Feature</directory>
             <directory suffix="Test.php">./Modules/Football/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="footballPrediction">
-            <directory suffix="Test.php">./Modules/Football/Prediction/Tests/Feature</directory>
-            <directory suffix="Test.php">./Modules/Football/Prediction/Tests/Unit</directory>
-        </testsuite>
         <testsuite name="user">
             <directory suffix="Test.php">./Modules/User/Tests/Feature</directory>
             <directory suffix="Test.php">./Modules/User/Tests/Unit</directory>

@@ -183,10 +183,10 @@ return [
 
         Module\User\Providers\ConfigServiceProvider::class,
         Module\User\Providers\RouteServiceProvider::class,
-        Module\User\Providers\ServiceProvider::class,
         Module\User\Providers\AuthServiceProvider::class,
         Module\User\Providers\UserRepositoryServiceProvider::class,
         Module\User\Favourites\UserFavouritesResourcesServiceProvider::class,
+        Module\User\Favourites\EventsServiceProvider::class,
     ],
 
     /*

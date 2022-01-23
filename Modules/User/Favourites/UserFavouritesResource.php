@@ -6,19 +6,17 @@ namespace Module\User\Favourites;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use App\Utils\PaginationData;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\League;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\Http\Resources\TeamResource;
 use Module\Football\Http\Resources\LeagueResource;
 
 final class UserFavouritesResource extends JsonResource
 {
-    public function __construct(private FavouritesResponse $collection)
+    public function __construct(private FetchUserFavouritesResourcesResult $favouritesResponse)
     {
-        parent::__construct($collection);
+        parent::__construct($favouritesResponse);
     }
 
     /**
@@ -30,7 +28,7 @@ final class UserFavouritesResource extends JsonResource
         return [
             'type'          => 'user_favourites',
             'favourites'    => $this->transformFavourites(),
-            'links'         => $this->getPaginationLinks($request)
+            'links'         => $this->getPaginationLinks()
         ];
     }
 
@@ -39,36 +37,21 @@ final class UserFavouritesResource extends JsonResource
      */
     private function transformFavourites(): array
     {
-        return $this->collection
-            ->favourites()
-            ->toLaravelCollection()
-            ->map(function (Object $favourite) {
-                return match ($favourite::class) {
-                    Team::class     => new TeamResource($favourite),
-                    League::class   => new LeagueResource($favourite)
-                };
-            })
-            ->all();
+        return $this->favouritesResponse->favourites->toLaravelCollection()->map(function (Object $favourite) {
+            return match ($favourite::class) {
+                Team::class     => new TeamResource($favourite),
+                League::class   => new LeagueResource($favourite)
+            };
+        })->all();
     }
 
-    private function getPaginationLinks(Request $request): array
+    private function getPaginationLinks(): array
     {
-        $options = [
-            'path' => Paginator::resolveCurrentPath(),
-            'query' => Paginator::resolveQueryString()
-        ];
-
-        $perPage = $request->input('per_page', PaginationData::PER_PAGE);
-
-        $pagination = new Paginator($this->collection->favourites()->toLaravelCollection(), $perPage, options: $options);
-
-        $pagination->hasMorePagesWhen($this->collection->hasMorePages());
-
-        $links = $pagination->toArray();
+        $links = $this->favouritesResponse->paginator->toArray();
 
         $links['next_page_url'] = $this->when($links['next_page_url'] !== null, $links['next_page_url']);
         $links['prev_page_url'] = $this->when($links['prev_page_url'] !== null, $links['prev_page_url']);
-        $links['has_more_pages'] = $this->collection->hasMorePages();
+        $links['has_more_pages'] = $this->favouritesResponse->paginator->hasMorePages();
 
         return Arr::except($links, ['data']);
     }

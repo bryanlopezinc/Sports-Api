@@ -9,5 +9,5 @@ use Module\User\ValueObjects\UserId;
 
 interface FetchUserFavouritesResourcesInterface
 {
-    public function fetchResources(UserId $userId, PaginationData $pagination): FavouritesResponse;
+    public function fetchResources(UserId $userId, PaginationData $pagination): FetchUserFavouritesResourcesResult;
 }

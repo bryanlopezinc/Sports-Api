@@ -20,7 +20,7 @@ final class FetchUserFavourites
     ) {
     }
 
-    public function get(UserId $userId, PaginationData $pagination): FavouritesResponse
+    public function get(UserId $userId, PaginationData $pagination): FetchUserFavouritesResourcesResult
     {
         return $this->userFavouritesResources->fetchResources($userId, $pagination);
     }
@@ -28,7 +28,7 @@ final class FetchUserFavourites
     /**
      * @throws UserNotFoundHttpException
      */
-    public function FromRequest(UserFavouritesRequest $request): FavouritesResponse
+    public function FromRequest(UserFavouritesRequest $request): FetchUserFavouritesResourcesResult
     {
         $userId = UserId::fromRequest($request);
 

@@ -8,42 +8,52 @@ use App\Utils\PaginationData;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Client\Response;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Http;
 use Module\User\ValueObjects\UserId;
-use Module\User\Favourites\FavouritesResponse;
-use Module\User\Favourites\ResourcesCollection;
+use Module\User\Favourites\FetchUserFavouritesResourcesResult as Result;
 use Module\User\Favourites\FavouritesCollection;
 use Module\User\Favourites\FavouritesRepository;
 use Module\User\Favourites\FetchUserFavouritesResourcesInterface;
 
 final class FetchfavouritesHttpClient implements FetchUserFavouritesResourcesInterface
 {
-    /**
-     * @var array<string>
-     */
-    private array $resolvers = [
-        FetchFootballTeams::class,
-        FetchFootballLeagues::class
+    /** @var array<string> */
+    private array $factories = [
+        \Module\Football\Favourites\Clients\FetchLeaguestRequest::class,
+        \Module\Football\Favourites\Clients\FetchTeamsRequest::class
     ];
+
+    /** @var array<RequestInterface> */
+    private array $factoryInstances;
 
     public function __construct(private FavouritesRepository $repository)
     {
     }
 
-    public function fetchResources(UserId $userId, PaginationData $pagination): FavouritesResponse
+    public function fetchResources(UserId $userId, PaginationData $pagination): Result
     {
         $favourites = $this->repository->getFavourites($userId, $pagination);
 
-        $resolvers = collect($this->resolvers)->map(fn (string $resolver): FavouritesResolverInterface => app($resolver));
+        if ($favourites->isEmpty()) {
+            return new Result(new FavouritesCollection([]), new Paginator([], $pagination->getPerPage()));
+        }
 
-        $response = $this->pool($this->getPendingRequestsFrom($resolvers->all(), $favourites->getCollection()));
+        $this->setInstances();
 
-        $collection = $resolvers
-            ->map(fn (FavouritesResolverInterface $client): array => $client->mapResponsesToDto($response))
+        $response = $this->pool($this->getPendingRequestsFrom($favourites));
+
+        $collection = collect($this->factoryInstances)
+            ->map(fn (RequestInterface $factory): array => $factory->mapResponsesToDto($response))
             ->flatten()
-            ->pipe(fn (Collection $collection) => new ResourcesCollection($collection->all()));
+            ->pipe(fn (Collection $collection) => new FavouritesCollection($collection->all()));
 
-        return new FavouritesResponse($collection, $favourites->getPagination()->hasMorePages());
+        return new Result($collection, $favourites);
+    }
+
+    private function setInstances(): void
+    {
+        $this->factoryInstances = array_map(fn (string $factory): RequestInterface => app($factory), $this->factories);
     }
 
     /**
@@ -54,13 +64,14 @@ final class FetchfavouritesHttpClient implements FetchUserFavouritesResourcesInt
     private function pool(array $requests): array
     {
         $responses = Http::pool(function (Pool $pool) use ($requests) {
-            return collect($requests)
-                ->map(function (Request $request, string|int $alias) use ($pool) {
-                    return $pool
-                        ->as((string) $alias)
-                        ->withHeaders($request->headers())
-                        ->get($request->uri(), $request->query());
-                })->all();
+            $callback = function (Request $request, string|int $alias) use ($pool) {
+                return $pool
+                    ->as((string) $alias)
+                    ->withHeaders($request->headers())
+                    ->get($request->uri(), $request->query());
+            };
+
+            return collect($requests)->map($callback)->all();
         });
 
         foreach ($responses as $response) {
@@ -73,12 +84,12 @@ final class FetchfavouritesHttpClient implements FetchUserFavouritesResourcesInt
     /**
      * @return array<string, Request>
      */
-    private function getPendingRequestsFrom(array $resolvers, FavouritesCollection $collection)
+    private function getPendingRequestsFrom(Paginator $collection)
     {
         $pendingRequests = [];
 
-        collect($resolvers)
-            ->map(fn (FavouritesResolverInterface $resolver) => $resolver->getRequestObjectsFrom($collection))
+        collect($this->factoryInstances)
+            ->map(fn (RequestInterface $factory) => $factory->buildRequestObjectsWith($collection))
             ->each(function (array $requests) use (&$pendingRequests) {
                 foreach ($requests as $alias => $request) {
                     $pendingRequests[$alias] = $request;
