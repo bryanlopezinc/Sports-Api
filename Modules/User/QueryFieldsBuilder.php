@@ -15,23 +15,9 @@ final class QueryFieldsBuilder extends Builder
         return $this;
     }
 
-    public function favourites(): self
-    {
-        $this->attributes[] = QueryFields::FAVOURITES_COUNT;
-
-        return $this;
-    }
-
     public function isPrivate(): self
     {
         $this->attributes[] = QueryFields::IS_PRIVATE_PROFILE;
-
-        return $this;
-    }
-
-    public function username(): self
-    {
-        $this->attributes[] = QueryFields::USERNAME;
 
         return $this;
     }

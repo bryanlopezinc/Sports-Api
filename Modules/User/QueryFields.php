@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Module\User;
 
+use Illuminate\Support\Arr;
+use ReflectionClass;
+
 /**
  * The fields that should be returned from a user query
  */
@@ -14,18 +17,8 @@ final class QueryFields
     public const EMAIL               = 'email';
     public const PASSWORD            = 'password';
     public const USERNAME            = 'username';
-    public const IS_PRIVATE_PROFILE  = 'profile_is_private';
+    public const IS_PRIVATE_PROFILE  = 'is_private';
     public const FAVOURITES_COUNT    = 'favourites_count';
-
-    private const VALID = [
-        self::ID,
-        self::NAME,
-        self::EMAIL,
-        self::PASSWORD,
-        self::USERNAME,
-        self::IS_PRIVATE_PROFILE,
-        self::FAVOURITES_COUNT
-    ];
 
     /**
      * @param array<string> $fields
@@ -37,8 +30,10 @@ final class QueryFields
 
     private function validateFields(): void
     {
+        $valid = array_values((new ReflectionClass($this))->getConstants());
+
         foreach ($this->fields as $field) {
-            if (notInArray($field, self::VALID)) {
+            if (notInArray($field, $valid)) {
                 throw new \InvalidArgumentException('Invalid field name ' . $field);
             }
         }
@@ -49,12 +44,9 @@ final class QueryFields
         return inArray($field, $this->fields);
     }
 
-    /**
-     * @return array<string>
-     */
-    public function all(): array
+    public function except(string|array $fields): array
     {
-        return $this->fields;
+        return Arr::except($this->fields, $fields);
     }
 
     public function isEmpty(): bool

@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Module\User\Repository;
 
+use Illuminate\Support\Collection;
 use Module\User\Dto\User;
-use App\ValueObjects\Email;
 use Module\User\QueryFields;
-use Module\User\Database\Column;
 use Module\User\Models\User as Model;
-use Module\User\ValueObjects\Username;
 use Module\User\Dto\Builders\UserBuilder;
 use Module\User\Collections\UsersCollection;
 use Module\User\Collections\UserIdsCollection;
@@ -28,34 +26,11 @@ final class UserRepository implements FetchUsersRepositoryInterface, CreateUserR
 
     public function findUsersById(UserIdsCollection $ids, QueryFields $options): UsersCollection
     {
-        return $this->findManyBy(Column::ID, $ids->toIntegerArray(), $options);
-    }
-
-    public function findUsersByEmail(array $emails, QueryFields $options): UsersCollection
-    {
-        $emails = array_map(fn (Email $email): string => $email->toString(), $emails);
-
-        return $this->findManyBy(Column::EMAIL, $emails, $options);
-    }
-
-    public function findUsersByUsername(array $usernames, QueryFields $options): UsersCollection
-    {
-        $usernames = array_map(fn (Username $username): string => $username->toString(), $usernames);
-
-        return $this->findManyBy(Column::USERNAME, $usernames, $options);
-    }
-
-    /**
-     * @param array<string|int> $values
-     */
-    private function findManyBy(string $column, array $values, QueryFields $options): UsersCollection
-    {
-        $results = Model::WithQueryOptions($options)
-            ->whereIn($this->model->qualifyColumn($column), $values)
+        return Model::WithQueryOptions($options)
+            ->whereIn($this->model->qualifyColumn('id'), $ids->toIntegerArray())
             ->get()
-            ->map(fn (Model $model) => $this->clean($model, $options));
-
-        return $results->isEmpty() ? new UsersCollection([]) : new UsersCollection($this->mapResultsToDto($results->all()));
+            ->map(fn (Model $model) => $this->clean($model, $options))
+            ->pipe(fn(Collection $collection) => new UsersCollection($this->mapResultsToDto($collection->all())));
     }
 
     public function create(User $user): User
@@ -65,11 +40,11 @@ final class UserRepository implements FetchUsersRepositoryInterface, CreateUserR
         }
 
         $createdUser = $this->model->create([
-            Column::USERNAME    => $user->username()->toString(),
-            Column::EMAIL       => $user->email()->toString(),
-            Column::IS_PRIVATE  => $user->profileIsPrivate(),
-            Column::NAME        => $user->name(),
-            Column::PASSWORD    => $user->password(),
+            'username'    => $user->username()->toString(),
+            'email'       => $user->email()->toString(),
+            'is_private'  => $user->profileIsPrivate(),
+            'name'        => $user->name(),
+            'password'    => $user->password(),
         ]);
 
         return UserBuilder::fromModel($createdUser)->setFavouritesCount(0)->build();
@@ -90,8 +65,8 @@ final class UserRepository implements FetchUsersRepositoryInterface, CreateUserR
             return $model;
         }
 
-        if (!$fields->has($fields::ID)) {
-            $model->offsetUnset(Column::ID);
+        if (!$fields->has('id')) {
+            $model->offsetUnset('id');
         }
 
         return $model;

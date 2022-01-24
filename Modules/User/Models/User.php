@@ -38,8 +38,6 @@ class User extends Authenticatable
      */
     public function scopeWithQueryOptions($builder, QueryFields $queryOptions)
     {
-        $request = new ColumnsRequest($queryOptions);
-
         $builder->addSelect($this->getQualifiedKeyName());
 
         if ($queryOptions->isEmpty()) {
@@ -47,10 +45,10 @@ class User extends Authenticatable
         }
 
         if (!$queryOptions->isEmpty()) {
-            $builder->addSelect($request->qualifyAllExceptRelationsWith($this));
+            $builder->addSelect($this->qualifyColumns($queryOptions->except('favourites_count')));
         }
 
-        $this->parseFavouritesCountQuery($builder, $request);
+        $this->parseFavouritesCountQuery($builder, $queryOptions);
 
         return $builder;
     }

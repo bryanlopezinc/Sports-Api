@@ -7,7 +7,6 @@ namespace Module\User\Dto\Builders;
 use App\DTO\Builder;
 use Module\User\Dto\User;
 use App\ValueObjects\Email;
-use Module\User\Database\Column;
 use Module\User\ValueObjects\UserId;
 use Module\User\ValueObjects\Username;
 use Module\User\Models\User as UserModel;
@@ -21,13 +20,13 @@ final class UserBuilder extends Builder
         $exists = fn (string $key): bool => array_key_exists($key, $attributes);
 
         return (new self)
-            ->when($exists(Column::ID), fn (UserBuilder $b) => $b->setId($attributes[Column::ID]))
-            ->when($exists(Column::NAME), fn (UserBuilder $b) => $b->setName($attributes[Column::NAME]))
-            ->when($exists(Column::USERNAME), fn (UserBuilder $b) => $b->setUsername($attributes[Column::USERNAME]))
-            ->when($exists(Column::EMAIL), fn (UserBuilder $b) => $b->setEmail($attributes[Column::EMAIL]))
-            ->when($exists(Column::PASSWORD), fn (UserBuilder $b) => $b->setPassword($attributes[Column::PASSWORD]))
-            ->when($exists(Column::IS_PRIVATE), fn (UserBuilder $b) => $b->setIsPrivate($model->getAttribute(Column::IS_PRIVATE)))
-            ->when($exists(Column::FAVOURITES_COUNT), fn (UserBuilder $b) => $b->setFavouritesCount($model->getAttribute(Column::FAVOURITES_COUNT)));
+            ->when($exists('id'), fn (UserBuilder $b) => $b->setId($attributes['id']))
+            ->when($exists('name'), fn (UserBuilder $b) => $b->setName($attributes['name']))
+            ->when($exists('username'), fn (UserBuilder $b) => $b->setUsername($attributes['username']))
+            ->when($exists('email'), fn (UserBuilder $b) => $b->setEmail($attributes['email']))
+            ->when($exists('password'), fn (UserBuilder $b) => $b->setPassword($attributes['password']))
+            ->when($exists('is_private'), fn (UserBuilder $b) => $b->setIsPrivate($model->getAttribute('is_private')))
+            ->when($exists('favourites_count'), fn (UserBuilder $b) => $b->setFavouritesCount($model->getAttribute('favourites_count')));
     }
 
     public function setId(int $id): self

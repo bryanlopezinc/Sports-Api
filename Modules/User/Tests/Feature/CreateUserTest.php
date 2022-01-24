@@ -75,7 +75,7 @@ class CreateUserTest extends TestCase
         ])
             ->assertStatus(422)
             ->assertJsonMissingValidationErrors('username')
-            ->assertJsonValidationErrors(['email' => 'Email is already taken']);
+            ->assertJsonValidationErrors(['email' => 'The email has already been taken.']);
     }
 
     public function test_username_must_be_unique(): void
@@ -96,6 +96,6 @@ class CreateUserTest extends TestCase
         ])
             ->assertStatus(422)
             ->assertJsonMissingValidationErrors('email')
-            ->assertJsonValidationErrors(['username' => 'Username is already taken']);
+            ->assertJsonValidationErrors(['username' => 'The username has already been taken.']);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Models;
 
-use Module\User\Database\Column;
+use Module\User\QueryFields;
 
 trait ScopeFavouritesCount
 {
@@ -13,9 +13,9 @@ trait ScopeFavouritesCount
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function parseFavouritesCountQuery(&$builder, ColumnsRequest $request)
+    protected function parseFavouritesCountQuery(&$builder, QueryFields $options)
     {
-        $wantsFavoritesCount = $request->wantsFavouritesCountRelation() ?: $request->gueryFields()->isEmpty();
+        $wantsFavoritesCount = $options->has($options::FAVOURITES_COUNT) ?: $options->isEmpty();
 
         if (!$wantsFavoritesCount) {
             return $builder;
@@ -24,7 +24,7 @@ trait ScopeFavouritesCount
         return $builder->join('users_favourites_count', 'users.id', '=', 'users_favourites_count.user_id', 'left outer')
             ->addSelect([
                 'users_favourites_count.user_id',
-                'users_favourites_count.count as ' . Column::FAVOURITES_COUNT,
+                'users_favourites_count.count as favourites_count',
             ]);
     }
 }

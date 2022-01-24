@@ -40,9 +40,7 @@ class UserRepositoryTest extends TestCase
 
         $options = QueryFields::builder()->email()->build();
 
-        $id = $user->id; // @phpstan-ignore-line
-
-        $result = $this->repository->findUsersById((new UserId($id))->asCollection(), $options)->sole();
+        $result = $this->repository->findUsersById((new UserId($user->id))->asCollection(), $options)->sole();
 
         $this->assertCount(1, $result->toArray());
 
