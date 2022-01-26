@@ -15,6 +15,7 @@ final class FetchHeadlinesRepository implements FetchHeadlinesRepositoryInterfac
     private const SOURCES = [
         \Module\Football\News\DataProviders\Goal\GetHeadlines::class,
         \Module\Football\News\DataProviders\Goal\GetTransferNews::class,
+        \Module\Football\News\DataProviders\SkySports\LatestNews::class,
     ];
 
     public function headlines(): array

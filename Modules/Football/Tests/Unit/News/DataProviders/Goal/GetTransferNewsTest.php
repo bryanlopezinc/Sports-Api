@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Unit\News\DataProviders\Goal;
 
 use Tests\TestCase;
-use Illuminate\Http\Client\Response;
 use Illuminate\Contracts\Cache\Repository;
-use GuzzleHttp\Psr7\Response as Psr7Response;
+use Illuminate\Support\Facades\Http;
 use Module\Football\News\DataProviders\Goal\GetTransferNews;
 use Psr\Log\LoggerInterface;
 
@@ -37,7 +36,7 @@ class GetTransferNewsTest extends TestCase
         $provider = app(GetTransferNews::class);
 
         $provider->toNewsArticles([
-            $provider::ALIAS => new Response(new Psr7Response(body: $this->rawHtml()))
+            $provider::ALIAS => Http::fake(fn () => Http::response($this->rawHtml()))->get('https://google.com')
         ]);
     }
 
@@ -69,7 +68,7 @@ class GetTransferNewsTest extends TestCase
         HTML;
 
         $provider->toNewsArticles([
-            $provider::ALIAS => new Response(new Psr7Response(body: $html))
+            $provider::ALIAS => Http::fake(fn () => Http::response($html))->get('https://google.com')
         ]);
     }
 
@@ -100,7 +99,7 @@ class GetTransferNewsTest extends TestCase
         HTML;
 
         $provider->toNewsArticles([
-            $provider::ALIAS => new Response(new Psr7Response(body: $html))
+            $provider::ALIAS => Http::fake(fn () => Http::response($html))->get('https://google.com')
         ]);
     }
 
@@ -118,7 +117,7 @@ class GetTransferNewsTest extends TestCase
         $provider = app(GetTransferNews::class);
 
         $provider->toNewsArticles([
-            $provider::ALIAS => new Response(new Psr7Response(404))
+            $provider::ALIAS => Http::fake(fn () => Http::response(status: 404))->get('https://google.com')
         ]);
     }
 

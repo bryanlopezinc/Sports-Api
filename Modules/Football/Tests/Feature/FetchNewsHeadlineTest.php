@@ -16,8 +16,9 @@ class FetchNewsHeadlineTest extends TestCase
 
         Http::fakeSequence()
             ->push(file_get_contents(base_path('Modules\Football\Tests\Stubs\Goal.com\news.html')))
-            ->push(file_get_contents(base_path('Modules\Football\Tests\Stubs\Goal.com\transfer-news.html')));
+            ->push(file_get_contents(base_path('Modules\Football\Tests\Stubs\Goal.com\transfer-news.html')))
+            ->push(file_get_contents(base_path('Modules\Football\Tests\Stubs\SkySports\latest.html')));
 
-        $this->getJson(route(RouteName::NEWS))->assertSuccessful()->assertJsonCount(40, 'data');
+        $this->getJson(route(RouteName::NEWS))->assertSuccessful()->assertJsonCount(60, 'data');
     }
 }
