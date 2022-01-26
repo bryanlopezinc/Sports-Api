@@ -130,3 +130,6 @@ Route::middleware([TransactionMiddleware::class, 'auth:' . Config::GUARD])->grou
         ->name(RouteName::ADD_LEAGUE_TO_FAVOURITES)
         ->middleware(Convert::keys('id'));
 });
+
+//News
+Route::get('news', \Module\Football\News\FetchNewsHeadlinesController::class)->name(RouteName::NEWS);

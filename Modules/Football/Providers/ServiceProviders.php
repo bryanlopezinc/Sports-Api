@@ -14,6 +14,7 @@ final class ServiceProviders
         \Module\Football\Prediction\Providers\EventServiceProvider::class,
         \Module\Football\Prediction\Providers\MigrationsServiceProvider::class,
         \Module\Football\Prediction\Providers\FixturePredictionsContextualBindingServiceProvider::class,
+        \Module\Football\News\ServiceProvider::class
     ];
 
     /**
