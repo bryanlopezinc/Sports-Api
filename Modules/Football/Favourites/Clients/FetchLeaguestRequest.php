@@ -9,13 +9,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Http\Client\Response;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\Pool;
 use Module\Football\ValueObjects\LeagueId;
-use Module\User\Favourites\Clients\Request;
 use Module\Football\Favourites\Models\Favourite;
 use Module\Football\Services\CacheLeagueService;
 use Module\Football\Collections\LeaguesCollection;
 use Module\Football\Collections\LeagueIdsCollection;
-use Module\User\Favourites\Clients\RequestInterface;
+use Module\User\Favourites\Clients\RequestsFavouriteResourceInterface as RequestInterface;
 use Module\Football\Contracts\Cache\LeaguesCacheInterface;
 use Module\Football\Clients\ApiSports\V3\FetchLeagueHttpClient;
 use Module\Football\Clients\ApiSports\V3\Requests\FetchLeagueByIdRequest;
@@ -32,24 +32,21 @@ final class FetchLeaguestRequest implements RequestInterface
     }
 
     /**
-     * @return array<Request>
+     * {@inheritdoc}
      */
-    public function buildRequestObjectsWith(Paginator $collection): array
+    public function configure(Pool $pool, Paginator $collection): array
     {
-        $requests = [];
-
-        $collection->getCollection()
+        return $collection->getCollection()
             ->filter(fn (Model $favourite) => $favourite['type'] === Favourite::LEAGUE_TYPE)
             ->map(fn (Model $favourite) => new LeagueId($favourite['favourite_id']))
             ->tap(fn (Collection $collection) => $this->requestedIds = new LeagueIdsCollection($collection->all()))
             ->reject(fn (LeagueId $leagueId) => $this->cache->has($leagueId))
-            ->each(function (LeagueId $id) use (&$requests) {
-                $request = new FetchLeagueByIdRequest($id);
+            ->map(function (LeagueId $id) use ($pool) {
+                $endpoint = new FetchLeagueByIdRequest($id);
 
-                $requests[$this->key($id)] = new Request($request->uri(), $request->query(), $request->headers());
-            });
-
-        return $requests;
+                return $pool->as($this->key($id))->withHeaders($endpoint->headers())->get($endpoint->uri(), $endpoint->query());
+            })
+            ->all();
     }
 
     public function key(LeagueId $leagueId = null): string
@@ -60,12 +57,13 @@ final class FetchLeaguestRequest implements RequestInterface
     /**
      * @param array<string, Response> $response
      */
-    public function mapResponsesToDto(array $response): array
+    public function toDataTransferObject(array $response): array
     {
         $jsonResponseMapper = new FetchLeagueHttpClient();
 
         return collect($response)
             ->filter(fn (Response $response, string $alias): bool => str_starts_with($alias, $this->key()))
+            ->each(fn (Response $response) => $response->onError(fn () => abort(500)))
             ->map(fn (Response $response): League => $jsonResponseMapper->mapJsonResponseIntoLeagueDto($response))
             ->tap(fn (Collection $collection) => $this->cacheLeagueService->cacheMany(new LeaguesCollection($collection->all())))
             ->pipe(fn (Collection $collection) => $this->cache->findManyById($this->requestedIds)->merge($collection->all())->toArray());

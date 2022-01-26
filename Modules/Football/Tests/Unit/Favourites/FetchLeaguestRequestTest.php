@@ -6,6 +6,7 @@ namespace Module\Football\Tests\Unit\Favourites;
 
 use GuzzleHttp\Psr7\Response as Psr7Response;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
 use Illuminate\Pagination\Paginator;
 use Module\Football\Collections\LeaguesCollection;
@@ -33,10 +34,9 @@ class FetchLeaguestRequestTest extends TestCase
         /** @var FetchLeaguestRequest */
         $request = app(FetchLeaguestRequest::class);
 
-        $result = $request->buildRequestObjectsWith(new Paginator($models, 12));
+        $result = $request->configure(new Pool(), new Paginator($models, 12));
 
         $this->assertCount(1, $result);
-        $this->assertEquals($request->key(new LeagueId(21)), array_key_first($result));
     }
 
     public function test_will_return_correct_response(): void
@@ -54,9 +54,9 @@ class FetchLeaguestRequestTest extends TestCase
         /** @var FetchLeaguestRequest */
         $request = app(FetchLeaguestRequest::class);
 
-        $result = $request->buildRequestObjectsWith(new Paginator($models, 12));
+        $result = $request->configure(new Pool(), new Paginator($models, 12));
 
-        $result = $request->mapResponsesToDto([
+        $result = $request->toDataTransferObject([
             $request->key() => new Response(new Psr7Response(body: FetchLeagueResponse::json()))
         ]);
 
