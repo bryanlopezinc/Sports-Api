@@ -19,13 +19,10 @@ use Module\User\Favourites\FetchUserFavouritesResourcesInterface;
 final class FetchfavouritesHttpClient implements FetchUserFavouritesResourcesInterface
 {
     /** @var array<string> */
-    private array $factories = [
+    private const CLIENTS = [
         \Module\Football\Favourites\Clients\FetchLeaguestRequest::class,
         \Module\Football\Favourites\Clients\FetchTeamsRequest::class
     ];
-
-    /** @var array<RequestInterface> */
-    private array $factoryInstances;
 
     public function __construct(private FavouritesRepository $repository)
     {
@@ -39,63 +36,27 @@ final class FetchfavouritesHttpClient implements FetchUserFavouritesResourcesInt
             return new Result(new FavouritesCollection([]), new Paginator([], $pagination->getPerPage()));
         }
 
-        $this->setInstances();
+        $instances = array_map(fn (string $client): RequestsFavouriteResourceInterface => app($client), self::CLIENTS);
 
-        $response = $this->pool($this->getPendingRequestsFrom($favourites));
+        $response = $this->pool($instances, $favourites);
 
-        $collection = collect($this->factoryInstances)
-            ->map(fn (RequestInterface $factory): array => $factory->mapResponsesToDto($response))
+        $collection = collect($instances)
+            ->map(fn (RequestsFavouriteResourceInterface $client): array => $client->toDataTransferObject($response))
             ->flatten()
             ->pipe(fn (Collection $collection) => new FavouritesCollection($collection->all()));
 
         return new Result($collection, $favourites);
     }
 
-    private function setInstances(): void
-    {
-        $this->factoryInstances = array_map(fn (string $factory): RequestInterface => app($factory), $this->factories);
-    }
-
     /**
-     * @param array<string, Request> $requests
+     * @param array<RequestsFavouriteResourceInterface> $clients
      *
-     * @return array<string, Response>
+     * @return array<string|int, Response>
      */
-    private function pool(array $requests): array
+    private function pool(array $clients, Paginator $favourites): array
     {
-        $responses = Http::pool(function (Pool $pool) use ($requests) {
-            $callback = function (Request $request, string|int $alias) use ($pool) {
-                return $pool
-                    ->as((string) $alias)
-                    ->withHeaders($request->headers())
-                    ->get($request->uri(), $request->query());
-            };
-
-            return collect($requests)->map($callback)->all();
+        return Http::pool(function (Pool $pool) use ($clients, $favourites) {
+            return collect($clients)->map(fn (RequestsFavouriteResourceInterface $client): array => $client->configure($pool, $favourites))->flatten()->all();
         });
-
-        foreach ($responses as $response) {
-            $response->onError(fn (Response $response) => abort(500));
-        }
-
-        return $responses;
-    }
-
-    /**
-     * @return array<string, Request>
-     */
-    private function getPendingRequestsFrom(Paginator $collection)
-    {
-        $pendingRequests = [];
-
-        collect($this->factoryInstances)
-            ->map(fn (RequestInterface $factory) => $factory->buildRequestObjectsWith($collection))
-            ->each(function (array $requests) use (&$pendingRequests) {
-                foreach ($requests as $alias => $request) {
-                    $pendingRequests[$alias] = $request;
-                }
-            });
-
-        return $pendingRequests;
     }
 }

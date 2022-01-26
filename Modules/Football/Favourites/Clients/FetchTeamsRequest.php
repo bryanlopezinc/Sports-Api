@@ -16,9 +16,9 @@ use Module\Football\Clients\ApiSports\V3\FetchTeamHttpClient;
 use Module\Football\Clients\ApiSports\V3\Requests\FetchTeamByIdRequest;
 use Module\Football\Collections\TeamIdsCollection;
 use Module\Football\Favourites\Models\Favourite;
-use Module\User\Favourites\Clients\RequestInterface;
+use Module\User\Favourites\Clients\RequestsFavouriteResourceInterface as RequestInterface;
 use Illuminate\Database\Eloquent\Model;
-use Module\User\Favourites\Clients\Request;
+use Illuminate\Http\Client\Pool;
 
 /**
  * Prepare the team ids from user favourites (football) table for api request
@@ -34,22 +34,19 @@ final class FetchTeamsRequest implements RequestInterface
     /**
      * {@inheritdoc}
      */
-    public function buildRequestObjectsWith(Paginator $collection): array
+    public function configure(Pool $pool, Paginator $collection): array
     {
-        $requests = [];
-
-        $collection->getCollection()
+        return $collection->getCollection()
             ->filter(fn (Model $favourite) => $favourite['type'] === Favourite::TEAM_TYPE)
             ->map(fn (Model $favourite) => new TeamId($favourite['favourite_id']))
             ->tap(fn (Collection $collection) => $this->requestedTeams = new TeamIdsCollection($collection->all()))
             ->reject(fn (TeamId $teamId) => $this->teamsCache->has($teamId))
-            ->each(function (TeamId $id) use (&$requests) {
-                $request = new FetchTeamByIdRequest($id);
+            ->map(function (TeamId $id) use ($pool) {
+                $endpoint = new FetchTeamByIdRequest($id);
 
-                $requests[$this->key($id)] = new Request($request->uri(), $request->query(), $request->headers());
-            });
-
-        return $requests;
+                return $pool->as($this->key($id))->withHeaders($endpoint->headers())->get($endpoint->uri(), $endpoint->query());
+            })
+            ->all();
     }
 
     public function key(TeamId $teamId = null): string
@@ -58,14 +55,15 @@ final class FetchTeamsRequest implements RequestInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param array<string, Response> $response
      */
-    public function mapResponsesToDto(array $response): array
+    public function toDataTransferObject(array $response): array
     {
         $jsonResponseMapper = new FetchTeamHttpClient();
 
         return collect($response)
             ->filter(fn (Response $response, string $alias): bool => str_starts_with($alias, $this->key()))
+            ->each(fn (Response $response) => $response->onError(fn () => abort(500)))
             ->map(fn (Response $response): Team => $jsonResponseMapper->mapJsonResponseIntoTeamDto($response))
             ->tap(fn (Collection $collection) => $this->cacheTeamService->cacheMany(new TeamsCollection($collection->all())))
             ->pipe(fn (Collection $collection) => $this->teamsCache->getMany($this->requestedTeams)->merge($collection->all())->toArray());
