@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Tests\Feature;
 
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Http;
@@ -18,12 +19,7 @@ use Module\Football\ValueObjects\TeamId;
 
 class AddFootballTeamToFavouriteTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Favourite::truncate();
-    }
+    use LazilyRefreshDatabase;
 
     private function getTestRespone(int $id): TestResponse
     {
