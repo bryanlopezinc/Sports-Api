@@ -30,4 +30,5 @@ final class RouteName
     public const ADD_TEAM_TO_FAVOURITES      = 'soccer:AddTeamToFavourites';
     public const ADD_LEAGUE_TO_FAVOURITES    = 'soccer:AddLeagueToFavourites';
     public const NEWS                        = 'soccer:news';
+    public const CREATE_COMMENT              = 'soccer:createComment';
 }

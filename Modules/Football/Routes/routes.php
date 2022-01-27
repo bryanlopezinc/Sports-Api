@@ -95,6 +95,10 @@ Route::prefix('fixtures')->group(function () {
     Route::get('predictions', PC\FetchFixturePredictionsController::class)
         ->name(RouteName::FIXTURE_PREDICTIONS)
         ->middleware(Convert::keys('id'), 'cache.headers:max_age=600');
+
+    Route::post('comments', Controllers\CreateCommentController::class)
+        ->name(RouteName::CREATE_COMMENT)
+        ->middleware(Convert::keys('fixture_id'), TransactionMiddleware::class, 'auth:' . Config::GUARD);
 });
 
 //Coaches routes
