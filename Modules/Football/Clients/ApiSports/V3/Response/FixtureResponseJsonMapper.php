@@ -55,7 +55,7 @@ final class FixtureResponseJsonMapper
             ->setLeague($this->mapLeagueResponseIntoDto($this->response->get('league')))
             ->setHomeTeam($this->mapTeamResponseIntoDto($this->response->get('teams.home')))
             ->setAwayTeam($this->mapTeamResponseIntoDto($this->response->get('teams.away')))
-            ->setWinnerId($this->determineWinnerId())
+            ->setWinnerId($this->getWinnerId())
             ->setGoals($this->response->get('goals.home'), $this->response->get('goals.away'))
             ->setHalfTimeScore($this->response->get('score.halftime.home'), $this->response->get('score.halftime.away'))
             ->setFullTimeScore($this->response->get('score.fulltime.home'), $this->response->get('score.fulltime.away'))
@@ -170,7 +170,7 @@ final class FixtureResponseJsonMapper
         return $response->get('city') !== null && $response->get('name') !== null;
     }
 
-    private function determineWinnerId(): ?int
+    private function getWinnerId(): ?int
     {
         $teams = $this->response->get('teams');
 
