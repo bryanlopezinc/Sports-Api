@@ -6,6 +6,7 @@ namespace Module\Football\DTO;
 
 use App\ValueObjects\Country;
 use App\DTO\DataTransferObject;
+use Module\Football\Venue;
 use Module\Football\Media\ImageUrl;
 use Module\Football\ValueObjects\Name;
 use Module\Football\ValueObjects\TeamId;

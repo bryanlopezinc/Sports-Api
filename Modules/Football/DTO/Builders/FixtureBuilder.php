@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Football\DTO\Builders;
 
 use Module\Football\DTO\Team;
-use Module\Football\DTO\Venue;
 use Module\Football\DTO\League;
 use Module\Football\DTO\Fixture;
 use Module\Football\FixtureReferee as Referee;
 use Module\Football\FixturePeriodGoals;
+use Module\Football\Venue;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\ValueObjects\TimeZone;
 use Module\Football\ValueObjects\FixtureId;
@@ -43,11 +43,6 @@ final class FixtureBuilder extends Builder
     public function setVenue(Venue $venue): self
     {
         return $this->set('venue', $venue);
-    }
-
-    public function setVenueInfoIsAvailable(bool $isAvailable): self
-    {
-        return $this->set('has_venue_info', $isAvailable);
     }
 
     public function setPenaltyScore(?int $goalsHome, ?int $goalsAway): self

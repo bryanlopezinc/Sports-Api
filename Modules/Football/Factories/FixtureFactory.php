@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Module\Football\Factories;
 
 use Module\Football\DTO\Team;
-use Module\Football\DTO\Venue;
 use Module\Football\DTO\League;
 use Module\Football\DTO\Fixture;
 use Module\Football\ValueObjects\TimeElapsed;
 use Module\Football\ValueObjects\FixtureStatus;
 use Module\Football\Collections\FixturesCollection;
 use Module\Football\DTO\Builders\FixtureBuilder;
+use Module\Football\Venue;
+use Module\Football\ValueObjects\Name;
 use Module\Football\ValueObjects\TeamId;
 
 final class FixtureFactory extends Factory
@@ -35,8 +36,7 @@ final class FixtureFactory extends Factory
             ->setHomeTeam($homeTeam = new Team(TeamFactory::new()->makeAttributes()))
             ->setAwayTeam(new Team(TeamFactory::new()->makeAttributes()))
             ->setLeague(new League(LeagueFactory::new()->makeAttributes()))
-            ->setVenue(new Venue(VenueFactory::new()->makeAttributes()))
-            ->setVenueInfoIsAvailable(true)
+            ->setVenue(new Venue(new Name($this->faker->company), $this->faker->city))
             ->setWinnerId($homeTeam->getId()->toInt())
             ->toArray();
     }

@@ -7,7 +7,7 @@ namespace Module\Football\DTO\Builders;
 use Stringable;
 use App\ValueObjects\Country;
 use Module\Football\DTO\Team;
-use Module\Football\DTO\Venue;
+use Module\Football\Venue;
 use Module\Football\Media\UrlGenerator;
 use Module\Football\ValueObjects\Name;
 use Module\Football\ValueObjects\TeamId;

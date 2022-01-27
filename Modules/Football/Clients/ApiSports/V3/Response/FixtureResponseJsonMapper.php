@@ -7,20 +7,19 @@ namespace Module\Football\Clients\ApiSports\V3\Response;
 use Carbon\Carbon;
 use Module\Football\Clients\ApiSports\V3\CountryNameNormalizers\CountryNameNormalizerUsingSimilarText;
 use Module\Football\DTO\Team;
-use Module\Football\DTO\Venue;
 use Module\Football\DTO\League;
 use Module\Football\DTO\Fixture;
 use Module\Football\DTO\Builders\TeamBuilder;
-use Module\Football\DTO\Builders\VenueBuilder;
 use Module\Football\DTO\Builders\LeagueBuilder;
 use Module\Football\ValueObjects\FixtureStatus;
 use Module\Football\DTO\Builders\FixtureBuilder;
 use Module\Football\DTO\Builders\LeagueSeasonBuilder;
+use Module\Football\ValueObjects\Name;
+use Module\Football\Venue;
 
 final class FixtureResponseJsonMapper
 {
     private FixtureBuilder $builder;
-    private VenueBuilder $venueBuilder;
     private LeagueBuilder $leagueBuilder;
     private Response $response;
 
@@ -30,14 +29,12 @@ final class FixtureResponseJsonMapper
     public function __construct(
         array $data,
         FixtureBuilder $builder = null,
-        VenueBuilder $venueBuilder = null,
         private ?TeamBuilder $teamBilder = null,
         LeagueBuilder $leagueBuilder = null
     ) {
 
         $this->response = new Response($data);
         $this->builder = $builder ?: new FixtureBuilder;
-        $this->venueBuilder = $venueBuilder ?: new VenueBuilder();
         $this->leagueBuilder = $leagueBuilder ?: new LeagueBuilder();
     }
 
@@ -50,8 +47,7 @@ final class FixtureResponseJsonMapper
             ->setDate(Carbon::parse($this->response->get('fixture.date'))->toDateTimeString())
             ->setFixtureStatus($this->convertFixtureStatus())
             ->setTimeElapsed($this->response->get('fixture.status.elapsed'))
-            ->setVenueInfoIsAvailable($this->hasVenueDetails())
-            ->when($this->hasVenueDetails(), fn (FixtureBuilder $b) => $b->setVenue($this->mapVenueResponseIntoDto()))
+            ->setVenue($this->getVenue())
             ->setLeague($this->mapLeagueResponseIntoDto($this->response->get('league')))
             ->setHomeTeam($this->mapTeamResponseIntoDto($this->response->get('teams.home')))
             ->setAwayTeam($this->mapTeamResponseIntoDto($this->response->get('teams.away')))
@@ -153,21 +149,16 @@ final class FixtureResponseJsonMapper
             ->build();
     }
 
-    private function mapVenueResponseIntoDto(): Venue
+    private function getVenue(): Venue
     {
-        $response = new Response($this->response->get('fixture.venue'));
+        $city = $this->response->get('fixture.venue.city');
+        $name = $this->response->get('fixture.venue.name');
 
-        return $this->venueBuilder
-            ->setCity($response->get('city'))
-            ->setName($response->get('name'))
-            ->build();
-    }
+        if (is_null($city) || is_null($name)) {
+            return Venue::unknown();
+        }
 
-    private function hasVenueDetails(): bool
-    {
-        $response = new Response($this->response->get('fixture.venue'));
-
-        return $response->get('city') !== null && $response->get('name') !== null;
+        return new Venue(new Name($name), $city);
     }
 
     private function getWinnerId(): ?int

@@ -16,6 +16,7 @@ use Module\Football\ValueObjects\FixtureStatus;
 use Module\Football\ValueObjects\FixtureStartTime;
 use Module\Football\Attributes\FixtureValidators\EnsureWinnerIdBelongsToFixtureTeams;
 use Module\Football\Attributes\FixtureValidators\EnsureFixtureHomeAndAwayTeamAreNotSame;
+use Module\Football\Venue;
 
 #[EnsureFixtureHomeAndAwayTeamAreNotSame]
 #[EnsureWinnerIdBelongsToFixtureTeams]
@@ -27,7 +28,6 @@ final class Fixture extends DataTransferObject
     protected FixtureId $id;
     protected FixtureReferee $referee;
     protected Venue $venue;
-    protected bool $has_venue_info;
     protected FixtureStatus $status;
     protected Team $home_team;
     protected Team $away_team;
@@ -46,19 +46,9 @@ final class Fixture extends DataTransferObject
     protected FixturePeriodGoals $penalty_score;
     protected League $league;
 
-    /**
-     * The venue info is not always available for some fixtures.
-     * The venueInfoIsAvailable method should be used to check if the fixture has venue info
-     * before calling this method.
-     */
     public function venue(): Venue
     {
         return $this->venue;
-    }
-
-    public function venueInfoIsAvailable(): bool
-    {
-        return $this->has_venue_info;
     }
 
     /**
