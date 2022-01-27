@@ -13,7 +13,7 @@ use Module\Football\ValueObjects\PlayerId;
 use Module\Football\ValueObjects\PlayerAge;
 use Module\Football\ValueObjects\HeightValue;
 use Module\Football\ValueObjects\JerseyNumber;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as PlayerName;
 use Module\Football\ValueObjects\PlayerPosition;
 use Stringable;
 
@@ -56,7 +56,7 @@ final class PlayerBuilder extends Builder
 
     public function setName(string $name): self
     {
-        return $this->set('name', new Name($name));
+        return $this->set('name', new PlayerName($name));
     }
 
     public function setPosition(int $position): self

@@ -12,7 +12,7 @@ use Module\Football\ValueObjects\FixtureStatus;
 use Module\Football\Collections\FixturesCollection;
 use Module\Football\DTO\Builders\FixtureBuilder;
 use Module\Football\Venue;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as VenueName;
 use Module\Football\ValueObjects\TeamId;
 
 final class FixtureFactory extends Factory
@@ -36,7 +36,7 @@ final class FixtureFactory extends Factory
             ->setHomeTeam($homeTeam = new Team(TeamFactory::new()->makeAttributes()))
             ->setAwayTeam(new Team(TeamFactory::new()->makeAttributes()))
             ->setLeague(new League(LeagueFactory::new()->makeAttributes()))
-            ->setVenue(new Venue(new Name($this->faker->company), $this->faker->city))
+            ->setVenue(new Venue(new VenueName($this->faker->company), $this->faker->city))
             ->setWinnerId($homeTeam->getId()->toInt())
             ->toArray();
     }

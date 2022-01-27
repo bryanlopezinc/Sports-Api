@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Football\ValueObjects;
+namespace App\ValueObjects;
 
-final class Name
+final class NonEmptyString
 {
     public function __construct(private string $value)
     {

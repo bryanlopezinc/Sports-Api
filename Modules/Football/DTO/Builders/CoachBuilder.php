@@ -10,7 +10,7 @@ use App\ValueObjects\Country;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\Coach;
 use Module\Football\Media\UrlGenerator;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as CoachName;
 use Module\Football\ValueObjects\CoachId;
 use Module\Football\ValueObjects\CoachAge;
 
@@ -30,7 +30,7 @@ final class CoachBuilder extends Builder
 
     public function name(string $name): self
     {
-        return $this->set('name', new Name($name));
+        return $this->set('name', new CoachName($name));
     }
 
     public function setCountry(string|Stringable $country): self

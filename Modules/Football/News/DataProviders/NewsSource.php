@@ -8,7 +8,7 @@ use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Collection;
 use Module\Football\News\NewsArticle;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as Title;
 use Psr\Log\LoggerInterface;
 
 abstract class NewsSource
@@ -47,7 +47,7 @@ abstract class NewsSource
                 return false;
             }
 
-            return new NewsArticle($url, new Name($title), $body);
+            return new NewsArticle($url, new Title($title), $body);
         };
 
         $articles = collect($xpath->query($this->queryExpression()))->map($callback);

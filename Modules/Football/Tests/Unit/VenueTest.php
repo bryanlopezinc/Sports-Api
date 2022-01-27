@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Unit;
 
 use Module\Football\Venue;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as Name;
 use Tests\TestCase;
 
 class VenueTest extends TestCase

@@ -9,7 +9,7 @@ use App\ValueObjects\Country;
 use Module\Football\DTO\Team;
 use Module\Football\Venue;
 use Module\Football\Media\UrlGenerator;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as TeamName;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\ValueObjects\TeamYearFounded;
 
@@ -22,7 +22,7 @@ final class TeamBuilder extends Builder
 
     public function setName(string $name): self
     {
-        return $this->set('name', new Name($name));
+        return $this->set('name', new TeamName($name));
     }
 
     public function setIsNational(bool $isNational): self

@@ -9,14 +9,14 @@ use App\DTO\DataTransferObject;
 use Module\Football\Media\ImageUrl;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\ValueObjects\LeagueType;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as LeagueName;
 
 final class League extends DataTransferObject
 {
     protected LeagueId $id;
     protected ImageUrl $logo;
     protected Country $country;
-    protected Name $name;
+    protected LeagueName $name;
     protected LeagueType $type;
     protected LeagueSeason $season;
 
@@ -40,7 +40,7 @@ final class League extends DataTransferObject
         return $this->logo;
     }
 
-    public function getName(): Name
+    public function getName(): LeagueName
     {
         return $this->name;
     }

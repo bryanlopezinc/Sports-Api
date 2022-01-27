@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Football;
 
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString;
 
 final class Venue
 {
-    public function __construct(public readonly ?Name $name, public readonly ?string $city)
+    public function __construct(public readonly ?NonEmptyString $name, public readonly ?string $city)
     {
         if (count(array_filter(func_get_args())) === 1) {
             throw new \LogicException(code: 3000);

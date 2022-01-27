@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football;
 
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as Name;
 
 final class FixtureReferee
 {

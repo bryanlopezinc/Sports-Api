@@ -8,7 +8,7 @@ use App\ValueObjects\Date;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\Builders\TeamBuilder;
 use Module\Football\ValueObjects\CoachCareer;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as TeamName;
 
 final class CoachCareerJsonMapper
 {
@@ -40,10 +40,10 @@ final class CoachCareerJsonMapper
         return new Date($this->response->get('end'));
     }
 
-    private function getTeam(): Team|Name
+    private function getTeam(): Team|TeamName
     {
         if ($this->response->get('team.id') === null) {
-            return new Name($this->response->get('team.name'));
+            return new TeamName($this->response->get('team.name'));
         }
 
         return (new TeamJsonMapper($this->response->get('team'), $this->teamBuilder))->toDataTransferObject();

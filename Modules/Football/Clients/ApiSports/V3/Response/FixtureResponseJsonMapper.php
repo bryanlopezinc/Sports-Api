@@ -14,7 +14,7 @@ use Module\Football\DTO\Builders\LeagueBuilder;
 use Module\Football\ValueObjects\FixtureStatus;
 use Module\Football\DTO\Builders\FixtureBuilder;
 use Module\Football\DTO\Builders\LeagueSeasonBuilder;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as VenueName;
 use Module\Football\Venue;
 
 final class FixtureResponseJsonMapper
@@ -158,7 +158,7 @@ final class FixtureResponseJsonMapper
             return Venue::unknown();
         }
 
-        return new Venue(new Name($name), $city);
+        return new Venue(new VenueName($name), $city);
     }
 
     private function getWinnerId(): ?int

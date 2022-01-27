@@ -7,7 +7,7 @@ namespace Module\Football\Clients\ApiSports\V3\Response;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\Builders\TeamBuilder;
 use Module\Football\Venue;
-use Module\Football\ValueObjects\Name;
+use App\ValueObjects\NonEmptyString as VenueName;
 
 final class TeamResponseJsonMapper
 {
@@ -29,7 +29,7 @@ final class TeamResponseJsonMapper
     {
         return $this->builder
             ->fromTeam((new TeamJsonMapper($this->response->get('team'), $this->builder))->toDataTransferObject())
-            ->setVenue(new Venue(new Name($this->response->get('venue.name')), $this->response->get('venue.city'))
+            ->setVenue(new Venue(new VenueName($this->response->get('venue.name')), $this->response->get('venue.city'))
             )->build();
     }
 }
