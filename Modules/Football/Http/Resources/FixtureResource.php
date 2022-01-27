@@ -87,10 +87,10 @@ final class FixtureResource extends JsonResource implements FixtureJsonResourceI
     {
         return [
             'meta'        => [
-                'has_first_half_score'   => $hasFirstPeriodScore   = $this->fixture->hasFirstPeriodScore(),
-                'has_full_time_score'    => $hasSecondPeriodScore = $this->fixture->hasSecondPeriodScore(),
-                'has_extra_time_score'   => $hasExtraTimeScore    = $this->fixture->hasExtraPeriodScore(),
-                'has_penalty_score'      => $hasPenaltyScore      = $this->fixture->hasPenaltyPeriodScore()
+                'has_first_half_score'   => $hasFirstPeriodScore   = $this->fixture->getFirstPeriodScore()->isAvailable(),
+                'has_full_time_score'    => $hasSecondPeriodScore = $this->fixture->getSecondPeriodScore()->isAvailable(),
+                'has_extra_time_score'   => $hasExtraTimeScore    = $this->fixture->getExtraTimeScore()->isAvailable(),
+                'has_penalty_score'      => $hasPenaltyScore      = $this->fixture->getPenaltyPeriodScore()->isAvailable()
             ],
             'first_half'  => $this->when($hasFirstPeriodScore, fn () => $this->transformPeriodScore($this->fixture->getFirstPeriodScore())),
             'second_half' => $this->when($hasSecondPeriodScore, fn () => $this->transformPeriodScore($this->fixture->getSecondPeriodScore())),

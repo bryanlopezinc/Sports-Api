@@ -67,13 +67,9 @@ final class FixtureBuilder extends Builder
 
     private function setFixturePeriodScore(?int $goalsHome, ?int $goalsAway, string $key): self
     {
-        $hasScoreName = 'has_' . $key;
-
         if ($goalsAway === null && $goalsHome === null) {
-            return $this->set($hasScoreName, false);
+            return $this->set($key, new FixturePeriodGoals(null, null));
         }
-
-        $this->set($hasScoreName, true);
 
         return $this->set($key, new FixturePeriodGoals(new MatchGoals($goalsHome), new MatchGoals($goalsAway)));
     }
