@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapApiRoutes(): void
     {
-        Route::prefix('v1')->prefix('football')->middleware(['api'])->group(base_path('Modules\Football\Routes\routes.php'));
+        Route::prefix('v1/football')->middleware(['api'])->group(base_path('Modules\Football\Routes\routes.php'));
     }
 
     protected function configureRateLimiting(): void

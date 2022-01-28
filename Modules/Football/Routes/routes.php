@@ -99,6 +99,8 @@ Route::prefix('fixtures')->group(function () {
     Route::post('comments', Controllers\CreateCommentController::class)
         ->name(RouteName::CREATE_COMMENT)
         ->middleware(Convert::keys('fixture_id'), TransactionMiddleware::class, 'auth:' . Config::GUARD);
+
+    Route::get('comments', Controllers\FetchFixtureCommentsController::class)->name(RouteName::FIXTURE_COMMENTS)->middleware(Convert::keys('id'));
 });
 
 //Coaches routes
