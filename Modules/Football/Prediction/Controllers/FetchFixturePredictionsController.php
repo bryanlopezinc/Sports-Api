@@ -12,9 +12,6 @@ use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Services\FetchFixtureService;
 use Module\Football\Prediction\Services\FetchFixturePredictionsService;
 
-/**
- * @see \Module\Football\Prediction\Providers\FixturePredictionsContextualBindingServiceProvider
- */
 final class FetchFixturePredictionsController
 {
     public function __construct(private FetchFixtureService $service, private FetchFixturePredictionsService $fixturePredictions)

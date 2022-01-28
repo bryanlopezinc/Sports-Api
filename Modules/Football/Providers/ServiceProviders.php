@@ -12,7 +12,6 @@ final class ServiceProviders
     protected array $merge = [
         \Module\Football\Prediction\Providers\ServiceProvider::class,
         \Module\Football\Prediction\Providers\EventServiceProvider::class,
-        \Module\Football\Prediction\Providers\FixturePredictionsContextualBindingServiceProvider::class,
         \Module\Football\News\ServiceProvider::class
     ];
 

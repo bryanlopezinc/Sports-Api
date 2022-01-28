@@ -36,6 +36,8 @@ class CreateCommentTest extends TestCase
 
     public function test_comment_attribute_must_be_present(): void
     {
+        Http::fake(fn () => Http::response(FetchFixtureResponse::json()));
+
         Passport::actingAs(UserFactory::new()->create());
 
         $this->getTestResponse(['fixture_id' => 200])->assertStatus(422)->assertJsonValidationErrorFor('comment');
@@ -43,6 +45,8 @@ class CreateCommentTest extends TestCase
 
     public function test_fixture_id_attribute_must_be_present(): void
     {
+        Http::fake(fn () => Http::response(FetchFixtureResponse::json()));
+
         Passport::actingAs(UserFactory::new()->create());
 
         $this->getTestResponse(['comment' => 'lets go manchester!'])->assertStatus(422)->assertJsonValidationErrorFor('fixture_id');
@@ -50,6 +54,8 @@ class CreateCommentTest extends TestCase
 
     public function test_comment_attribute_cannot_be_empty(): void
     {
+        Http::fake(fn () => Http::response(FetchFixtureResponse::json()));
+
         Passport::actingAs(UserFactory::new()->create());
 
         $this->getTestResponse([
@@ -60,6 +66,8 @@ class CreateCommentTest extends TestCase
 
     public function test_comment_cannot_exceed_max_length(): void
     {
+        Http::fake(fn () => Http::response(FetchFixtureResponse::json()));
+
         Passport::actingAs(UserFactory::new()->create());
 
         $this->getTestResponse([

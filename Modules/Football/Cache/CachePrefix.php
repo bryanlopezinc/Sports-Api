@@ -35,6 +35,7 @@ final class CachePrefix
             PlayersCacheRepository::class                   => 's:pys:',
             PlayersTransferHistoryCacheRepository::class    => 's:pys:TH:',
             LiveFixturesCacheRepository::class              => 's:F-Live:',
+            FixturesThatExistsCacheRepository::class        => 's:knownFixtures:'
         };
     }
 

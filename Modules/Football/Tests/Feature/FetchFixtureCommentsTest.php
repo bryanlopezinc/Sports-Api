@@ -28,6 +28,8 @@ class FetchFixtureCommentsTest extends TestCase
 
     public function test_attributes_must_be_valid(): void
     {
+        Http::fakeSequence()->whenEmpty(Http::response(FetchFixtureResponse::json()));
+
         $this->getTestResponse([])->assertStatus(422)->assertJsonValidationErrorFor('id');
 
         $this->getTestResponse([
@@ -49,6 +51,15 @@ class FetchFixtureCommentsTest extends TestCase
             'per_page' => PaginationData::MAX_PER_PAGE + 1,
             'id'   => 2
         ])->assertStatus(422)->assertJsonValidationErrorFor('per_page');
+    }
+
+    public function test_will_return_404_status_code_when_fixture_is_invalid(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse([
+            'id' => 200,
+        ])->assertNotFound();
     }
 
     public function test_success_response(): void

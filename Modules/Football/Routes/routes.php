@@ -13,6 +13,7 @@ use Module\Football\Favourites\Controllers as FC;
 use Module\User\Routes\Config;
 use Module\Football\Prediction\Controllers as PC;
 use Module\Football\Prediction\Middleware as PCM;
+use Module\Football\Http\Middleware\EnsureFixtureExistsMiddleware;
 
 //Teams Routes
 Route::prefix('teams')->group(function () {
@@ -98,9 +99,11 @@ Route::prefix('fixtures')->group(function () {
 
     Route::post('comments', Controllers\CreateCommentController::class)
         ->name(RouteName::CREATE_COMMENT)
-        ->middleware(Convert::keys('fixture_id'), TransactionMiddleware::class, 'auth:' . Config::GUARD);
+        ->middleware([Convert::keys('fixture_id'), TransactionMiddleware::class, 'auth:' . Config::GUARD, EnsureFixtureExistsMiddleware::key('fixture_id')]);
 
-    Route::get('comments', Controllers\FetchFixtureCommentsController::class)->name(RouteName::FIXTURE_COMMENTS)->middleware(Convert::keys('id'));
+    Route::get('comments', Controllers\FetchFixtureCommentsController::class)
+        ->name(RouteName::FIXTURE_COMMENTS)
+        ->middleware(Convert::keys('id'), EnsureFixtureExistsMiddleware::key('id'));
 });
 
 //Coaches routes

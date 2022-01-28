@@ -30,4 +30,12 @@ final class FixtureIdsCollection extends BaseCollection
             ->uniqueStrict(fn (FixtureId $id) => $id->toInt())
             ->pipe(fn (Collection $collection) => new FixtureIdsCollection($collection->all()));
     }
+
+    /**
+     * @return array<int>
+     */
+    public function toIntArray(): array
+    {
+        return $this->collection->map(fn (FixtureId $id): int => $id->toInt())->all();
+    }
 }
