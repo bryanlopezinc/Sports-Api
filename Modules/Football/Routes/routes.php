@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Route;
 use Module\Football\Http\Controllers;
 use Module\Football\Http\Middleware as MW;
 use App\HashId\ConvertHashedValuesToIntegerMiddleware as Convert;
+use App\Http\Middleware\Authenticate;
 use Module\Football\Http\Middleware\ConvertLeagueStandingTeamsMiddleware;
 use App\Http\Middleware\HandleDbTransactionsMiddleware as TransactionMiddleware;
 use Module\Football\Favourites\Controllers as FC;
-use Module\User\Routes\Config;
 use Module\Football\Prediction\Controllers as PC;
 use Module\Football\Prediction\Middleware as PCM;
 use Module\Football\Http\Middleware\EnsureFixtureExistsMiddleware;
@@ -87,7 +87,7 @@ Route::prefix('fixtures')->group(function () {
 
     Route::post('predict', PC\PredictFixtureController::class)->middleware([
         TransactionMiddleware::class,
-        'auth:' . Config::GUARD,
+        Authenticate::user(),
         Convert::keys('fixture_id'),
         PCM\EnsureUserCanPredictFixtureMiddleware::class,
         PCM\EnsureFixtureCanBePredictedMiddleware::class
@@ -99,7 +99,7 @@ Route::prefix('fixtures')->group(function () {
 
     Route::post('comments', Controllers\CreateCommentController::class)
         ->name(RouteName::CREATE_COMMENT)
-        ->middleware([Convert::keys('fixture_id'), TransactionMiddleware::class, 'auth:' . Config::GUARD, EnsureFixtureExistsMiddleware::key('fixture_id')]);
+        ->middleware([Convert::keys('fixture_id'), TransactionMiddleware::class, Authenticate::user(), EnsureFixtureExistsMiddleware::key('fixture_id')]);
 
     Route::get('comments', Controllers\FetchFixtureCommentsController::class)
         ->name(RouteName::FIXTURE_COMMENTS)
@@ -129,7 +129,7 @@ Route::prefix('players')->group(function () {
 });
 
 //Favourites routes
-Route::middleware([TransactionMiddleware::class, 'auth:' . Config::GUARD])->group(function () {
+Route::middleware([TransactionMiddleware::class, Authenticate::user()])->group(function () {
 
     Route::post('favourites/team', FC\AddTeamTofavouritesController::class)
         ->name(RouteName::ADD_TEAM_TO_FAVOURITES)

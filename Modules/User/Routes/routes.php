@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware;
-use Module\User\Routes\Config;
+use App\Http\Middleware\Authenticate;
 use Module\User\Http\Controllers;
 use Module\User\Routes\RouteName;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +11,7 @@ use Module\User\Favourites;
 
 Route::middleware(Middleware\HandleDbTransactionsMiddleware::class)->group(function () {
 
-    Route::middleware(['auth:' . Config::GUARD])->group(function () {
+    Route::middleware([Authenticate::user()])->group(function () {
         Route::get('auth/profile', [Controllers\UserProfileController::class, 'auth'])->name(RouteName::AUTH_USER_PROFILE);
         Route::get('auth/favourites', [Favourites\FetchFavouritesController::class, 'auth'])->name(RouteName::AUTH_USER_FAVOURITES);
         Route::get('favourites/fixtures', Favourites\FetchFixturesForUserFavouritesController::class)->name(RouteName::USER_FAVOURITES_FIXTURES);

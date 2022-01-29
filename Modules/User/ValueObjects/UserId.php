@@ -7,7 +7,6 @@ namespace Module\User\ValueObjects;
 use Illuminate\Http\Request;
 use App\ValueObjects\ResourceId;
 use Module\User\Collections\UserIdsCollection;
-use Module\User\Routes\Config;
 
 final class UserId extends ResourceId
 {
@@ -26,6 +25,6 @@ final class UserId extends ResourceId
 
     public static function fromAuthUser(): self
     {
-        return new self(auth(Config::GUARD)->id());
+        return new self(auth('api')->id());
     }
 }

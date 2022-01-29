@@ -10,7 +10,6 @@ use Module\Football\Prediction\Cache\FixturePredictionsResultCacheRepository;
 use Module\Football\Prediction\FixturePredictionsResult;
 use Module\Football\Prediction\Contracts\FetchFixturePredictionsRepositoryInterface;
 use Module\Football\Prediction\Prediction;
-use Module\User\Routes\Config;
 use Module\User\ValueObjects\UserId;
 
 final class FetchFixturePredictionsService
@@ -34,7 +33,7 @@ final class FetchFixturePredictionsService
 
     public function authUserHasPredictedFixture(FixtureId $fixtureId): bool
     {
-        $auth = auth(Config::GUARD);
+        $auth = auth('api');
 
         if (!$auth->check()) {
             return false;
