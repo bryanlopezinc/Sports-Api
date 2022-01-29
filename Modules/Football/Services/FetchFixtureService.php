@@ -53,6 +53,11 @@ final class FetchFixtureService
             ->merge($cacheResult->toArray());
     }
 
+    public function exists(FixtureId $fixtureId): bool
+    {
+        return $this->cache->has($fixtureId) ? true : $this->client->exists($fixtureId);
+    }
+
     private function cache(Fixture $fixture): bool
     {
         return $this->cache->cache($fixture, (new DetermineFixtureTimeToLiveInCache)->for($fixture));

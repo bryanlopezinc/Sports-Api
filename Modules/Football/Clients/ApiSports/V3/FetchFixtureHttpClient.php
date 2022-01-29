@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Clients\ApiSports\V3;
 
+use App\Exceptions\Http\ResourceNotFoundHttpException;
 use Illuminate\Http\Client\Response as ClientResponse;
 use Module\Football\DTO\Fixture;
 use Illuminate\Support\Collection;
@@ -28,6 +29,15 @@ final class FetchFixtureHttpClient extends ApiSportsClient implements FetchFixtu
         private FixturesStatisticsCacheInterface $fixturesStatisticsCache,
     ) {
         parent::__construct();
+    }
+
+    public function exists(FixtureId $fixtureId): bool
+    {
+        try {
+            return $this->get('fixtures', ['id' => $fixtureId->toInt()])->successful();
+        } catch (ResourceNotFoundHttpException) {
+            return false;
+        }
     }
 
     public function FindFixtureById(FixtureId $id): Fixture

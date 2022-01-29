@@ -6,12 +6,12 @@ namespace Module\Football\Http\Middleware;
 
 use App\Exceptions\Http\ResourceNotFoundHttpException;
 use Illuminate\Http\Request;
-use Module\Football\Cache\FixturesThatExistsCacheRepository;
+use Module\Football\Services\FetchFixtureService;
 use Module\Football\ValueObjects\FixtureId;
 
 final class EnsureFixtureExistsMiddleware
 {
-    public function __construct(private FixturesThatExistsCacheRepository $repository)
+    public function __construct(private FetchFixtureService $service)
     {
     }
 
@@ -27,9 +27,7 @@ final class EnsureFixtureExistsMiddleware
             return $next($request);
         }
 
-        $fixtureExists = $this->repository->exists(FixtureId::fromRequest($request, $requestKey));
-
-        if (!$fixtureExists) {
+        if (!$this->service->exists(FixtureId::fromRequest($request, $requestKey))) {
             throw new ResourceNotFoundHttpException;
         }
 

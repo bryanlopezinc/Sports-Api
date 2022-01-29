@@ -11,6 +11,8 @@ use Module\Football\ValueObjects\FixtureId;
 
 interface FetchFixtureRepositoryInterface
 {
+    public function exists(FixtureId $fixtureId): bool;
+    
     /**
      * Only id, name, logo are returned for each team in the fixture.
      * The full fixture data and full LEAGUE data of the fixture league is returned in this response

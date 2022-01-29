@@ -6,6 +6,7 @@ namespace Module\Football\Providers\Repository;
 
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Module\Football\Cache\FixturesThatExistsCacheRepository;
 use Module\Football\Clients\ApiSports\V3\FetchFixtureHttpClient;
 use Module\Football\Contracts\Repositories\FetchFixtureRepositoryInterface;
 
@@ -13,7 +14,12 @@ class FetchFixtureRepositoryServiceProvider extends Provider implements Deferrab
 {
     public function boot(): void
     {
-        $this->app->bind(FetchFixtureRepositoryInterface::class, fn () => app(FetchFixtureHttpClient::class));
+        $this->app->bind(FetchFixtureRepositoryInterface::class, function ($app) {
+            return new FixturesThatExistsCacheRepository(
+                $app['cache']->store(),
+                app(FetchFixtureHttpClient::class)
+            );
+        });
     }
 
     /**
