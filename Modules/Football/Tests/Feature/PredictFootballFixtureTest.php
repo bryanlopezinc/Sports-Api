@@ -43,6 +43,15 @@ class PredictFootballFixtureTest extends TestCase
         $this->getTestResponse(215662, $this->prediction())->assertUnauthorized();
     }
 
+    public function test_will_return_not_found_status_code_when_fixture_does_not_exists()
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        Passport::actingAs(UserFactory::new()->create());
+
+        $this->getTestResponse(33, $this->prediction())->assertNotFound();
+    }
+
     /**
      * @dataProvider requestData
      */

@@ -25,12 +25,16 @@ class FetchFixtureLineUpTest extends TestCase
         );
     }
 
-    /**
-     * @group 111
-     */
     public function test_will_throw_validation_error_when_required_fields_are_missing()
     {
         $this->getJson(route(RouteName::FIXTURE_LINEUP))->assertStatus(422)->assertJsonValidationErrors(['id']);
+    }
+
+    public function test_will_return_not_found_status_code_when_fixture_does_not_exists()
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse(33)->assertNotFound();
     }
 
     /**

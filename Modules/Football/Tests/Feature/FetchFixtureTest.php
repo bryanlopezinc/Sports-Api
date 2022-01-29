@@ -112,4 +112,11 @@ class FetchFixtureTest extends TestCase
                 ]
             ]);
     }
+
+    public function test_will_return_not_found_status_code_when_fixture_does_not_exists()
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse(33)->assertNotFound();
+    }
 }
