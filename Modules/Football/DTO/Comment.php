@@ -13,34 +13,9 @@ use Module\Football\ValueObjects\Comment as UserComment;
 
 final class Comment extends DataTransferObject
 {
-    protected ResourceId $id;
-    protected UserComment $userComment;
-    protected User $commentedBy;
-    protected FixtureId $fixtureId;
-    protected DateValue $time;
-
-    public function id(): ResourceId
-    {
-        return $this->id;
-    }
-
-    public function fixtureId(): FixtureId
-    {
-        return $this->fixtureId;
-    }
-
-    public function time(): DateValue
-    {
-        return $this->time;
-    }
-
-    public function commentedBy(): User
-    {
-        return $this->commentedBy;
-    }
-
-    public function userComment(): UserComment
-    {
-        return $this->userComment;
-    }
+    public readonly ResourceId $id;
+    public readonly UserComment $userComment;
+    public readonly User $commentedBy;
+    public readonly FixtureId $fixtureId;
+    public readonly DateValue $time;
 }

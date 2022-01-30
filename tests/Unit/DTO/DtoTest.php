@@ -10,9 +10,6 @@ use App\DTO\Exception\UnsetAttributeException;
 use App\DTO\Exception\ChangeAttributeException;
 use App\DTO\Exception\PropertyCannotHaveDefaultValueException;
 
-/**
- * @group 109
- */
 class DtoTest extends TestCase
 {
     /**

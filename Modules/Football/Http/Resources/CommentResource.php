@@ -25,9 +25,9 @@ final class CommentResource extends JsonResource
         return [
             'type'       => 'football_fixture_comment',
             'attributes' => [
-                'comment'       => $this->comment->userComment()->value,
-                'commented_by'  => new UserResource($this->comment->commentedBy()),
-                'date'          => $this->comment->time()->toCarbon()->toDateTimeString(),
+                'comment'       => $this->comment->userComment->value,
+                'commented_by'  => new UserResource($this->comment->commentedBy),
+                'date'          => $this->comment->time->toCarbon()->toDateTimeString(),
             ],
         ];
     }
