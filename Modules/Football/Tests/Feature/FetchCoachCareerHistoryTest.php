@@ -28,4 +28,11 @@ class FetchCoachCareerHistoryTest extends TestCase
 
         $this->getTestResponse(12)->assertSuccessful();
     }
+
+    public function test_will_return_404_status_code_when_coach_id_does_not_exists(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse(334)->assertNotFound();
+    }
 }

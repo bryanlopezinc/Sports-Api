@@ -38,6 +38,11 @@ class FetchUserFavouritesTest extends TestCase
             ->assertSuccessful();
     }
 
+    public function test_will_return_404_status_code_when_user_does_not_exists_does_not_exists(): void
+    {
+        $this->getTestResponse(UserFactory::new()->create()->id + 1)->assertNotFound();
+    }
+
     public function test_authorized_user_can_view_favourites(): void
     {
         Http::fakeSequence()->push(FetchTeamResponse::json());

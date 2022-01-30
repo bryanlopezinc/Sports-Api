@@ -20,6 +20,13 @@ class FetchPlayerTest extends TestCase
         $this->withoutExceptionHandling()->getJson((string) new FetchPlayerRoute(new PlayerId(40)))->assertSuccessful();
     }
 
+    public function test_will_return_404_status_code_when_player_id_does_not_exists(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getJson((string) new FetchPlayerRoute(new PlayerId(140)))->assertNotFound();
+    }
+
     public function test_will_throw_validation_error_when_player_id_is_missing(): void
     {
         $this->getJson(route(RouteName::FIND_PLAYER))->assertJsonValidationErrors(['id']);

@@ -44,4 +44,11 @@ class FetchTeamTest extends TestCase
                 ]
             ]);
     }
+
+    public function test_will_return_404_status_code_when_team_id_does_not_exists(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse(22)->assertNotFound();
+    }
 }

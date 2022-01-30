@@ -32,6 +32,13 @@ class FetchTeamHeadToHeadTest extends TestCase
         $this->getTestResponse(34, 33)->assertSuccessful();
     }
 
+    public function test_will_return_404_status_code_when_team_ids_does_not_exists(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse(341, 133)->assertNotFound();
+    }
+
     public function test_will_throw_validation_exception_when_ids_are_same(): void
     {
         $this->getTestResponse(33, 33)->assertStatus(422);

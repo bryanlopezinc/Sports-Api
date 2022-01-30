@@ -13,7 +13,7 @@ use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
 
 class FetchLeagueTest extends TestCase
 {
-    private function getTestRespone(int $id, array $query = []): TestResponse
+    private function getTestResponse(int $id, array $query = []): TestResponse
     {
         return $this->getJson(
             (string) new FetchLeagueRoute(new LeagueId($id), $query)
@@ -26,7 +26,7 @@ class FetchLeagueTest extends TestCase
 
         Http::fake(fn () => Http::response(FetchLeagueResponse::json()));
 
-        $this->getTestRespone(234)
+        $this->getTestResponse(234)
             ->assertSuccessful()
             ->assertJsonCount(5, 'data.attributes')
             ->assertJsonCount(5, 'data.attributes.season')
@@ -64,13 +64,20 @@ class FetchLeagueTest extends TestCase
             );
     }
 
+    public function test_will_return_404_status_code_when_league_id_does_not_exists(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse(334)->assertNotFound();
+    }
+
     public function test_will_return_partial_response(): void
     {
         $this->withoutExceptionHandling();
 
         Http::fake(fn () => Http::response(FetchLeagueResponse::json()));
 
-        $this->getTestRespone(234, ['filter' => 'name,country'])
+        $this->getTestResponse(234, ['filter' => 'name,country'])
             ->assertSuccessful()
             ->assertJsonCount(1)
             ->assertJsonCount(2, 'data.attributes')

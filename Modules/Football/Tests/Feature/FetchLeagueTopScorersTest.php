@@ -37,6 +37,13 @@ class FetchLeagueTopScorersTest extends TestCase
             ->assertSuccessful();
     }
 
+    public function test_will_return_404_status_code_when_league_id_does_not_exists(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse(334, 2021)->assertNotFound();
+    }
+
     public function test_will_throw_validation_error_when_required_fields_are_missing()
     {
         $this->getJson(route(RouteName::LEAGUE_TOP_SCORERS))->assertStatus(422)->assertJsonValidationErrors(['id', 'season']);

@@ -38,6 +38,13 @@ class FetchLeagueStandingTest extends TestCase
         $this->getTestResponse(400, 2018)->assertSuccessful()->assertJsonCount(20, 'data.standings');
     }
 
+    public function test_will_return_404_status_code_when_league_id_does_not_exists(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getTestResponse(334, 2018)->assertNotFound();
+    }
+
     public function test_will_return_validation_error_when_teams_are_invalid()
     {
         Http::fakeSequence()->push(FetchLeagueResponse::json());

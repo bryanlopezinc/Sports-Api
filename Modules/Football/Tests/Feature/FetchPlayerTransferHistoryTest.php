@@ -20,4 +20,11 @@ class FetchPlayerTransferHistoryTest extends TestCase
             ->getJson(route(RouteName::PLAYER_TRANSFER_HISTORY, ['id' => $this->hashId(20)]))
             ->assertSuccessful();
     }
+
+    public function test_will_return_404_status_code_when_player_id_does_not_exists(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getJson(route(RouteName::PLAYER_TRANSFER_HISTORY, ['id' => $this->hashId(120)]))->assertNotFound();
+    }
 }
