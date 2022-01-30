@@ -54,8 +54,10 @@ abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayab
 
     protected function set(string $key, mixed $value): void
     {
-        if (property_exists($this, $key)) {
-            $this->{$key} = ($value);
+        if (property_exists(static::class, $key)) {
+            $property = new \ReflectionProperty(static::class, $key);
+
+            $property->setValue($this, $value);
         }
 
         if (!$this->offsetExists($key)) {

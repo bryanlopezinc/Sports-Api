@@ -10,6 +10,9 @@ use App\DTO\Exception\UnsetAttributeException;
 use App\DTO\Exception\ChangeAttributeException;
 use App\DTO\Exception\PropertyCannotHaveDefaultValueException;
 
+/**
+ * @group 109
+ */
 class DtoTest extends TestCase
 {
     /**
@@ -27,6 +30,57 @@ class DtoTest extends TestCase
                 ]
             ]
         ];
+    }
+
+    /**
+     * @dataProvider dtoData
+     */
+    public function test_support_readonly_properties(array $data): void
+    {
+        $class = new class($data) extends DataTransferObject
+        {
+            public readonly string $foo;
+            public readonly string $baz;
+            public readonly string $foobar;
+            public readonly string $bafoo;
+        };
+
+        $this->assertEquals($class->foo, 'scratched 3 million dollars off my checkList 3 years ago');
+        $this->assertEquals($class->baz, 'am tip toeing to the bank hope u dont speak to me');
+        $this->assertEquals($class->foobar, 'bar_foo');
+        $this->assertEquals($class->bafoo, 'out_of_foos');
+    }
+
+    public function test_is_empty(): void
+    {
+        $class = new class([]) extends DataTransferObject
+        {
+            protected string $foo;
+            protected string $baz;
+            protected string $foobar;
+            protected string $bafoo;
+        };
+
+        $this->assertTrue($class->isEmpty());
+    }
+
+    /**
+     * @dataProvider dtoData
+     */
+    public function test_will_set_defined_properties(array $data): void
+    {
+        $class = new class($data) extends DataTransferObject
+        {
+            public string $foo;
+            public string $baz;
+            public string $foobar;
+            public string $bafoo;
+        };
+
+        $this->assertEquals($class->foo, 'scratched 3 million dollars off my checkList 3 years ago');
+        $this->assertEquals($class->baz, 'am tip toeing to the bank hope u dont speak to me');
+        $this->assertEquals($class->foobar, 'bar_foo');
+        $this->assertEquals($class->bafoo, 'out_of_foos');
     }
 
     /**
