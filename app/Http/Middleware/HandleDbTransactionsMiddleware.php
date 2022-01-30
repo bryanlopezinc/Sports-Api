@@ -30,7 +30,7 @@ final class HandleDbTransactionsMiddleware
         /** @var \Illuminate\Http\Response */
         $response = $next($request);
 
-        if ($response->isServerError() || $response->isClientError()) {
+        if (!$response->isSuccessful()) {
             DB::rollBack();
         } else {
             DB::commit();
