@@ -104,6 +104,10 @@ Route::prefix('fixtures')->group(function () {
     Route::get('comments', Controllers\FetchFixtureCommentsController::class)
         ->name(RouteName::FIXTURE_COMMENTS)
         ->middleware(Convert::keys('id'), EnsureFixtureExistsMiddleware::key('id'));
+
+    Route::delete('comments', Controllers\DeleteCommentController::class)
+        ->name(RouteName::DELETE_COMMENT)
+        ->middleware([TransactionMiddleware::class, Authenticate::user()]);
 });
 
 //Coaches routes

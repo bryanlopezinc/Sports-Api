@@ -32,4 +32,5 @@ final class RouteName
     public const NEWS                        = 'soccer:news';
     public const CREATE_COMMENT              = 'soccer:createComment';
     public const FIXTURE_COMMENTS            = 'soccer:fixtureComments';
+    public const DELETE_COMMENT              = 'soccer:deleteComment';
 }
