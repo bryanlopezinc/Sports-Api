@@ -13,7 +13,7 @@ class FootballPredictionsTable extends Migration
             $table->integer('fixture_id');
             $table->integer('user_id');
             $table->integer('code_id')->index();
-            $table->timestamp('predicted_on');
+            $table->timestamp('predicted_on')->useCurrent();
             $table->unique(['fixture_id', 'user_id']);
         });
     }
