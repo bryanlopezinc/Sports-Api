@@ -12,6 +12,7 @@ use Module\Football\Media\UrlGenerator;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\ValueObjects\LeagueType;
 use App\ValueObjects\NonEmptyString as LeagueName;
+use App\DTO\Builder;
 
 final class LeagueBuilder extends Builder
 {

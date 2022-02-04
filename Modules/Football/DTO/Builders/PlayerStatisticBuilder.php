@@ -15,6 +15,7 @@ use Module\Football\FixturePlayerStatistic\GoalKeeperGoalsStat;
 use Module\Football\FixturePlayerStatistic\Passes;
 use Module\Football\FixturePlayerStatistic\PlayerRating;
 use Module\Football\FixturePlayerStatistic\Shots;
+use App\DTO\Builder;
 
 final class PlayerStatisticBuilder extends Builder
 {

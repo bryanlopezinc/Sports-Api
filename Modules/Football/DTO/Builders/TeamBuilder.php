@@ -12,6 +12,7 @@ use Module\Football\Media\UrlGenerator;
 use App\ValueObjects\NonEmptyString as TeamName;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\ValueObjects\TeamYearFounded;
+use App\DTO\Builder;
 
 final class TeamBuilder extends Builder
 {

@@ -7,6 +7,7 @@ namespace Module\Football\DTO\Builders;
 use Module\Football\DTO\Team;
 use Module\Football\DTO\FixtureStatistics;
 use Module\Football\FixtureStatistic\BallPossession;
+use App\DTO\Builder;
 
 final class FixtureStatisticsBuilder extends Builder
 {

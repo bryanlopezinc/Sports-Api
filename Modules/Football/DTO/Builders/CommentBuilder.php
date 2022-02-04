@@ -11,6 +11,7 @@ use Module\User\Dto\Builders\UserBuilder;
 use Module\Football\Model\Comment as Model;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\ValueObjects\Comment as UserComment;
+use App\DTO\Builder;
 
 final class CommentBuilder extends Builder
 {

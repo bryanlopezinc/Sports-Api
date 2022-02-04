@@ -10,6 +10,7 @@ use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueEndDate;
 use Module\Football\ValueObjects\LeagueStartDate;
 use Module\Football\ValueObjects\LeagueSeasonDuration;
+use App\DTO\Builder;
 
 final class LeagueSeasonBuilder extends Builder
 {

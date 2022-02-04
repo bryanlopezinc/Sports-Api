@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\DTO\Builders;
 
+use App\DTO\Builder;
 use Stringable;
 use App\ValueObjects\Date;
 use App\ValueObjects\Country;

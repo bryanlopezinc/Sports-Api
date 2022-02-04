@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\DTO\Builders;
 
 use Module\Football\DTO\StandingData;
+use App\DTO\Builder;
 
 final class StandingDataBuilder extends Builder
 {

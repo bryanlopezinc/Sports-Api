@@ -17,6 +17,7 @@ use Module\Football\ValueObjects\MatchGoals;
 use Module\Football\ValueObjects\TimeElapsed;
 use Module\Football\ValueObjects\FixtureStatus;
 use Module\Football\ValueObjects\FixtureStartTime;
+use App\DTO\Builder;
 
 final class FixtureBuilder extends Builder
 {

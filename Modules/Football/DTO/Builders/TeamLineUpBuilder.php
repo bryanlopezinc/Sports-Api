@@ -10,6 +10,7 @@ use Module\Football\DTO\TeamLineUp;
 use Module\Football\ValueObjects\TeamFormation;
 use Module\Football\Collections\PlayersCollection;
 use Module\Football\Collections\TeamMissingPlayersCollection;
+use App\DTO\Builder;
 
 final class TeamLineUpBuilder extends Builder
 {

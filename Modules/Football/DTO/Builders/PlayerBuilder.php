@@ -16,6 +16,7 @@ use Module\Football\ValueObjects\JerseyNumber;
 use App\ValueObjects\NonEmptyString as PlayerName;
 use Module\Football\ValueObjects\PlayerPosition;
 use Stringable;
+use App\DTO\Builder;
 
 final class PlayerBuilder extends Builder
 {
