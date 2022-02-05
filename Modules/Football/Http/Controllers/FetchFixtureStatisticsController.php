@@ -13,6 +13,7 @@ use Module\Football\Services\FetchFixtureStatisticsService;
 use Module\Football\ValueObjects\TeamId;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Module\Football\DTO\FixtureStatistics as Statistics;
+use Module\Football\Http\Resources\FixtureStatisticsResource;
 use Module\Football\Http\Resources\PartialFixtureStaticsResource;
 
 final class FetchFixtureStatisticsController
@@ -22,7 +23,7 @@ final class FetchFixtureStatisticsController
         $statistics = $this->getFixtureStatisticsForSelectedTeam($request, $service->fetch(FixtureId::fromRequest($request)));
 
         if (empty($statistics)) {
-            return new JsonResource([]);
+            return new FixtureStatisticsResource([]);
         }
 
         return new PartialFixtureStaticsResource($statistics);

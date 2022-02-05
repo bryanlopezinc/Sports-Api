@@ -177,6 +177,6 @@ class FetchFixtureStatisticsTest extends TestCase
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json());
 
-        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data');
+        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data.stats');
     }
 }
