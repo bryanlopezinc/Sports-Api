@@ -9,7 +9,6 @@ use IteratorAggregate;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\Arrayable;
 use App\Exceptions\InvalidCollectionItemException;
-use App\Utils\ValidateClassWithAtrributes;
 
 /**
  * @template T
@@ -44,8 +43,7 @@ abstract class BaseCollection implements Arrayable, Countable, IteratorAggregate
             if (!$this->isValid($item)) {
                 throw new InvalidCollectionItemException($index, static::class, $item);
             }
-        })
-        ->whenNotEmpty(fn () => (new ValidateClassWithAtrributes($this))->validate());
+        });
     }
 
     protected function setItems(mixed $items): void

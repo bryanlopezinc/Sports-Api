@@ -8,11 +8,9 @@ use App\DTO\DataTransferObject;
 use Module\Football\ValueObjects\TeamFormation;
 use Module\Football\Collections\PlayersCollection;
 use Module\Football\Collections\TeamMissingPlayersCollection;
-use Module\Football\Attributes\FixtureLineUpValidators\EnsureContainsUniquePlayers;
-use Module\Football\Attributes\FixtureLineUpValidators\EnsureTeamStartingElevenEqualsEleven;
+use Module\Football\Attributes\ValidateTeamLineUp;
 
-#[EnsureTeamStartingElevenEqualsEleven]
-#[EnsureContainsUniquePlayers]
+#[ValidateTeamLineUp]
 final class TeamLineUp extends DataTransferObject
 {
     protected PlayersCollection $startXI;

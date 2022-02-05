@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Module\Football\DTO;
 
 use App\DTO\DataTransferObject;
-use Module\Football\Attributes\LeagueStandingValidators\EnsureAllValuesAreNotNegative;
-use Module\Football\Attributes\LeagueStandingValidators\EnsureTotalGamesPlayedEqualsRecord;
+use Module\Football\Attributes\ValidateLeagueStanding;
 
-#[EnsureTotalGamesPlayedEqualsRecord]
-#[EnsureAllValuesAreNotNegative]
+#[ValidateLeagueStanding]
 final class StandingData extends DataTransferObject
 {
     protected int $played;

@@ -14,12 +14,10 @@ use Module\Football\ValueObjects\MatchGoals;
 use Module\Football\ValueObjects\TimeElapsed;
 use Module\Football\ValueObjects\FixtureStatus;
 use Module\Football\ValueObjects\FixtureStartTime;
-use Module\Football\Attributes\FixtureValidators\EnsureWinnerIdBelongsToATeamInFixture;
-use Module\Football\Attributes\FixtureValidators\EnsureFixtureHomeAndAwayTeamAreNotSame;
+use Module\Football\Attributes\ValidateFixture;
 use Module\Football\Venue;
 
-#[EnsureFixtureHomeAndAwayTeamAreNotSame]
-#[EnsureWinnerIdBelongsToATeamInFixture]
+#[ValidateFixture]
 final class Fixture extends DataTransferObject
 {
     protected FixtureStartTime $date;
