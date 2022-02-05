@@ -9,8 +9,12 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\Football\ValueObjects\CoachId;
 use Module\Football\Routes\FetchCoachRoute;
+use Module\Football\Routes\RouteName;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchCoachResponse;
 
+/**
+ * @group 109
+ */
 class FetchCoachTest extends TestCase
 {
     private function getTestResponse(int $id): TestResponse
@@ -27,6 +31,15 @@ class FetchCoachTest extends TestCase
         Http::fakeSequence()->push(FetchCoachResponse::json());
 
         $this->getTestResponse(12)->assertSuccessful();
+    }
+
+    public function test_will_return_validation_error_when_id_is_not_present(): void
+    {
+        Http::fake(fn () => Http::response(status: 404));
+
+        $this->getJson(route(RouteName::FIND_COACH))
+            ->assertStatus(422)
+            ->assertJsonValidationErrorFor('id');
     }
 
     public function test_will_return_404_status_code_when_coach_id_does_not_exists(): void
