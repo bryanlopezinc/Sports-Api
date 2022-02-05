@@ -33,7 +33,7 @@ abstract class BaseCollection implements Arrayable, Countable, IteratorAggregate
     /**
      * @phpstan-return \Traversable<T>.
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->collection->getIterator();
     }
@@ -72,19 +72,15 @@ abstract class BaseCollection implements Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * @throws \Illuminate\Collections\MultipleItemsFoundException
-     * @throws \OutOfBoundsException
+     * @throws \Illuminate\Support\ItemNotFoundException
+     * @throws \Illuminate\Support\MultipleItemsFoundException
      */
     final protected function soleItem(): mixed
     {
-        try {
-            return $this->collection->sole();
-        } catch (\Illuminate\Collections\ItemNotFoundException) {
-            throw new \OutOfBoundsException;
-        }
+        return $this->collection->sole();
     }
 
-    final public function count()
+    final public function count(): int
     {
         return $this->collection->count();
     }

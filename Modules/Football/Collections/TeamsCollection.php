@@ -33,8 +33,8 @@ final class TeamsCollection extends BaseCollection
     }
 
     /**
-     * @throws \OutOfBoundsException
-     * @throws \Illuminate\Collections\MultipleItemsFoundException
+     * @throws \Illuminate\Support\ItemNotFoundException
+     * @throws \Illuminate\Support\MultipleItemsFoundException
      */
     public function sole(): Team
     {
