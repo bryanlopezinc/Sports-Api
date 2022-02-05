@@ -12,9 +12,6 @@ use Module\Football\Routes\FetchCoachRoute;
 use Module\Football\Routes\RouteName;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchCoachResponse;
 
-/**
- * @group 109
- */
 class FetchCoachTest extends TestCase
 {
     private function getTestResponse(int $id): TestResponse
