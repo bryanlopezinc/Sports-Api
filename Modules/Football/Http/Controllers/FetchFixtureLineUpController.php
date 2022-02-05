@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Http\Controllers;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use Module\Football\Http\Requests\FetchFixtureLineUpRequest;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Services\FetchFixtureLineUpService;
@@ -14,8 +13,6 @@ final class FetchFixtureLineUpController
 {
     public function __invoke(FetchFixtureLineUpRequest $request, FetchFixtureLineUpService $service): FixtureLineUpResource
     {
-        $fixtureLineUp = $service->fetchLineUp(FixtureId::fromRequest($request));
-
-        return new FixtureLineUpResource($fixtureLineUp);
+        return new FixtureLineUpResource($service->fetchLineUp(FixtureId::fromRequest($request)));
     }
 }
