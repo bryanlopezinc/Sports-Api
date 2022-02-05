@@ -58,6 +58,6 @@ class FixtureEventsTest extends TestCase
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json());
 
-        $this->getTestResponse(400)->assertSuccessful()->assertJsonCount(0, 'data');
+        $this->getTestResponse(400)->assertSuccessful()->assertJsonCount(0, 'data.events');
     }
 }
