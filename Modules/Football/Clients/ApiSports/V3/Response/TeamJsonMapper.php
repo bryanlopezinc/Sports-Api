@@ -10,16 +10,11 @@ use Module\Football\Clients\ApiSports\V3\CountryNameNormalizers\CountryNameNorma
 
 final class TeamJsonMapper
 {
-    private TeamBuilder $builder;
     private Response $response;
 
-    /**
-     * @param array<string, mixed> $data
-     */
-    public function __construct(array $data, TeamBuilder $teamBuilder = null)
+    public function __construct(array $data, private TeamBuilder $builder = new TeamBuilder)
     {
         $this->response = new Response($data);
-        $this->builder = $teamBuilder ?: new TeamBuilder();
     }
 
     public function toDataTransferObject(): Team

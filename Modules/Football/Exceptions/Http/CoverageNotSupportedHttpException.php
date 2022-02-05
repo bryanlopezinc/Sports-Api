@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Exceptions\Http;
 
-use App\Exceptions\Http\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class CoverageNotSupportedHttpException extends HttpException
 {

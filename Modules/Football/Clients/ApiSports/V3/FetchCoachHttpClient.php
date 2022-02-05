@@ -13,9 +13,7 @@ final class FetchCoachHttpClient extends ApiSportsClient implements FetchCoachRe
 {
     public function byId(CoachId $coachId): Coach
     {
-        $response = $this->get('coachs', [
-            'id'    => $coachId->toInt(),
-        ])->json('response.0');
+        $response = $this->get('coachs', ['id' => $coachId->toInt()])->json('response.0');
 
         return (new CoachResponseJsonMapper($response))->mapIntoDataTransferObject();
     }

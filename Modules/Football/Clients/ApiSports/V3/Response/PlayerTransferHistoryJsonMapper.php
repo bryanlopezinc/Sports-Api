@@ -11,7 +11,7 @@ use Module\Football\PlayerTransferHistory;
 
 final class PlayerTransferHistoryJsonMapper
 {
-    public function __construct(private array $response)
+    public function __construct(private readonly array $response)
     {
     }
 

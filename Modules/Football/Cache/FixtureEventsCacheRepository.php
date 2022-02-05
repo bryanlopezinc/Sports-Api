@@ -9,9 +9,8 @@ use Illuminate\Contracts\Cache\Repository;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Collections\FixtureEventsCollection;
-use Module\Football\Contracts\Cache\FixturesEventsCacheInterface;
 
-final class FixtureEventsCacheRepository implements FixturesEventsCacheInterface
+final class FixtureEventsCacheRepository
 {
     public function __construct(private Repository $repository)
     {

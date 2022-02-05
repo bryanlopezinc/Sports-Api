@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Prediction\Middleware;
 
 use Illuminate\Http\Request;
-use App\Exceptions\Http\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Module\Football\Prediction\PredictFixtureRequest;
 use Module\Football\ValueObjects\FixtureId;
 use Symfony\Component\HttpFoundation\Response;

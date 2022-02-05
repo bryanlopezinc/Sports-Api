@@ -46,11 +46,9 @@ final class PaginationData
 
     public function getPerPage(): int
     {
-        $wantsTooFewData = $this->perPage < $this->minItemsPerPage;
-
         $wantsTooMuchData = $this->perPage > $this->maxItemsPerPage;
 
-        if ($wantsTooFewData) {
+        if ($this->perPage < $this->minItemsPerPage) {
             return self::PER_PAGE;
         }
 

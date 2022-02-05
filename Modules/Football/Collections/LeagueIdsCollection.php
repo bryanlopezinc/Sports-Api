@@ -8,9 +8,6 @@ use Illuminate\Support\Collection;
 use App\Collections\BaseCollection;
 use Module\Football\ValueObjects\LeagueId;
 
-/**
- * @template T of LeagueId
- */
 final class LeagueIdsCollection extends BaseCollection
 {
     protected function isValid(mixed $item): bool

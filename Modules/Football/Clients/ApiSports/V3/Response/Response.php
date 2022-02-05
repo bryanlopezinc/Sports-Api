@@ -9,10 +9,7 @@ use Illuminate\Support\Arr;
 
 class Response
 {
-    /**
-     * @param array<string, mixed> $data
-     */
-    public function __construct(protected array $data)
+    public function __construct(protected readonly array $data)
     {
     }
 

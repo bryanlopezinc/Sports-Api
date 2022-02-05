@@ -7,13 +7,12 @@ namespace Module\Football\Providers\Cache;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Module\Football\Cache\TeamsHeadToHeadCacheRepository;
-use Module\Football\Contracts\Cache\TeamsHeadToHeadCacheInterface;
 
 final class TeamsHeadToHeadCacheServiceProvider extends Provider implements DeferrableProvider
 {
     public function boot(): void
     {
-        $this->app->singleton(TeamsHeadToHeadCacheInterface::class, function ($app) {
+        $this->app->singleton(TeamsHeadToHeadCacheRepository::class, function ($app) {
             return new TeamsHeadToHeadCacheRepository($app['cache']->store());
         });
     }
@@ -26,7 +25,7 @@ final class TeamsHeadToHeadCacheServiceProvider extends Provider implements Defe
     public function provides()
     {
         return [
-            TeamsHeadToHeadCacheInterface::class,
+            TeamsHeadToHeadCacheRepository::class,
         ];
     }
 }

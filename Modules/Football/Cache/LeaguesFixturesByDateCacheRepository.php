@@ -11,9 +11,8 @@ use Illuminate\Contracts\Cache\Repository;
 use Module\Football\ValueObjects\LeagueId;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\FixturesCollection;
-use Module\Football\Contracts\Cache\LeaguesFixturesByDateCacheInterface;
 
-final class LeaguesFixturesByDateCacheRepository implements LeaguesFixturesByDateCacheInterface
+final class LeaguesFixturesByDateCacheRepository
 {
     public function __construct(private Repository $respository)
     {

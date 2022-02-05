@@ -8,9 +8,6 @@ use App\Collections\BaseCollection;
 use Module\Football\DTO\Fixture;
 use Illuminate\Support\Collection;
 
-/**
- * @template T of Fixture
- */
 final class FixturesCollection extends BaseCollection
 {
     protected function isValid(mixed $value): bool

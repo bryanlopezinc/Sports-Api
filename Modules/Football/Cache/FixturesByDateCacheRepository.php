@@ -7,9 +7,8 @@ namespace Module\Football\Cache;
 use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
 use Illuminate\Contracts\Cache\Repository;
-use Module\Football\Contracts\Cache\FixturesByDateCacheInterface;
 
-final class FixturesByDateCacheRepository implements FixturesByDateCacheInterface
+final class FixturesByDateCacheRepository
 {
     public function __construct(private Repository $repository)
     {

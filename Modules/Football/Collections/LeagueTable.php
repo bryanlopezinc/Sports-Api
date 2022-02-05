@@ -8,17 +8,31 @@ use App\Collections\BaseCollection;
 use Module\Football\DTO\League;
 use Illuminate\Support\Collection;
 use Module\Football\DTO\LeagueStanding;
-use Module\Football\Attributes\LeagueTableValidators\EnsureStandingsHaveSameLeague;
 
-/**
- * @template T of LeagueStanding
- */
-#[EnsureStandingsHaveSameLeague]
 final class LeagueTable extends BaseCollection
 {
     protected function isValid(mixed $value): bool
     {
         return $value instanceof LeagueStanding;
+    }
+
+    protected function validateItems(): void
+    {
+        parent::validateItems();
+
+        if ($this->isEmpty()) {
+            return;
+        }
+
+        $hasSameLeague = $this
+            ->toLaravelCollection()
+            ->map(fn (LeagueStanding $standing): int => $standing->getLeague()->getId()->toInt())
+            ->unique()
+            ->count() === 1;
+
+        if (!$hasSameLeague) {
+            throw new \InvalidArgumentException('league standing must have same league ids');
+        }
     }
 
     public function getLeague(): League

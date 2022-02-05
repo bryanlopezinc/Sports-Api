@@ -14,9 +14,6 @@ use Module\Football\DTO\Builders\{LeagueSeasonBuilder, LeagueCoverageBuilder, Le
 
 final class LeagueResponseJsonMapper
 {
-    private LeagueBuilder $builder;
-    private LeagueCoverageBuilder $leagueCoverageBuilder;
-    private LeagueSeasonBuilder $leagueSeasonBuilder;
     private Response $response;
 
     /**
@@ -24,9 +21,9 @@ final class LeagueResponseJsonMapper
      */
     public function __construct(
         array $response,
-        LeagueBuilder $builder = null,
-        LeagueCoverageBuilder $leagueCoverageBuilder = null,
-        LeagueSeasonBuilder $leagueSeasonBuilder = null,
+        private LeagueBuilder $builder = new LeagueBuilder,
+        private LeagueCoverageBuilder $leagueCoverageBuilder = new LeagueCoverageBuilder,
+        private LeagueSeasonBuilder $leagueSeasonBuilder = new LeagueSeasonBuilder,
     ) {
         $this->response = new Response($response);
         $this->builder = $builder ?: new LeagueBuilder;

@@ -7,17 +7,20 @@ namespace Module\Football\Collections;
 use App\Collections\BaseCollection;
 use Illuminate\Support\Collection;
 use Module\Football\DTO\PlayerStatistics;
-use Module\Football\Attributes\FixturePlayersStatisticsValidators\EnsureUniquePlayers;
-use Module\Football\Attributes\FixturePlayersStatisticsValidators\EnsureContainsOneOrTwoTeams;
 use Module\Football\ValueObjects\TeamId;
 
-#[EnsureContainsOneOrTwoTeams]
-#[EnsureUniquePlayers]
 final class FixturePlayersStatisticsCollection extends BaseCollection
 {
     protected function isValid(mixed $item): bool
     {
         return $item instanceof PlayerStatistics;
+    }
+
+    protected function validateItems(): void
+    {
+        parent::validateItems();
+
+        (new Validators\ValidateFixturePlayersStatistics($this));
     }
 
     public function forTeam(TeamId $teamId): FixturePlayersStatisticsCollection

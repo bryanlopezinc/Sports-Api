@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Football\Clients\ApiSports\V3;
 
 use App\ValueObjects\Date;
-use Module\Football\DTO\Fixture;
 use Illuminate\Support\Collection;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
@@ -18,12 +17,12 @@ final class FetchLeagueFixturesByDateHttpClient extends ApiSportsClient implemen
     public function findBy(LeagueId $leagueId, Season $season, Date $date): FixturesCollection
     {
         return $this->get('fixtures', [
-                'date'      => $date->toCarbon()->toDateString(),
-                'league'    => $leagueId->toInt(),
-                'season'    => $season->toInt()
+                'date'   => $date->toCarbon()->toDateString(),
+                'league' => $leagueId->toInt(),
+                'season' => $season->toInt()
             ])
             ->collect('response')
-            ->map(fn (array $response): Fixture => (new FixtureResponseJsonMapper($response))->toDataTransferObject())
+            ->map(new FixtureResponseJsonMapper())
             ->pipe(fn (Collection $collection) => new FixturesCollection($collection->all()));
     }
 }

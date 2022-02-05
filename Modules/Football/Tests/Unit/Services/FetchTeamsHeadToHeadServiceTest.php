@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Football\Tests\Unit\Services;
 
+use Illuminate\Contracts\Cache\Repository;
+use Module\Football\Cache\TeamsHeadToHeadCacheRepository;
 use Tests\TestCase;
 use Module\Football\DTO\Team;
 use Module\Football\Factories\TeamFactory;
 use Module\Football\Factories\FixtureFactory;
-use Module\Football\DTO\Builders\FixtureBuilder;
 use Module\Football\ValueObjects\TeamsHeadToHead;
 use Module\Football\Services\FetchTeamsHeadToHeadService;
-use Module\Football\Contracts\Cache\TeamsHeadToHeadCacheInterface;
 use Module\Football\Contracts\Repositories\FetchTeamHeadToHeadRepositoryInterface;
 
 class FetchTeamsHeadToHeadServiceTest extends TestCase
@@ -23,7 +23,7 @@ class FetchTeamsHeadToHeadServiceTest extends TestCase
     {
         return [
             $this->getMockBuilder(FetchTeamHeadToHeadRepositoryInterface::class)->getMock(),
-            $this->getMockBuilder(TeamsHeadToHeadCacheInterface::class)->getMock(),
+            $this->getMockBuilder(Repository::class)->getMock(),
         ];
     }
 
@@ -45,7 +45,7 @@ class FetchTeamsHeadToHeadServiceTest extends TestCase
 
         $cache->expects($this->exactly(2))->method('has')->willReturn(false, true);
         $cache->expects($this->once())->method('get')->willReturn($headToHead);
-        $cache->expects($this->once())->method('put');
+        $cache->expects($this->once())->method('put')->willReturn(true);
 
         $repository->expects($this->once())->method('getHeadToHead')->willReturn($headToHead);
 
@@ -56,7 +56,7 @@ class FetchTeamsHeadToHeadServiceTest extends TestCase
     private function getServiceInstance($repository, $cache): FetchTeamsHeadToHeadService
     {
         $this->instance(FetchTeamHeadToHeadRepositoryInterface::class, $repository);
-        $this->instance(TeamsHeadToHeadCacheInterface::class, $cache);
+        $this->instance(TeamsHeadToHeadCacheRepository::class, new TeamsHeadToHeadCacheRepository($cache));
 
         return app(FetchTeamsHeadToHeadService::class);
     }

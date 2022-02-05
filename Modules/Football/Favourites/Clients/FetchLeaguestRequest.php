@@ -18,7 +18,7 @@ use Module\Football\Collections\LeagueIdsCollection;
 use Module\User\Favourites\Clients\RequestsFavouriteResourceInterface as RequestInterface;
 use Module\Football\Contracts\Cache\LeaguesCacheInterface;
 use Module\Football\Clients\ApiSports\V3\FetchLeagueHttpClient;
-use Module\Football\Clients\ApiSports\V3\Requests\FetchLeagueByIdRequest;
+use Module\Football\Clients\ApiSports\V3\ApiSportsRequest;
 
 /**
  * Prepare the league ids from user favourites (football) table for api request
@@ -42,9 +42,9 @@ final class FetchLeaguestRequest implements RequestInterface
             ->tap(fn (Collection $collection) => $this->requestedIds = new LeagueIdsCollection($collection->all()))
             ->reject(fn (LeagueId $leagueId) => $this->cache->has($leagueId))
             ->map(function (LeagueId $id) use ($pool) {
-                $endpoint = new FetchLeagueByIdRequest($id);
+                $request = ApiSportsRequest::findLeagueRequest($id);
 
-                return $pool->as($this->key($id))->withHeaders($endpoint->headers())->get($endpoint->uri(), $endpoint->query());
+                return $pool->as($this->key($id))->withHeaders($request->headers())->get($request->uri(), $request->query());
             })
             ->all();
     }

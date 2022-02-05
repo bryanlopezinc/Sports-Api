@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
+use Module\Football\Cache\FixturesCacheRepository;
 use Module\Football\Collections\FixtureIdsCollection;
 use Module\Football\Collections\FixturesCollection;
 use Module\Football\DTO\Fixture;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\DetermineFixtureTimeToLiveInCache;
-use Module\Football\Contracts\Cache\FixturesCacheInterface;
 use Module\Football\Contracts\Repositories\FetchFixtureRepositoryInterface;
 
 final class FetchFixtureService
 {
     public function __construct(
         private FetchFixtureRepositoryInterface $client,
-        private FixturesCacheInterface $cache,
+        private FixturesCacheRepository $cache,
     ) {
     }
 

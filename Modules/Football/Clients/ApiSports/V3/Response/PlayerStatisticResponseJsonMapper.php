@@ -38,9 +38,7 @@ final class PlayerStatisticResponseJsonMapper
         $callback = function (array $data): PlayerStatistics {
             $this->builder->player($this->mapPlayer($data['player'], $data['statistics'][0]['games']['position']));
 
-            return (new MapPlayerStatistics($data['statistics'][0], $this->builder))
-                ->setStatisitcs()
-                ->build();
+            return (new MapPlayerStatistics($data['statistics'][0], $this->builder))->setStatisitcs()->build();
         };
 
         return array_map($callback, $this->response->get('players'));

@@ -15,6 +15,7 @@ use Module\Football\ValueObjects\TimeElapsed;
 use Module\Football\DTO\Builders\PlayerBuilder;
 use Module\Football\FixtureEvents\MissedPenaltyEvent;
 use Module\Football\Collections\FixtureEventsCollection;
+use Module\Football\FixtureEvents\EventInterface;
 
 final class FixtureEventsResponseJsonMapper
 {
@@ -22,23 +23,24 @@ final class FixtureEventsResponseJsonMapper
      * @param array<string, mixed> $data
      */
     public function __construct(
-        private array $data,
-        private ?TeamBuilder $teamBuilder = null,
-        private ?PlayerBuilder $playerBuilder = null
+        private TeamBuilder $teamBuilder = new TeamBuilder,
+        private PlayerBuilder $playerBuilder = new PlayerBuilder
     ) {
-        $this->response = new Response($data);
     }
 
-    public function toCollection(): FixtureEventsCollection
+    public function __invoke(array $event): EventInterface
     {
-        return collect($this->data)
-            ->map(fn (array $event) => match (strtolower($event['type'])) {
-                'goal'  => $this->mapGoalEventType($event),
-                'card'  => $this->mapCardEventType($event),
-                'subst' => $this->mapSubstitutionType($event),
-                'var'   => $this->mapVarEventType($event),
-            })
-            ->pipe(fn (Collection $collection) => new FixtureEventsCollection($collection->all()));
+        return  match (strtolower($event['type'])) {
+            'goal'  => $this->mapGoalEventType($event),
+            'card'  => $this->mapCardEventType($event),
+            'subst' => $this->mapSubstitutionType($event),
+            'var'   => $this->mapVarEventType($event),
+        };
+    }
+
+    public function toCollection(array $events): FixtureEventsCollection
+    {
+        return collect($events)->map($this)->pipe(fn (Collection $collection) => new FixtureEventsCollection($collection->all()));
     }
 
     /**
@@ -130,6 +132,6 @@ final class FixtureEventsResponseJsonMapper
      */
     private function mapPlayer(array $data): Player
     {
-        return (new PlayerResponseJsonMapper($data, playerBuilder: $this->playerBuilder))->toDataTransferObject();
+        return (new PlayerResponseJsonMapper($data, builder: $this->playerBuilder))->toDataTransferObject();
     }
 }

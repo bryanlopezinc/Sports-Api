@@ -14,37 +14,25 @@ use Module\Football\DTO\Builders\LeagueStandingBuilder;
 
 final class LeagueStandingResponseJsonMapper
 {
-    private LeagueStandingBuilder $builder;
-    private StandingDataBuilder $standingDataBuilder;
-    private Response $response;
-
-    /**
-     * @param array<string, mixed> $data
-     */
     public function __construct(
-        array $data,
-        private ?TeamBuilder $teamBuilder = null,
-        LeagueStandingBuilder $builder = null,
-        StandingDataBuilder $standingDataBuilder = null
+        private TeamBuilder $teamBuilder = new TeamBuilder,
+        private LeagueStandingBuilder $builder = new LeagueStandingBuilder,
+        private StandingDataBuilder $standingDataBuilder = new StandingDataBuilder
     ) {
-
-        $this->response = new Response($data);
-        $this->builder = $builder ?: new LeagueStandingBuilder();
-        $this->standingDataBuilder = $standingDataBuilder ?: new StandingDataBuilder();
     }
 
-    public function toDataTransferObject(): LeagueStanding
+    public function __invoke(array $data): LeagueStanding
     {
         return $this->builder
-            ->setForm($this->convertTeamForm($this->response->get('form')))
-            ->setTeamRank($this->response->get('rank'))
-            ->setTeam($this->mapResponseIntoTeamDto($this->response->get('team')))
-            ->setTeamPoints($this->response->get('points'))
-            ->setGoalsDiff($this->response->get('goalsDiff'))
-            ->setPositionDescription($this->response->get('description'))
-            ->setStandingRecord($this->mapResponseIntoStandingDto($this->response->get('all')))
-            ->setHomeRecord($this->mapResponseIntoStandingDto($this->response->get('home')))
-            ->setAwayRecord($this->mapResponseIntoStandingDto($this->response->get('away')))
+            ->setForm($this->convertTeamForm($data['form']))
+            ->setTeamRank($data['rank'])
+            ->setTeam($this->mapResponseIntoTeamDto($data['team']))
+            ->setTeamPoints($data['points'])
+            ->setGoalsDiff($data['goalsDiff'])
+            ->setPositionDescription($data['description'])
+            ->setStandingRecord($this->mapResponseIntoStandingDto($data['all']))
+            ->setHomeRecord($this->mapResponseIntoStandingDto($data['home']))
+            ->setAwayRecord($this->mapResponseIntoStandingDto($data['away']))
             ->build();
     }
 
@@ -60,9 +48,6 @@ final class LeagueStandingResponseJsonMapper
         }, str_split($form));
     }
 
-    /**
-     * @param array<string, mixed> $data
-     */
     private function mapResponseIntoStandingDto(array $data): StandingData
     {
         $standingData = new Response($data);
@@ -77,9 +62,6 @@ final class LeagueStandingResponseJsonMapper
             ->build();
     }
 
-    /**
-     * @param array<string, mixed> $data
-     */
     private function mapResponseIntoTeamDto(array $data): Team
     {
         return (new TeamJsonMapper($data, $this->teamBuilder))->toDataTransferObject();

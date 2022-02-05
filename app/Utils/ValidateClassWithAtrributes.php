@@ -38,7 +38,7 @@ final class ValidateClassWithAtrributes
         static::$cache[$this->object::class] = $this->getClassAttributesInstances();
     }
 
-    public function runAfterMakingValidatorAttributes(): void
+    public function validate(): void
     {
         foreach (static::$cache[$this->object::class] as $validator) {
             $validator->validate($this->object);

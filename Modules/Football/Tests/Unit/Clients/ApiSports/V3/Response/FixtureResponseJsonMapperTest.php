@@ -16,7 +16,7 @@ class FixtureResponseJsonMapperTest extends TestCase
      */
     public function test_will_mark_fixture_as_finished_when_fixture_was_concluded_more_than_25_minutes_ago(array $response): void
     {
-        $fixture = (new FixtureResponseJsonMapper($response))->toDataTransferObject();
+        $fixture = (new FixtureResponseJsonMapper())->toDataTransferObject($response);
 
         $this->assertTrue($fixture->status()->isFinished());
     }
@@ -28,7 +28,7 @@ class FixtureResponseJsonMapperTest extends TestCase
     {
         $response['fixture']['periods']['second'] = now()->subMinutes(50)->timestamp;
 
-        $fixture = (new FixtureResponseJsonMapper($response))->toDataTransferObject();
+        $fixture = (new FixtureResponseJsonMapper())->toDataTransferObject($response);
 
         $this->assertFalse($fixture->status()->isFinished());
         $this->assertTrue($fixture->status()->code() === FixtureStatus::CONFIRMING_EXTRA_TIME);

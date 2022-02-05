@@ -7,13 +7,12 @@ namespace Module\Football\Providers\Cache;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Module\Football\Cache\FixturesByDateCacheRepository;
-use Module\Football\Contracts\Cache\FixturesByDateCacheInterface;
 
 final class FixturesOnDateCacheServiceProvider extends Provider implements DeferrableProvider
 {
     public function boot(): void
     {
-        $this->app->singleton(FixturesByDateCacheInterface::class, function ($app) {
+        $this->app->singleton(FixturesByDateCacheRepository::class, function ($app) {
             return new FixturesByDateCacheRepository($app['cache']->store());
         });
     }
@@ -26,7 +25,7 @@ final class FixturesOnDateCacheServiceProvider extends Provider implements Defer
     public function provides()
     {
         return [
-            FixturesByDateCacheInterface::class
+            FixturesByDateCacheRepository::class
         ];
     }
 }

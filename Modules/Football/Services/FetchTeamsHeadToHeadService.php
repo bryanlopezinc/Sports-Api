@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Module\Football\Services;
 
 use App\Utils\TimeToLive;
+use Module\Football\Cache\TeamsHeadToHeadCacheRepository;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\Collections\FixturesCollection;
-use Module\Football\Contracts\Cache\TeamsHeadToHeadCacheInterface;
 use Module\Football\Contracts\Repositories\FetchTeamHeadToHeadRepositoryInterface;
 
 final class FetchTeamsHeadToHeadService
 {
     public function __construct(
         private FetchTeamHeadToHeadRepositoryInterface $repository,
-        private TeamsHeadToHeadCacheInterface $cache,
+        private TeamsHeadToHeadCacheRepository $cache,
     ) {
     }
 

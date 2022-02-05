@@ -10,26 +10,17 @@ use Module\Football\DTO\Builders\FixtureStatisticsBuilder;
 
 final class FixtureStatisticsResponseJsonMapper
 {
-    private Response $response;
-
-    /**
-     * @param array<string, mixed> $data
-     */
     public function __construct(
-        array $data,
-        private ?TeamBuilder $teamBuilder = null,
-        private ?FixtureStatisticsBuilder $builder = null
+        private TeamBuilder $teamBuilder = new TeamBuilder,
+        private FixtureStatisticsBuilder $builder = new FixtureStatisticsBuilder
     ) {
-
-        $this->response = new Response($data);
-        $this->builder = $this->builder ?: new FixtureStatisticsBuilder;
     }
 
-    public function toDataTransferObject(): FixtureStatistics
+    public function __invoke(array $data): FixtureStatistics
     {
-        $statistics = collect($this->response->get('statistics'));
+        $statistics = collect($data['statistics']);
 
-        $this->mapTeamToDto();
+        $this->mapTeamToDto($data);
 
         $getValueForType = fn (string $type) => $statistics->where('type', $type)->first()['value'];
 
@@ -52,10 +43,10 @@ final class FixtureStatisticsResponseJsonMapper
             ->build();
     }
 
-    private function mapTeamToDto(): void
+    private function mapTeamToDto(array $data): void
     {
         $this->builder->team(
-            (new TeamJsonMapper($this->response->get('team'), $this->teamBuilder))->toDataTransferObject()
+            (new TeamJsonMapper($data['team'], $this->teamBuilder))->toDataTransferObject()
         );
     }
 }

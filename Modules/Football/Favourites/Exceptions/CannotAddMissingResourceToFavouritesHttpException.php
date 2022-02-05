@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Favourites\Exceptions;
 
-use App\Exceptions\Http\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class CannotAddMissingResourceToFavouritesHttpException extends HttpException
 {

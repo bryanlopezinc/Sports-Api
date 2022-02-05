@@ -10,7 +10,6 @@ use Module\Football\DTO\Builders\PlayerBuilder;
 
 final class PlayerResponseJsonMapper
 {
-    private PlayerBuilder $builder;
     private Response $response;
 
     /**
@@ -20,10 +19,9 @@ final class PlayerResponseJsonMapper
     public function __construct(
         array $data,
         private array $playerPositionMap = [],
-        PlayerBuilder $playerBuilder = null
+        private PlayerBuilder $builder = new PlayerBuilder
     ) {
         $this->response = new Response($data);
-        $this->builder = $playerBuilder ?: new PlayerBuilder();
     }
 
     public function toDataTransferObject(): Player

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\Clients;
 
 use Illuminate\Http\Client\Response;
-use App\Exceptions\Http\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use App\Exceptions\Http\ResourceNotFoundHttpException;
 
 final class HttpRequestExceptionHandler

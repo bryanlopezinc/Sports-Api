@@ -7,17 +7,15 @@ namespace App\Collections;
 use Countable;
 use IteratorAggregate;
 use Illuminate\Support\Collection;
-use App\Concerns\ValidatesAfterCreating;
 use Illuminate\Contracts\Support\Arrayable;
 use App\Exceptions\InvalidCollectionItemException;
+use App\Utils\ValidateClassWithAtrributes;
 
 /**
  * @template T
  */
 abstract class BaseCollection implements Arrayable, Countable, IteratorAggregate
 {
-    use ValidatesAfterCreating;
-
     protected Collection $collection;
 
     abstract protected function isValid(mixed $item): bool;
@@ -40,14 +38,14 @@ abstract class BaseCollection implements Arrayable, Countable, IteratorAggregate
         return $this->collection->getIterator();
     }
 
-    private function validateItems(): void
+    protected function validateItems(): void
     {
         $this->collection->each(function ($item, $index) {
             if (!$this->isValid($item)) {
                 throw new InvalidCollectionItemException($index, static::class, $item);
             }
         })
-        ->whenNotEmpty(fn () => $this->runClassAfterMakingValidatorAttributes());
+        ->whenNotEmpty(fn () => (new ValidateClassWithAtrributes($this))->validate());
     }
 
     protected function setItems(mixed $items): void

@@ -6,18 +6,14 @@ namespace App\DTO;
 
 use ArrayAccess;
 use JsonSerializable;
-use App\Concerns\ValidatesAfterCreating;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
-use App\DTO\Exception\UnsetAttributeException;
-use App\DTO\Exception\ChangeAttributeException;
 use App\Attributes\CheckDataTransferObjectForDefaultProperties;
+use App\Utils\ValidateClassWithAtrributes;
 
 #[CheckDataTransferObjectForDefaultProperties]
 abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayable, ArrayAccess
 {
-    use ValidatesAfterCreating;
-
     /**
      * @param array<string, mixed> $attributes
      */
@@ -29,7 +25,7 @@ abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayab
 
         $this->setDtoAttributes();
 
-        $this->runClassAfterMakingValidatorAttributes();
+        (new ValidateClassWithAtrributes($this))->validate();
     }
 
     protected function setDtoAttributes(): void
@@ -99,7 +95,10 @@ abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayab
     public function offsetSet(mixed $offset, mixed $value): void
     {
         if ($this->offsetExists($offset)) {
-            throw new ChangeAttributeException($offset, static::class);
+            throw new \Exception(
+                sprintf('Cannot change %s attribute for %s', $offset, static::class),
+                4040
+            );
         }
 
         $this->set($offset, $value);
@@ -107,7 +106,10 @@ abstract class DataTransferObject implements Jsonable, JsonSerializable, Arrayab
 
     public function offsetUnset(mixed $offset): void
     {
-        throw new UnsetAttributeException($offset, static::class);
+        throw new \Exception(
+            sprintf('Cannot unset %s attribute for %s', $offset, static::class),
+            4041
+        );
     }
 
     /**

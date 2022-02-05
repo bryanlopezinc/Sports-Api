@@ -7,7 +7,6 @@ namespace Module\Football\Providers\Cache;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Module\Football\Cache\FixturesPlayersStatisticsCacheRepository;
-use Module\Football\Contracts\Cache\FixturesPlayersStatisticsCacheInterface;
 
 final class FixturesPlayersStatisticsCacheServiceProvider extends Provider implements DeferrableProvider
 {
@@ -18,7 +17,7 @@ final class FixturesPlayersStatisticsCacheServiceProvider extends Provider imple
      */
     public function boot(): void
     {
-        $this->app->singleton(FixturesPlayersStatisticsCacheInterface::class, function ($app) {
+        $this->app->singleton(FixturesPlayersStatisticsCacheRepository::class, function ($app) {
             return new FixturesPlayersStatisticsCacheRepository($app['cache']->store());
         });
     }
@@ -31,7 +30,7 @@ final class FixturesPlayersStatisticsCacheServiceProvider extends Provider imple
     public function provides()
     {
         return [
-            FixturesPlayersStatisticsCacheInterface::class
+            FixturesPlayersStatisticsCacheRepository::class
         ];
     }
 }

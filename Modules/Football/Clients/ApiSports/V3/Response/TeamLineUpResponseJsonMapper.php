@@ -32,15 +32,12 @@ final class TeamLineUpResponseJsonMapper
      */
     public function __construct(
         array $data,
-        private ?CoachBuilder $coachBuilder = null,
-        private ?PlayerBuilder $playerBuilder = null,
-        private ?TeamBuilder $teamBilder = null,
-        private ?TeamLineUpBuilder $teamLineUpBuilder = null
+        private CoachBuilder $coachBuilder = new CoachBuilder(),
+        private PlayerBuilder $playerBuilder = new PlayerBuilder(),
+        private TeamBuilder $teamBilder = new TeamBuilder(),
+        private TeamLineUpBuilder $teamLineUpBuilder = new TeamLineUpBuilder()
     ) {
         $this->response = new Response($data);
-        $this->coachBuilder = $coachBuilder ?: new CoachBuilder();
-        $this->playerBuilder = $playerBuilder ?: new PlayerBuilder();
-        $this->teamLineUpBuilder = $teamLineUpBuilder ?: new TeamLineUpBuilder();
     }
 
     public function toDataTransferObject(): TeamLineUp
@@ -71,7 +68,6 @@ final class TeamLineUpResponseJsonMapper
                     ->when(!$hasPostionOnGridView, fn (PlayerBuilder $b): PlayerBuilder => $b->setPositionOnGridLineUp(null, null))
                     ->build();
             })
-
             ->pipe(fn (Collection $collection) => new PlayersCollection($collection->all()));
     }
 

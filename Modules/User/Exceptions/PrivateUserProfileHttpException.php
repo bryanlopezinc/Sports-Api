@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Exceptions;
 
-use App\Exceptions\Http\HttpException;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class PrivateUserProfileHttpException extends HttpException
 {

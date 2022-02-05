@@ -11,7 +11,7 @@ use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Collections\LeaguesCollection;
 use Module\Football\Collections\LeagueIdsCollection;
-use Module\Football\Clients\ApiSports\V3\Requests\FetchLeagueByIdRequest;
+use Module\Football\Clients\ApiSports\V3\ApiSportsRequest;
 use Module\Football\Contracts\Repositories\FetchLeagueRepositoryInterface;
 use Module\Football\Clients\ApiSports\V3\Response\LeagueResponseJsonMapper;
 
@@ -19,9 +19,9 @@ final class FetchLeagueHttpClient extends ApiSportsClient implements FetchLeague
 {
     public function findByIdAndSeason(LeagueId $id, Season $season): League
     {
-        $response = $this->get(new Request('leagues', [
-            'season'  => $season->toInt(),
-            'id'      => $id->toInt()
+        $response = $this->get(new ApiSportsRequest('leagues', [
+            'season' => $season->toInt(),
+            'id' => $id->toInt()
         ]));
 
         return $this->mapJsonResponseIntoLeagueDto($response, $season);
@@ -29,7 +29,7 @@ final class FetchLeagueHttpClient extends ApiSportsClient implements FetchLeague
 
     public function findManyById(LeagueIdsCollection $ids): LeaguesCollection
     {
-        $requests = $ids->toLaravelCollection()->map(fn (LeagueId $id) => new FetchLeagueByIdRequest($id))->all();
+        $requests = $ids->toLaravelCollection()->map(fn (LeagueId $id) => ApiSportsRequest::findLeagueRequest($id))->all();
 
         return collect($this->pool($requests))
             ->map(fn (Response $response): League => $this->mapJsonResponseIntoLeagueDto($response))

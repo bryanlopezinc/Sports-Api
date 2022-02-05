@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Football\Tests\Unit\Services;
 
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Facades\Http;
+use Module\Football\Cache\FixturesCacheRepository;
 use Module\Football\Collections\FixtureIdsCollection;
 use Module\Football\Collections\FixturesCollection;
 use Tests\TestCase;
 use Module\Football\DTO\Fixture;
 use Module\Football\Factories\FixtureFactory;
 use Module\Football\Services\FetchFixtureService;
-use Module\Football\Contracts\Cache\FixturesCacheInterface;
 use Module\Football\Contracts\Repositories\FetchFixtureRepositoryInterface;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureResponse;
 use Module\Football\ValueObjects\FixtureId;
@@ -24,7 +25,7 @@ class FetchFixtureServiceTest extends TestCase
     private function getMocks()
     {
         return [
-            $this->getMockBuilder(FixturesCacheInterface::class)->getMock(),
+            $this->getMockBuilder(Repository::class)->getMock(),
             $this->getMockBuilder(FetchFixtureRepositoryInterface::class)->getMock()
         ];
     }
@@ -35,7 +36,7 @@ class FetchFixtureServiceTest extends TestCase
 
         $repository->expects($this->never())->method('findManyById');
 
-        $cache->expects($this->once())->method('getMany')->willReturn(FixtureFactory::new()->count(5)->toCollection());
+        $cache->expects($this->once())->method('getMultiple')->willReturn(FixtureFactory::new()->count(5)->toCollection());
 
         $this->assertCount(
             5,
@@ -53,8 +54,10 @@ class FetchFixtureServiceTest extends TestCase
         [$cache, $repository] = $this->getMocks();
 
         $cache->expects($this->once())
-            ->method('getMany')
+            ->method('getMultiple')
             ->willReturn(new FixturesCollection($fixtures->toLaravelCollection()->take(4)->all()));
+
+        $cache->expects($this->once())->method('put')->willReturn(true);
 
         $repository
             ->expects($this->once())
@@ -73,7 +76,7 @@ class FetchFixtureServiceTest extends TestCase
         $cache = $this->getMocks()[0];
         $cache->expects($this->exactly(7))->method('has')->willReturn(false);
 
-        $this->swap(FixturesCacheInterface::class, $cache);
+        $this->swap(FixturesCacheRepository::class, new FixturesCacheRepository($cache));
 
         /** @var FetchFixtureService */
         $service = app(FetchFixtureService::class);
@@ -93,7 +96,7 @@ class FetchFixtureServiceTest extends TestCase
 
     private function getServiceInstance($cache, $repository): FetchFixtureService
     {
-        $this->instance(FixturesCacheInterface::class, $cache);
+        $this->swap(FixturesCacheRepository::class, new FixturesCacheRepository($cache));
         $this->instance(FetchFixtureRepositoryInterface::class, $repository);
 
         return app(FetchFixtureService::class);

@@ -6,7 +6,6 @@ namespace Module\Football\Clients\ApiSports\V3;
 
 use Illuminate\Support\Collection;
 use Module\Football\FixtureLineUp;
-use Module\Football\TeamMissingPlayer;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\DTO\Builders\TeamLineUpBuilder;
 use Module\Football\Collections\TeamMissingPlayersCollection;
@@ -19,14 +18,11 @@ final class FetchFixtureLineUpHttpClient extends ApiSportsClient implements Fetc
 {
     public function fetchLineUp(FixtureId $id): FixtureLineUp
     {
-        $requests = [
-            'lineUps'           => new Request('fixtures/lineups', ['fixture'  => $id->toInt()]),
-            'missingPlayers'    => new Request('injuries', ['fixture'  => $id->toInt()]),
-        ];
+        $response = $this->pool([
+            'lineUps'           => new ApiSportsRequest('fixtures/lineups', ['fixture'  => $id->toInt()]),
+            'missingPlayers'    => new ApiSportsRequest('injuries', ['fixture'  => $id->toInt()]),
+        ]);
 
-        $response = $this->pool($requests);
-
-        $missingPlayers = $response['missingPlayers']->json('response');
         $fixtureLineUpData = $response['lineUps']->collect('response')->all();
 
         if (empty($fixtureLineUpData)) {
@@ -36,7 +32,7 @@ final class FetchFixtureLineUpHttpClient extends ApiSportsClient implements Fetc
         $fixtureLineUp = [];
 
         foreach ($fixtureLineUpData as $data) {
-            $builder = $this->setMissingPlayersForTeamLineUp($data, $missingPlayers);
+            $builder = $this->setMissingPlayersForTeamLineUp($data, $response['missingPlayers']->json('response'));
 
             $fixtureLineUp[] = (new TeamLineUpResponseJsonMapper($data, teamLineUpBuilder: $builder))->toDataTransferObject();
         }
@@ -54,7 +50,7 @@ final class FetchFixtureLineUpHttpClient extends ApiSportsClient implements Fetc
 
         $teamMissingPlayers = collect($missingPlayers)
             ->filter(fn (array $data) => $data['team']['id'] === $teamLineUp['team']['id'])
-            ->map(fn (array $data): TeamMissingPlayer => (new FixtureMissingPlayerJsonMapper($data))->transformToFixtureMissingPlayer())
+            ->map(new FixtureMissingPlayerJsonMapper())
             ->pipe(fn (Collection $collection) => new TeamMissingPlayersCollection($collection->all()));
 
         return $builder->setMissingPlayers($teamMissingPlayers);

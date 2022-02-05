@@ -6,9 +6,6 @@ namespace Tests\Unit\DTO;
 
 use Tests\TestCase;
 use App\DTO\DataTransferObject;
-use App\DTO\Exception\UnsetAttributeException;
-use App\DTO\Exception\ChangeAttributeException;
-use App\DTO\Exception\PropertyCannotHaveDefaultValueException;
 
 class DtoTest extends TestCase
 {
@@ -85,7 +82,7 @@ class DtoTest extends TestCase
      */
     public function test_cannot_have_default_properties(array $data): void
     {
-        $this->expectException(PropertyCannotHaveDefaultValueException::class);
+        $this->expectExceptionCode(5000);
 
         $class = new class($data) extends DataTransferObject
         {
@@ -110,7 +107,7 @@ class DtoTest extends TestCase
      */
     public function test_cannot_change_data_transfer_attribute(array $data): void
     {
-        $this->expectException(ChangeAttributeException::class);
+        $this->expectExceptionCode(4040);
 
         $dto = new class($data) extends DataTransferObject
         {
@@ -124,7 +121,7 @@ class DtoTest extends TestCase
      */
     public function test_cannot_unset_data_transfer_object_attribute(array $data): void
     {
-        $this->expectException(UnsetAttributeException::class);
+        $this->expectExceptionCode(4041);
 
         $dto = new class($data) extends DataTransferObject
         {

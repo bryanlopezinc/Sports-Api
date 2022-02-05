@@ -19,56 +19,51 @@ use Module\Football\Venue;
 
 final class FixtureResponseJsonMapper
 {
-    private FixtureBuilder $builder;
-    private LeagueBuilder $leagueBuilder;
-    private Response $response;
-
-    /**
-     * @param array<string, mixed> $data
-     */
     public function __construct(
-        array $data,
-        FixtureBuilder $builder = null,
-        private ?TeamBuilder $teamBilder = null,
-        LeagueBuilder $leagueBuilder = null
+        private FixtureBuilder $builder = new FixtureBuilder,
+        private TeamBuilder $teamBilder = new TeamBuilder,
+        private LeagueBuilder $leagueBuilder = new LeagueBuilder
     ) {
-
-        $this->response = new Response($data);
-        $this->builder = $builder ?: new FixtureBuilder;
-        $this->leagueBuilder = $leagueBuilder ?: new LeagueBuilder();
     }
 
-    public function toDataTransferObject(): Fixture
+    public function __invoke(array $data): Fixture
     {
+        $response = new Response($data);
+
         $fixture = $this->builder
-            ->setId($this->response->get('fixture.id'))
-            ->setReferee($this->getReferee())
-            ->setTimezone($this->response->get('fixture.timezone'))
-            ->setDate(Carbon::parse($this->response->get('fixture.date'))->toDateTimeString())
-            ->setFixtureStatus($this->convertFixtureStatus())
-            ->setTimeElapsed($this->response->get('fixture.status.elapsed'))
-            ->setVenue($this->getVenue())
-            ->setLeague($this->mapLeagueResponseIntoDto($this->response->get('league')))
-            ->setHomeTeam($this->mapTeamResponseIntoDto($this->response->get('teams.home')))
-            ->setAwayTeam($this->mapTeamResponseIntoDto($this->response->get('teams.away')))
-            ->setWinnerId($this->getWinnerId())
-            ->setGoals($this->response->get('goals.home'), $this->response->get('goals.away'))
-            ->setHalfTimeScore($this->response->get('score.halftime.home'), $this->response->get('score.halftime.away'))
-            ->setFullTimeScore($this->response->get('score.fulltime.home'), $this->response->get('score.fulltime.away'))
-            ->setExtraTimeScore($this->response->get('score.extratime.home'), $this->response->get('score.extratime.away'))
-            ->setPenaltyScore($this->response->get('score.penalty.home'), $this->response->get('score.penalty.away'))
+            ->setId($response->get('fixture.id'))
+            ->setReferee($this->getReferee($data))
+            ->setTimezone($response->get('fixture.timezone'))
+            ->setDate(Carbon::parse($response->get('fixture.date'))->toDateTimeString())
+            ->setFixtureStatus($this->convertFixtureStatus($data))
+            ->setTimeElapsed($response->get('fixture.status.elapsed'))
+            ->setVenue($this->getVenue($data))
+            ->setLeague($this->mapLeagueResponseIntoDto($response->get('league')))
+            ->setHomeTeam($this->mapTeamResponseIntoDto($response->get('teams.home')))
+            ->setAwayTeam($this->mapTeamResponseIntoDto($response->get('teams.away')))
+            ->setWinnerId($this->getWinnerId($data))
+            ->setGoals($response->get('goals.home'), $response->get('goals.away'))
+            ->setHalfTimeScore($response->get('score.halftime.home'), $response->get('score.halftime.away'))
+            ->setFullTimeScore($response->get('score.fulltime.home'), $response->get('score.fulltime.away'))
+            ->setExtraTimeScore($response->get('score.extratime.home'), $response->get('score.extratime.away'))
+            ->setPenaltyScore($response->get('score.penalty.home'), $response->get('score.penalty.away'))
             ->build();
 
-        return $this->confirmFixtureStatus($fixture);
+        return $this->confirmFixtureStatus($fixture, $data);
     }
 
-    private function confirmFixtureStatus(Fixture $fixture): Fixture
+    public function toDataTransferObject(array $response): Fixture
+    {
+        return $this($response);
+    }
+
+    private function confirmFixtureStatus(Fixture $fixture, array $data): Fixture
     {
         if (!$fixture->status()->isFullTime()) {
             return $fixture;
         }
 
-        $secondPeriodStartTime = Carbon::createFromTimestamp($this->response->get('fixture.periods.second'));
+        $secondPeriodStartTime = Carbon::createFromTimestamp($data['fixture']['periods']['second']);
 
         //Determine if fixture finished less than X minutes ago.
         //since no info about how many minutes added time was given in the second period
@@ -89,9 +84,9 @@ final class FixtureResponseJsonMapper
             ->build();
     }
 
-    private function convertFixtureStatus(): int
+    private function convertFixtureStatus(array $data): int
     {
-        return match ($this->response->get('fixture.status.short')) {
+        return match ($data['fixture']['status']['short']) {
             'TBD'   => FixtureStatus::TBD,
             'NS'    => FixtureStatus::NOT_STARTED,
             '1H'    => FixtureStatus::FIRST_HALF,
@@ -114,9 +109,9 @@ final class FixtureResponseJsonMapper
         };
     }
 
-    private function getReferee(): ?string
+    private function getReferee(array $data): ?string
     {
-        $refreeNameAndCountry = $this->response->get('fixture.referee');
+        $refreeNameAndCountry = $data['fixture']['referee'];
 
         if ($refreeNameAndCountry === null) {
             return null;
@@ -149,10 +144,10 @@ final class FixtureResponseJsonMapper
             ->build();
     }
 
-    private function getVenue(): Venue
+    private function getVenue(array $data): Venue
     {
-        $city = $this->response->get('fixture.venue.city');
-        $name = $this->response->get('fixture.venue.name');
+        $city = $data['fixture']['venue']['city'];
+        $name = $data['fixture']['venue']['name'];
 
         if (is_null($city) || is_null($name)) {
             return Venue::unknown();
@@ -161,12 +156,12 @@ final class FixtureResponseJsonMapper
         return new Venue(new VenueName($name), $city);
     }
 
-    private function getWinnerId(): ?int
+    private function getWinnerId(array $data): ?int
     {
-        $teams = $this->response->get('teams');
+        $teams = $data['teams'];
 
         //only finished fixture should have a winner
-        if (notInArray($this->response->get('fixture.status.short'), ['FT', 'AET', 'PEN', 'WO'])) {
+        if (notInArray($data['fixture']['status']['short'], ['FT', 'AET', 'PEN', 'WO'])) {
             return null;
         }
 

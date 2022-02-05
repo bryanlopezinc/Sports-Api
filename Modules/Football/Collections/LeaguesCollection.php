@@ -9,9 +9,6 @@ use Module\Football\DTO\League;
 use Illuminate\Support\Collection;
 use Module\Football\ValueObjects\LeagueId;
 
-/**
- * @template T of League
- */
 final class LeaguesCollection extends BaseCollection
 {
     protected function isValid(mixed $value): bool

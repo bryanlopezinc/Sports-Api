@@ -10,21 +10,18 @@ use Module\Football\ValueObjects\ReasonForMissingFixture;
 
 final class FixtureMissingPlayerJsonMapper
 {
-    private Response $response;
-
     /**
      * @param array<string, mixed> $data
      */
-    public function __construct(array $data, private ?PlayerBuilder $builder = null)
+    public function __construct(private PlayerBuilder $builder = new PlayerBuilder)
     {
-        $this->response = new Response($data);
     }
 
-    public function transformToFixtureMissingPlayer(): TeamMissingPlayer
+    public function __invoke(array $data): TeamMissingPlayer
     {
         return new TeamMissingPlayer(
-            (new PlayerResponseJsonMapper($this->response->get('player'), [], $this->builder))->toDataTransferObject(),
-            new ReasonForMissingFixture($this->determineReasonForMissingFixture($this->response->get('player.reason')))
+            (new PlayerResponseJsonMapper($data['player'], [], $this->builder))->toDataTransferObject(),
+            new ReasonForMissingFixture($this->determineReasonForMissingFixture($data['player']['reason']))
         );
     }
 

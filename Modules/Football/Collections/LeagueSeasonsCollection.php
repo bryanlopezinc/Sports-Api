@@ -8,9 +8,6 @@ use App\Collections\BaseCollection;
 use Module\Football\DTO\LeagueSeason;
 use Module\Football\ValueObjects\Season;
 
-/**
- * @template T of LeagueSeason
- */
 final class LeagueSeasonsCollection extends BaseCollection
 {
     public function isValid(mixed $value): bool

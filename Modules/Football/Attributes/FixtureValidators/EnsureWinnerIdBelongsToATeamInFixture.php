@@ -9,7 +9,7 @@ use Module\Football\DTO\Fixture;
 use App\Contracts\AfterMakingValidatorInterface;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final class EnsureWinnerIdBelongsToFixtureTeams implements AfterMakingValidatorInterface
+final class EnsureWinnerIdBelongsToATeamInFixture implements AfterMakingValidatorInterface
 {
     /**
      * @param Fixture $fixture

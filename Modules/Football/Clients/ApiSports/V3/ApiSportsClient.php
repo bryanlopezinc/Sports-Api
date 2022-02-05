@@ -14,38 +14,34 @@ use Psr\Http\Client\NetworkExceptionInterface;
 
 abstract class ApiSportsClient
 {
-    private FailedResponseCache $cache;
-
-    public function __construct(FailedResponseCache $cache = null)
+    public function __construct(private FailedResponseCache $cache = new FailedResponseCache)
     {
-        $this->cache = $cache ?: new FailedResponseCache;
     }
 
-    /**
-     * @param array<mixed> $query
-     */
-    protected function get(string|Request $url, array $query = []): Response
+    protected function get(string|ApiSportsRequest $url, array $query = []): Response
     {
-        $request = $url instanceof Request ? $url : new Request($url, $query);
+        $request = $url instanceof ApiSportsRequest ? $url : new ApiSportsRequest($url, $query);
 
         return $this->pool(['response' => $request])['response'];
     }
 
     /**
-     * @param array<string|int, Request> $requests
+     * @param array<string|int, ApiSportsRequest> $requests
+     *
      * @return array<string, Response>
      */
     protected function pool(array $requests): array
     {
         $responses =  Http::pool(function (Pool $pool) use ($requests): array {
-            return collect($requests)
-                ->map(function (Request $request, string|int $alias) use ($pool) {
-                    return $pool
-                        ->as((string) $alias)
-                        ->withHeaders($request->headers())
-                        ->beforeSending($this->checkForPreviousErrorResponse())
-                        ->get($request->uri(), $request->query());
-                })->all();
+            $callback = function (ApiSportsRequest $request, string|int $alias) use ($pool) {
+                return $pool
+                    ->as((string) $alias)
+                    ->withHeaders($request->headers())
+                    ->beforeSending($this->checkForPreviousErrorResponse())
+                    ->get($request->uri(), $request->query());
+            };
+
+            return collect($requests)->map($callback)->all();
         });
 
         $this->handleFailedErrorResponses($responses);

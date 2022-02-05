@@ -21,9 +21,6 @@ final class FetchFixtureStatisticsHttpClient extends ApiSportsClient implements 
             return new FixtureStatistics($id, new FixtureStatisticsDto([]), new FixtureStatisticsDto([]));
         }
 
-        return $statistcs->map(function (array $data): FixtureStatisticsDto {
-            return (new Response\FixtureStatisticsResponseJsonMapper($data))->toDataTransferObject();
-        })
-            ->pipe(fn (Collection $collection) => new FixtureStatistics($id, ...$collection->all()));
+        return $statistcs->map(new Response\FixtureStatisticsResponseJsonMapper())->pipe(fn (Collection $collection) => new FixtureStatistics($id, ...$collection->all()));
     }
 }

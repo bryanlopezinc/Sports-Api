@@ -6,17 +6,17 @@ namespace Module\Football\Services;
 
 use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
+use Module\Football\Cache\LeaguesFixturesByDateCacheRepository;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Collections\FixturesCollection;
-use Module\Football\Contracts\Cache\LeaguesFixturesByDateCacheInterface;
 use Module\Football\Contracts\Repositories\FetchLeagueFixturesByDateRepositoryInterface;
 
 final class FetchLeagueFixturesByDateService
 {
     public function __construct(
         private FetchLeagueFixturesByDateRepositoryInterface $repository,
-        private LeaguesFixturesByDateCacheInterface $cache,
+        private LeaguesFixturesByDateCacheRepository $cache,
     ) {
     }
 

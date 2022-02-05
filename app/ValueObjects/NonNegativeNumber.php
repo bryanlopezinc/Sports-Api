@@ -31,9 +31,4 @@ final class NonNegativeNumber
             new self($value);
         }
     }
-
-    public function number(): int
-    {
-        return $this->number;
-    }
 }

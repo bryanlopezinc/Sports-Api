@@ -6,6 +6,7 @@ use Carbon\Carbon;
 
 /**
  * wrapper function for php 'in_array' with strict check
+ * 
  * @param array<mixed> $array
  */
 function inArray(mixed $needle, array $array): bool

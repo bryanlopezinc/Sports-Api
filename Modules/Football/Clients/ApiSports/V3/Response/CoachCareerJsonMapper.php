@@ -12,40 +12,34 @@ use App\ValueObjects\NonEmptyString as TeamName;
 
 final class CoachCareerJsonMapper
 {
-    private Response $response;
-
-    /**
-     * @param array<string, mixed> $response
-     */
-    public function __construct(array $response, private ?TeamBuilder $teamBuilder = null)
+    public function __construct(private TeamBuilder $teamBuilder = new TeamBuilder)
     {
-        $this->response = new Response($response);
     }
 
-    public function mapIntoCoachCareerObject(): CoachCareer
+    public function __invoke(array $response): CoachCareer
     {
         return new CoachCareer(
-            $this->getTeam(),
-            new Date($this->response->get('start')),
-            $this->getEndDate()
+            $this->getTeam($response),
+            new Date($response['start']),
+            $this->getEndDate($response)
         );
     }
 
-    private function getEndDate(): ?Date
+    private function getEndDate(array $response): ?Date
     {
-        if ($this->response->get('end') === null) {
+        if ($response['end'] === null) {
             return null;
         }
 
-        return new Date($this->response->get('end'));
+        return new Date($response['end']);
     }
 
-    private function getTeam(): Team|TeamName
+    private function getTeam(array $response): Team|TeamName
     {
-        if ($this->response->get('team.id') === null) {
-            return new TeamName($this->response->get('team.name'));
+        if ($response['team']['id'] === null) {
+            return new TeamName($response['team']['name']);
         }
 
-        return (new TeamJsonMapper($this->response->get('team'), $this->teamBuilder))->toDataTransferObject();
+        return (new TeamJsonMapper($response['team'], $this->teamBuilder))->toDataTransferObject();
     }
 }

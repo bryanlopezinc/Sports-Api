@@ -7,13 +7,12 @@ namespace Module\Football\Providers\Cache;
 use Illuminate\Support\ServiceProvider as Provider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Module\Football\Cache\LeaguesTopAsisstsCacheRepository;
-use Module\Football\Contracts\Cache\LeaguesTopAssistsCacheInterface;
 
 final class LeaguesTopAsisstsCacheServiceProvider extends Provider implements DeferrableProvider
 {
     public function boot(): void
     {
-        $this->app->singleton(LeaguesTopAssistsCacheInterface::class, function ($app) {
+        $this->app->singleton(LeaguesTopAsisstsCacheRepository::class, function ($app) {
             return new LeaguesTopAsisstsCacheRepository($app['cache']->store());
         });
     }
@@ -26,7 +25,7 @@ final class LeaguesTopAsisstsCacheServiceProvider extends Provider implements De
     public function provides()
     {
         return [
-            LeaguesTopAssistsCacheInterface::class,
+            LeaguesTopAsisstsCacheRepository::class,
         ];
     }
 }

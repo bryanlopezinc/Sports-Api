@@ -8,6 +8,8 @@ use App\Exceptions\Http\ResourceNotFoundHttpException;
 use Illuminate\Http\Client\Response as ClientResponse;
 use Module\Football\DTO\Fixture;
 use Illuminate\Support\Collection;
+use Module\Football\Cache\FixtureEventsCacheRepository;
+use Module\Football\Cache\FixturesStatisticsCacheRepository;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\DTO\Builders\FixtureBuilder;
@@ -17,16 +19,14 @@ use Module\Football\Collections\FixtureIdsCollection;
 use Module\Football\Collections\FixturesCollection;
 use Module\Football\DetermineFixtureTimeToLiveInCache;
 use Module\Football\FixtureStatistic\FixtureStatistics;
-use Module\Football\Contracts\Cache\FixturesEventsCacheInterface;
-use Module\Football\Contracts\Cache\FixturesStatisticsCacheInterface;
 use Module\Football\Contracts\Repositories\FetchFixtureRepositoryInterface;
 
 final class FetchFixtureHttpClient extends ApiSportsClient implements FetchFixtureRepositoryInterface
 {
     public function __construct(
         private FetchLeagueService $service,
-        private FixturesEventsCacheInterface $fixturesEventsCache,
-        private FixturesStatisticsCacheInterface $fixturesStatisticsCache,
+        private FixtureEventsCacheRepository $fixturesEventsCache,
+        private FixturesStatisticsCacheRepository $fixturesStatisticsCache,
     ) {
         parent::__construct();
     }
@@ -42,11 +42,9 @@ final class FetchFixtureHttpClient extends ApiSportsClient implements FetchFixtu
 
     public function FindFixtureById(FixtureId $id): Fixture
     {
-        $response =  $this->get('fixtures', [
-            'id' => $id->toInt(),
-        ])->json('response.0');
+        $response =  $this->get('fixtures', ['id' => $id->toInt()])->json('response.0');
 
-        $fixture = (new Response\FixtureResponseJsonMapper($response))->toDataTransferObject();
+        $fixture = (new Response\FixtureResponseJsonMapper())->toDataTransferObject($response);
 
         // fetch full league info to get data like coverage etc
         $league = $this->service->findByIdAndSeason($fixture->league()->getId(), new Season((new Response\Response($response))->get('league.season')));
@@ -62,9 +60,10 @@ final class FetchFixtureHttpClient extends ApiSportsClient implements FetchFixtu
     public function findManyById(FixtureIdsCollection $fixtureIds): FixturesCollection
     {
         return $fixtureIds->toLaravelCollection()
-            ->map(fn (FixtureId $id) => new Request('fixtures', ['id' => $id->toInt()]))
+            ->map(fn (FixtureId $id) => new ApiSportsRequest('fixtures', ['id' => $id->toInt()]))
             ->pipe(fn (Collection $collection) => collect($this->pool($collection->all())))
-            ->map(fn (ClientResponse $response) => (new Response\FixtureResponseJsonMapper($response->json('response.0')))->toDataTransferObject())
+            ->map(fn (ClientResponse $response): array => $response->json('response.0'))
+            ->map(new Response\FixtureResponseJsonMapper())
             ->pipe(fn (Collection $collection) => new FixturesCollection($collection->all()));
     }
 
@@ -83,7 +82,7 @@ final class FetchFixtureHttpClient extends ApiSportsClient implements FetchFixtu
 
         $this->fixturesEventsCache->cache(
             $fixture->id(),
-            (new Response\FixtureEventsResponseJsonMapper($response['events']))->toCollection(),
+            (new Response\FixtureEventsResponseJsonMapper())->toCollection($response['events']),
             (new DetermineFixtureTimeToLiveInCache)->for($fixture)
         );
     }
@@ -102,7 +101,7 @@ final class FetchFixtureHttpClient extends ApiSportsClient implements FetchFixtu
         }
 
         $statistics = collect($response['statistics'])
-            ->map(fn (array $statistic) => (new Response\FixtureStatisticsResponseJsonMapper($statistic))->toDataTransferObject())
+            ->map(new Response\FixtureStatisticsResponseJsonMapper())
             ->pipe(fn (Collection $collection) => new FixtureStatistics($fixture->id(), ...$collection->all()));
 
         $this->fixturesStatisticsCache->cache(

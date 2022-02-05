@@ -6,16 +6,16 @@ namespace Module\Football\Services;
 
 use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
+use Module\Football\Cache\LeaguesTopAsisstsCacheRepository;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Collections\LeagueTopAssistsCollection;
-use Module\Football\Contracts\Cache\LeaguesTopAssistsCacheInterface as Cache;
 use Module\Football\Contracts\Repositories\FetchLeagueTopAssistsRepositoryInterface as Repository;
 
 final class FetchLeagueTopAssistsService
 {
     public function __construct(
-        private Cache $cache,
+        private LeaguesTopAsisstsCacheRepository $cache,
         private Repository $repository,
         private FetchLeagueFixturesByDateService $leagueFixturesService,
     ) {

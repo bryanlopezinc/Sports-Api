@@ -8,14 +8,17 @@ use App\Utils\TimeToLive;
 use Module\Football\ValueObjects\TeamId;
 use Illuminate\Contracts\Cache\Repository;
 use Module\Football\ValueObjects\TeamsHeadToHead;
-use Module\Football\Contracts\Cache\TeamsHeadToHeadCacheInterface;
 
-final class TeamsHeadToHeadCacheRepository implements TeamsHeadToHeadCacheInterface
+final class TeamsHeadToHeadCacheRepository
 {
     public function __construct(private Repository $repository)
     {
     }
 
+    /**
+     * The order of the team ids are placed does not matter.
+     * has(teamOne, teamTwo) will yield the same result as has(teamTwo, teamOne)
+     */
     public function has(TeamId $teamOne, TeamId $teamTwo): bool
     {
         return $this->repository->has($this->prepareKey($teamOne, $teamTwo));
@@ -40,6 +43,12 @@ final class TeamsHeadToHeadCacheRepository implements TeamsHeadToHeadCacheInterf
         );
     }
 
+    /**
+     * The order of the team ids does not matter.
+     * get(teamOne, teamTwo) will yield the same result as get(teamTwo, teamOne)
+     *
+     * @throws \App\Exceptions\ItemNotInCacheException
+     */
     public function get(TeamId $teamOne, TeamId $teamTwo): TeamsHeadToHead
     {
         return $this->repository->get($this->prepareKey($teamOne, $teamTwo), fn () => throw new \App\Exceptions\ItemNotInCacheException);

@@ -16,16 +16,6 @@ abstract class Builder implements Arrayable
     }
 
     /**
-     * @return array<mixed>
-     */
-    protected function merges(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
      * if the value is a callback the instance of the builder is passed as its arguement
      */
     public function when(bool $condtion, mixed $value): static
@@ -49,6 +39,6 @@ abstract class Builder implements Arrayable
      */
     public function toArray()
     {
-        return array_merge($this->merges(), $this->attributes);
+        return $this->attributes;
     }
 }

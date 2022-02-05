@@ -12,14 +12,9 @@ final class FetchFixtureEventsClient extends ApiSportsClient implements FetchFix
 {
     public function events(FixtureId $fixtureId): FixtureEventsCollection
     {
-        $response =  $this->get('fixtures/events', [
-            'fixture' => $fixtureId->toInt(),
-        ])->json('response');
-
-        if (empty($response)) {
-            return new FixtureEventsCollection([]);
-        }
-
-        return (new Response\FixtureEventsResponseJsonMapper($response))->toCollection();
+        return $this->get('fixtures/events', ['fixture' => $fixtureId->toInt()])
+            ->collect('response')
+            ->map(new Response\FixtureEventsResponseJsonMapper())
+            ->pipeInto(FixtureEventsCollection::class);
     }
 }

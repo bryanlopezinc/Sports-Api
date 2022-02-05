@@ -31,7 +31,7 @@ final class FetchFixturesByDateHttpClient extends ApiSportsClient implements Fet
      */
     private function groupByLegueFixturesCount(LazyCollection $collection): array
     {
-        $jsonMapper = new Response\FixtureResponseJsonMapper([]);
+        $jsonMapper = new Response\FixtureResponseJsonMapper();
 
         /** @var array<int, LeagueFixturesGroup> */
         $leaguesFixturesGroups = [];

@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
-use App\Utils\TimeToLive;
-use Module\Football\DTO\Fixture;
+use Module\Football\Cache\FixtureEventsCacheRepository;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\DetermineFixtureTimeToLiveInCache;
 use Module\Football\Collections\FixtureEventsCollection;
-use Module\Football\Contracts\Cache\FixturesEventsCacheInterface;
 use Module\Football\Contracts\Repositories\FetchFixtureEventsRepositoryInterface;
 
 final class FetchFixtureEventsService
 {
     public function __construct(
-        private FixturesEventsCacheInterface $cache,
+        private FixtureEventsCacheRepository $cache,
         private FetchFixtureService $findFixtureService,
         private FetchFixtureEventsRepositoryInterface $repository,
         private DetermineFixtureTimeToLiveInCache $determineFixtureTtl

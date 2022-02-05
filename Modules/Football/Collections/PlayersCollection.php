@@ -8,9 +8,6 @@ use App\Collections\BaseCollection;
 use Module\Football\DTO\Player;
 use Illuminate\Support\Collection;
 
-/**
- * @template T of Player
- */
 final class PlayersCollection extends BaseCollection
 {
     protected function isValid(mixed $value): bool

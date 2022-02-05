@@ -8,7 +8,6 @@ use Attribute;
 use ReflectionClass;
 use ReflectionProperty;
 use App\Contracts\AfterMakingValidatorInterface;
-use App\DTO\Exception\PropertyCannotHaveDefaultValueException;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 final class CheckDataTransferObjectForDefaultProperties implements AfterMakingValidatorInterface
@@ -40,7 +39,10 @@ final class CheckDataTransferObjectForDefaultProperties implements AfterMakingVa
             ->isNotEmpty();
 
         if ($objectHasPropertyWithDefaultValue) {
-            throw new PropertyCannotHaveDefaultValueException($this->reflection->getName());
+            throw new \Exception(
+                sprintf('%s property/ies cannot have a default values', $this->reflection->getName()),
+                5000
+            );
         }
     }
 }

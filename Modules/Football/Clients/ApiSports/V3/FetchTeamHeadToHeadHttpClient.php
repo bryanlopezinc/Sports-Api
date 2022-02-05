@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Football\Clients\ApiSports\V3;
 
-use Module\Football\DTO\Fixture;
 use Illuminate\Support\Collection;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\ValueObjects\TeamsHeadToHead;
@@ -17,7 +16,7 @@ final class FetchTeamHeadToHeadHttpClient extends ApiSportsClient implements Fet
     {
         return $this->get('fixtures/headtohead', ['h2h' => "{$teamOne->toInt()}-{$teamTwo->toInt()}"])
             ->collect('response')
-            ->map(fn (array $data): Fixture => (new Response\FixtureResponseJsonMapper($data))->toDataTransferObject())
+            ->map(new Response\FixtureResponseJsonMapper())
             ->pipe(fn (Collection $collection) => new TeamsHeadToHead($teamOne, $teamTwo, new FixturesCollection($collection->all())));
     }
 }

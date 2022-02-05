@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Module\Football\Services;
 
 use App\Utils\TimeToLive;
+use Module\Football\Cache\FixturesPlayersStatisticsCacheRepository;
 use Module\Football\DTO\Fixture;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\DetermineFixtureTimeToLiveInCache;
 use Module\Football\Collections\FixturePlayersStatisticsCollection;
-use Module\Football\Contracts\Cache\FixturesPlayersStatisticsCacheInterface;
 use Module\Football\Contracts\Repositories\FetchPlayersStatisticsRepositoryInterface;
 
 final class FetchFixturePlayersStatisticsService
 {
     public function __construct(
         private FetchPlayersStatisticsRepositoryInterface $repository,
-        private FixturesPlayersStatisticsCacheInterface $cache,
+        private FixturesPlayersStatisticsCacheRepository $cache,
         private FetchFixtureService $findFixtureService,
         private DetermineFixtureTimeToLiveInCache $ttlDeterminer
     ) {

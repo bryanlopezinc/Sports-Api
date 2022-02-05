@@ -10,9 +10,8 @@ use Illuminate\Contracts\Cache\Repository;
 use Module\Football\ValueObjects\LeagueId;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Collections\LeagueTopAssistsCollection;
-use Module\Football\Contracts\Cache\LeaguesTopAssistsCacheInterface;
 
-final class LeaguesTopAsisstsCacheRepository implements LeaguesTopAssistsCacheInterface
+final class LeaguesTopAsisstsCacheRepository
 {
     public function __construct(private Repository $repository)
     {

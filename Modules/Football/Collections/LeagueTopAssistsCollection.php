@@ -8,14 +8,22 @@ use App\Collections\BaseCollection;
 use Illuminate\Support\Collection;
 use Module\Football\DTO\Player;
 use Module\Football\ValueObjects\LeagueTopAssist;
-use Module\Football\Attributes\LeagueTopAssistsValidators\EnsureCollectionHasNoDuplcatePlayers;
 
-#[EnsureCollectionHasNoDuplcatePlayers]
 final class LeagueTopAssistsCollection extends BaseCollection
 {
     protected function isValid(mixed $item): bool
     {
         return $item instanceof LeagueTopAssist;
+    }
+
+    protected function validateItems(): void
+    {
+        parent::validateItems();
+
+        $this->players()
+            ->toLaravelCollection()
+            ->duplicates(fn (Player $player): int => $player->getId()->toInt())
+            ->whenNotEmpty(fn () => throw new \LogicException('Duplicate players found in top assists collection'));
     }
 
     public function players(): PlayersCollection

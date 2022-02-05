@@ -11,25 +11,14 @@ use App\ValueObjects\NonEmptyString as VenueName;
 
 final class TeamResponseJsonMapper
 {
-    private TeamBuilder $builder;
-    private Response $response;
-
-    /**
-     * @param array<string, mixed> $response
-     */
-    public function __construct(
-        array $response,
-        TeamBuilder $teamBuilder = null,
-    ) {
-        $this->response = new Response($response);
-        $this->builder = $teamBuilder ?: new TeamBuilder();
+    public function __construct(private TeamBuilder $builder = new TeamBuilder)
+    {
     }
 
-    public function toDataTransferObject(): Team
+    public function __invoke(array $data): Team
     {
         return $this->builder
-            ->fromTeam((new TeamJsonMapper($this->response->get('team'), $this->builder))->toDataTransferObject())
-            ->setVenue(new Venue(new VenueName($this->response->get('venue.name')), $this->response->get('venue.city'))
-            )->build();
+            ->fromTeam((new TeamJsonMapper($data['team'], $this->builder))->toDataTransferObject())
+            ->setVenue(new Venue(new VenueName($data['venue']['name']), $data['venue']['city']))->build();
     }
 }

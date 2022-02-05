@@ -12,9 +12,8 @@ use Illuminate\Support\Collection;
 use Module\Football\Collections\FixtureIdsCollection;
 use Module\Football\Collections\FixturesCollection;
 use Module\Football\ValueObjects\FixtureId;
-use Module\Football\Contracts\Cache\FixturesCacheInterface;
 
-final class FixturesCacheRepository implements FixturesCacheInterface
+final class FixturesCacheRepository
 {
     public function __construct(private Repository $repository)
     {

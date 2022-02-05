@@ -8,12 +8,12 @@ use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Stringable;
+use Module\Football\Cache\LeagueStandingCacheRepository;
 use Module\Football\DTO\League;
 use Module\Football\ValueObjects\Season;
 use Module\Football\ValueObjects\LeagueId;
 use Module\Football\Collections\LeagueTable;
 use Module\Football\Collections\TeamIdsCollection;
-use Module\Football\Contracts\Cache\LeaguesTablesCacheInterface;
 use Module\Football\Contracts\Repositories\FetchLeagueStandingRepositoryInterface;
 use Module\Football\Http\Requests\FetchLeagueStandingRequest;
 use Module\Football\ValueObjects\TeamId;
@@ -21,7 +21,7 @@ use Module\Football\ValueObjects\TeamId;
 final class FetchLeagueStandingService
 {
     public function __construct(
-        private LeaguesTablesCacheInterface $cache,
+        private LeagueStandingCacheRepository $cache,
         private FetchLeagueFixturesByDateService $fetchFixturesByDate,
         private FetchLeagueStandingRepositoryInterface $repository,
     ) {
