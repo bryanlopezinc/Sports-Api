@@ -12,13 +12,9 @@ use Module\Football\Http\Resources\FixtureLineUpResource;
 
 final class FetchFixtureLineUpController
 {
-    public function __invoke(FetchFixtureLineUpRequest $request, FetchFixtureLineUpService $service): FixtureLineUpResource|JsonResource
+    public function __invoke(FetchFixtureLineUpRequest $request, FetchFixtureLineUpService $service): FixtureLineUpResource
     {
         $fixtureLineUp = $service->fetchLineUp(FixtureId::fromRequest($request));
-
-        if ($fixtureLineUp->isEmpty()) {
-            return new JsonResource([]);
-        }
 
         return new FixtureLineUpResource($fixtureLineUp);
     }

@@ -27,13 +27,15 @@ final class FixtureLineUpResource extends JsonResource
      */
     public function toArray($request): array
     {
+        $isEmpty = $this->fixtureLineUp->isEmpty();
+
         return [
             'type'               => 'football_fixture_lineup',
             'fixture_id'         => FixtureId::fromRequest($request)->asHashedId(),
-            'line_up'            => [
+            'line_up'            => $this->when($isEmpty, [], fn () => [
                 'home'           => $this->transformTeamLineUp($this->fixtureLineUp->homeTeam()),
                 'away'           => $this->transformTeamLineUp($this->fixtureLineUp->awayTeam()),
-            ],
+            ])
         ];
     }
 

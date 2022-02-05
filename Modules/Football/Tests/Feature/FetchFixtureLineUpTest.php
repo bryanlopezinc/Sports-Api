@@ -99,7 +99,7 @@ class FetchFixtureLineUpTest extends TestCase
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json());
 
-        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data');
+        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data.line_up');
     }
 
     public function test_will_return_403_status_code_when_fixture_lineup_is_not_supported()
