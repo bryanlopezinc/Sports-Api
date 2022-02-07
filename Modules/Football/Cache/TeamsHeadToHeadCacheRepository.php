@@ -16,7 +16,7 @@ final class TeamsHeadToHeadCacheRepository
     }
 
     /**
-     * The order of the team ids are placed does not matter.
+     * The order the team ids args are placed does not matter.
      * has(teamOne, teamTwo) will yield the same result as has(teamTwo, teamOne)
      */
     public function has(TeamId $teamOne, TeamId $teamTwo): bool
@@ -28,7 +28,7 @@ final class TeamsHeadToHeadCacheRepository
     {
         //Ids are always stored in the format high:low
         // to ensure that results are same regardless of the order
-        // the team ids are parsed.
+        // the team ids are placed.
         $key = collect([$teamOne->toInt(), $teamTwo->toInt()])->sortDesc()->implode(':');
 
         return new CachePrefix($this) . $key;

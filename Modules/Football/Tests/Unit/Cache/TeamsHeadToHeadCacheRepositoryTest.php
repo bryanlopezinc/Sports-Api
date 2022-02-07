@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Cache;
 use Module\Football\Factories\TeamFactory;
 use App\Exceptions\ItemNotInCacheException;
 use Module\Football\Factories\FixtureFactory;
-use Module\Football\DTO\Builders\FixtureBuilder;
 use Module\Football\ValueObjects\TeamsHeadToHead;
 use Module\Football\Cache\TeamsHeadToHeadCacheRepository;
 
@@ -42,7 +41,7 @@ class TeamsHeadToHeadCacheRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function Has_will_return_false_regardless_of_team_ids_args_placement_when_teamIds_dont_exists(): void
+    public function Has_will_return_false_regardless_of_the_order_the_team_ids_are_placed(): void
     {
         $headToHead = $this->headToHead();
 
@@ -53,7 +52,7 @@ class TeamsHeadToHeadCacheRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function Has_will_return_true_regardless_of_team_ids_args_placement_when_teamIds_exists(): void
+    public function Has_will_return_true_regardless_of_the_order_the_team_ids_are_placed(): void
     {
         $headToHead = $this->headToHead();
 
@@ -78,7 +77,7 @@ class TeamsHeadToHeadCacheRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function GET_will_return_same_value_regardless_of_team_ids_args_placement_when_teamIds_exists(): void
+    public function GET_will_return_same_value_regardless_of_the_order_the_team_ids_are_placed(): void
     {
         $headToHead = $this->headToHead();
 
