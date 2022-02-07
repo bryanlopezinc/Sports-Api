@@ -23,6 +23,6 @@ class FixtureDtoTest extends TestCase
     {
         $this->expectExceptionCode(601);
 
-        FixtureFactory::new()->winnerId(TeamFactory::new()->toDto()->getId())->toDto();
+        FixtureFactory::new()->winner(TeamFactory::new()->toDto())->toDto();
     }
 }

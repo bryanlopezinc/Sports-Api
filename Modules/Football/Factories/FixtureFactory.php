@@ -37,7 +37,7 @@ final class FixtureFactory extends Factory
             ->setAwayTeam(new Team(TeamFactory::new()->makeAttributes()))
             ->setLeague(new League(LeagueFactory::new()->makeAttributes()))
             ->setVenue(new Venue(new VenueName($this->faker->company), $this->faker->city))
-            ->setWinnerId($homeTeam->getId()->toInt())
+            ->setWinner($homeTeam)
             ->toArray();
     }
 
@@ -52,7 +52,7 @@ final class FixtureFactory extends Factory
                 ->setPenaltyScore(null, null)
                 ->setTimeElapsed(TimeElapsed::HALF_TIME)
                 ->setFixtureStatus(FixtureStatus::HALF_TIME)
-                ->setWinnerId(null);
+                ->setWinner(null);
         });
     }
 
@@ -71,9 +71,9 @@ final class FixtureFactory extends Factory
         return $this->withState(fn (FixtureBuilder $b) => $b->setHomeTeam($team));
     }
 
-    public function winnerId(TeamId $teamId): self
+    public function winner(Team $team): self
     {
-        return $this->withState(fn (FixtureBuilder $b) => $b->setWinnerId($teamId->toInt()));
+        return $this->withState(fn (FixtureBuilder $b) => $b->setWinner($team));
     }
 
     public function awayTeam(Team $team): self

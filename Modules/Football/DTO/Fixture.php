@@ -7,7 +7,6 @@ namespace Module\Football\DTO;
 use App\DTO\DataTransferObject;
 use Module\Football\FixtureReferee;
 use Module\Football\FixturePeriodGoals;
-use Module\Football\ValueObjects\TeamId;
 use Module\Football\ValueObjects\TimeZone;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\ValueObjects\MatchGoals;
@@ -29,7 +28,7 @@ final class Fixture extends DataTransferObject
     protected FixtureStatus $status;
     protected Team $home_team;
     protected Team $away_team;
-    protected TeamId $winner_id;
+    protected Team $winner;
     protected bool $has_winner;
     protected MatchGoals $goals_home;
     protected MatchGoals $goals_away;
@@ -132,9 +131,9 @@ final class Fixture extends DataTransferObject
      * it can still be unavailable if the fixture outcome is a draw outcome
      * use the hasWinner to check if fixture has winner before calling this method
      */
-    public function winnerId(): TeamId
+    public function winner(): Team
     {
-        return $this->winner_id;
+        return $this->winner;
     }
 
     /**

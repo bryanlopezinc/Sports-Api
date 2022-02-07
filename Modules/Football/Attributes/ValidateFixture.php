@@ -33,7 +33,7 @@ final class ValidateFixture implements AfterMakingValidatorInterface
             return;
         }
 
-        $winnerId = $fixture->winnerId();
+        $winnerId = $fixture->winner()->getId();
 
         $idBelongsToATeamInFixture = $winnerId->equals($fixture->getHomeTeam()->getId()) || $winnerId->equals($fixture->getAwayTeam()->getId());
 

@@ -32,7 +32,7 @@ class TeamsHeadToHeadCacheRepositoryTest extends TestCase
             ->count(4)
             ->homeTeam($team1)
             ->awayTeam($team2)
-            ->winnerId($team1->getId())
+            ->winner($team1)
             ->toCollection();
 
         return new TeamsHeadToHead($team1->getId(), $team2->getId(), $fixtures);

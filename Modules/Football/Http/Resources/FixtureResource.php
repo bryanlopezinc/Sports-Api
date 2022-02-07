@@ -50,7 +50,7 @@ final class FixtureResource extends JsonResource implements FixtureJsonResourceI
                 'status'               => $this->transFormFixtureStatus(),
                 'league'               => new LeagueResource($this->fixture->league()),
                 'has_winner'           => $this->fixture->hasWinner(),
-                'winner'               => $this->when($this->fixture->hasWinner(), fn () => $this->transformMatchWinner()),
+                'winner'               => $this->when($this->fixture->hasWinner(), fn () => new TeamResource($this->fixture->winner())),
                 'teams'                => [
                     'home'  => new TeamResource($this->fixture->getHomeTeam()),
                     'away'  => new TeamResource($this->fixture->getAwayTeam())
@@ -108,13 +108,6 @@ final class FixtureResource extends JsonResource implements FixtureJsonResourceI
             'home'  => $this->fixture->goalsHome()->toInt(),
             'away'  => $this->fixture->goalsAway()->toInt()
         ];
-    }
-
-    private function transformMatchWinner(): TeamResource
-    {
-        return new TeamResource(
-            (new FixturesCollection([$this->fixture]))->teams()->findById($this->fixture->winnerId())
-        );
     }
 
     /**

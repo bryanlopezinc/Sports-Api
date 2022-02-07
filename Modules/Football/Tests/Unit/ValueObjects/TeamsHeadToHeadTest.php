@@ -22,7 +22,7 @@ class TeamsHeadToHeadTest extends TestCase
             ->count(3)
             ->homeTeam($team = TeamFactory::new()->toDto())
             ->awayTeam($team)
-            ->winnerId($team->getId())
+            ->winner($team)
             ->toCollection();
 
         $ids = $fixtures->teams()->pluckIds()->toLaravelCollection();

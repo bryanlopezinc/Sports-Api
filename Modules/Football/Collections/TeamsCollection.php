@@ -15,11 +15,6 @@ final class TeamsCollection extends BaseCollection
         return $value instanceof Team;
     }
 
-    public function findById(TeamId $id): Team
-    {
-        return $this->collection->filter(fn (Team $team) => $team->getId()->equals($id))->sole();
-    }
-
     public function pluckIds(): TeamIdsCollection
     {
         return new TeamIdsCollection(

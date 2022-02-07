@@ -92,15 +92,9 @@ final class FixtureBuilder extends Builder
         return $this->set('status', new FixtureStatus($code));
     }
 
-    public function setWinnerId(?int $id): self
+    public function setWinner(?Team $team): self
     {
-        $isNull = is_null($id);
-
-        if (!$isNull) {
-            $this->set('winner_id', new TeamId($id));
-        }
-
-        return $this->set('has_winner', $isNull ? false : true);
+        return !is_null($team) ? $this->set('winner', $team)->set('has_winner', true) : $this->set('has_winner', false);
     }
 
     public function setReferee(?string $name): self

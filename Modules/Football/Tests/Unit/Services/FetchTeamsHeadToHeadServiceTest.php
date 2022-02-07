@@ -38,7 +38,7 @@ class FetchTeamsHeadToHeadServiceTest extends TestCase
             ->count(5)
             ->homeTeam($teams[0])
             ->awayTeam($teams[1])
-            ->winnerId($teams[0]->getId())
+            ->winner($teams[0])
             ->toCollection();
 
         $headToHead = new TeamsHeadToHead($teams[0]->getId(), $teams[1]->getId(), $fixtures);
