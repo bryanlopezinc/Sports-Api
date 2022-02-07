@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Football\Services;
 
-use App\Utils\TimeToLive;
 use Module\Football\Cache\TeamsHeadToHeadCacheRepository;
 use Module\Football\ValueObjects\TeamId;
 use Module\Football\Collections\FixturesCollection;
 use Module\Football\Contracts\Repositories\FetchTeamHeadToHeadRepositoryInterface;
+use Module\Football\TeamsHeadToHeadTTL;
 
 final class FetchTeamsHeadToHeadService
 {
@@ -30,27 +30,8 @@ final class FetchTeamsHeadToHeadService
 
         $fixtures = $teamsHeadToHead->getHeadToHeadFixtures();
 
-        $this->cache->put($teamsHeadToHead, $this->determineTimeToLiveIncacheFrom($fixtures));
+        $this->cache->put($teamsHeadToHead, (new TeamsHeadToHeadTTL)($fixtures));
 
         return $fixtures;
-    }
-
-    private function determineTimeToLiveIncacheFrom(FixturesCollection $collection): TimeToLive
-    {
-        if ($collection->anyFixtureIsInProgress()) {
-            return TimeToLive::seconds(120);
-        }
-
-        if ($collection->allFixturesArefinished()) {
-            return TimeToLive::minutes(minutesUntilTommorow());
-        }
-
-        if (!$collection->hasUpcomingFixture()) {
-            return TimeToLive::minutes(minutesUntilTommorow());
-        }
-
-        return TimeToLive::seconds(
-            now()->diffInSeconds($collection->nextUpcomingFixture()->date()->toCarbon()->toDateTimeString())
-        );
     }
 }

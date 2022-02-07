@@ -14,6 +14,7 @@ use Module\Football\Favourites\Controllers as FC;
 use Module\Football\Prediction\Controllers as PC;
 use Module\Football\Prediction\Middleware as PCM;
 use Module\Football\Http\Middleware\EnsureFixtureExistsMiddleware;
+use Module\Football\Http\Middleware\SetTeamsHeadToHeadMaxAgeMiddleware;
 
 //Teams Routes
 Route::prefix('teams')->group(function () {
@@ -27,7 +28,7 @@ Route::prefix('teams')->group(function () {
 
     Route::get('head_to_head', Controllers\FetchTeamsHeadToHeadController::class)
         ->name(RouteName::TEAMS_H2H)
-        ->middleware(Convert::keys('team_id_1', 'team_id_2'));
+        ->middleware([Convert::keys('team_id_1', 'team_id_2'), SetTeamsHeadToHeadMaxAgeMiddleware::class]);
 });
 
 //Leagues Routes

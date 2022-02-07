@@ -32,7 +32,7 @@ final class TimeToLive
         return new static(now()->addMinutes($minutes));
     }
 
-    public function ttl(): \DateTimeInterface|\DateInterval
+    public function ttl(): Carbon
     {
         return $this->ttl;
     }

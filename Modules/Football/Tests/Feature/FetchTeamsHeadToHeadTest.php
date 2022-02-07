@@ -11,13 +11,13 @@ use Illuminate\Testing\AssertableJsonString;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchTeamHeadToHeadResponse;
 
-class FetchTeamHeadToHeadTest extends TestCase
+class FetchTeamsHeadToHeadTest extends TestCase
 {
     private function getTestResponse(int $teamOne, int $teamTwo, array $query = []): TestResponse
     {
         $parameters = array_merge([
-            'team_id_1'     => $this->hashId($teamOne),
-            'team_id_2'     => $this->hashId($teamTwo),
+            'team_id_1' => $this->hashId($teamOne),
+            'team_id_2' => $this->hashId($teamTwo),
         ], $query);
 
         return $this->getJson(route(RouteName::TEAMS_H2H, $parameters));
@@ -25,11 +25,12 @@ class FetchTeamHeadToHeadTest extends TestCase
 
     public function test_success_response(): void
     {
-        $this->withoutExceptionHandling();
-
         Http::fake(fn () => Http::response(FetchTeamHeadToHeadResponse::json()));
 
-        $this->getTestResponse(34, 33)->assertSuccessful();
+        $this->withoutExceptionHandling()
+            ->getTestResponse(34, 33)
+            ->assertSuccessful()
+            ->assertHeader('max-age');
     }
 
     public function test_will_return_404_status_code_when_team_ids_does_not_exists(): void
