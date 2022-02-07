@@ -73,13 +73,6 @@ final class FixturesCollection extends BaseCollection
         return $this->collection->map(fn (Fixture $fixture) => $fixture->id())->pipe(fn (Collection $collection) => new FixtureIdsCollection($collection->all()));
     }
 
-    public function each(callable $callback): self
-    {
-        $this->collection->each($callback);
-
-        return $this;
-    }
-
     public function merge(mixed $values): FixturesCollection
     {
         return new FixturesCollection(collect($values)->merge($this->collection->all()));

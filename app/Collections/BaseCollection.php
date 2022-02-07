@@ -59,6 +59,13 @@ abstract class BaseCollection implements Arrayable, Countable, IteratorAggregate
         return $this->collection->all();
     }
 
+    public function each(callable $callback): static
+    {
+        $this->collection->each($callback);
+
+        return $this;
+    }
+
     final public function isEmpty(): bool
     {
         return $this->collection->isEmpty();
