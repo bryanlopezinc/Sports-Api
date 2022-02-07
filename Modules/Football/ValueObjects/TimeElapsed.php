@@ -27,9 +27,4 @@ final class TimeElapsed
     {
         return $this->elapsed;
     }
-
-    public function equals(TimeElapsed $timeElapsed): bool
-    {
-        return $this->elapsed === $timeElapsed->minutes();
-    }
 }
