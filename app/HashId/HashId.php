@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\HashId;
 
 use Hashids\Hashids;
-use App\ValueObjects\NonNegativeNumber;
+use App\ValueObjects\PositiveNumber;
 
 final class HashId implements HashIdInterface
 {
@@ -18,7 +18,7 @@ final class HashId implements HashIdInterface
 
     public function hash(int $id): string
     {
-        NonNegativeNumber::check($id);
+        PositiveNumber::check($id);
 
         return $this->hashIds->encode($id);
     }

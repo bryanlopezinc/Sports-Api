@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\Prediction;
 
-use App\ValueObjects\NonNegativeNumber;
+use App\ValueObjects\PositiveNumber;
 
 final class FixturePredictionsResult
 {
@@ -14,7 +14,7 @@ final class FixturePredictionsResult
         public readonly int $draws,
         public readonly int $total
     ) {
-        NonNegativeNumber::check(func_get_args());
+        PositiveNumber::check(func_get_args());
 
         $expectedTotal = $homeWins + $awayWins + $draws;
 

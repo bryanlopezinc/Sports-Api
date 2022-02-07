@@ -7,7 +7,7 @@ namespace Module\Football\Attributes;
 use Attribute;
 use Module\Football\DTO\StandingData;
 use App\Contracts\AfterMakingValidatorInterface;
-use App\ValueObjects\NonNegativeNumber;
+use App\ValueObjects\PositiveNumber;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 final class ValidateLeagueStanding implements AfterMakingValidatorInterface
@@ -23,7 +23,7 @@ final class ValidateLeagueStanding implements AfterMakingValidatorInterface
 
     private function ensureStatisticsValuesAreNotNegative(StandingData $standing): void
     {
-        NonNegativeNumber::check([
+        PositiveNumber::check([
             $standing->getPlayed(),
             $standing->getTotalWins(),
             $standing->getTotalLoses(),

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Football\FixturePlayerStatistic;
 
-use App\ValueObjects\NonNegativeNumber;
+use App\ValueObjects\PositiveNumber;
 
 final class Cards
 {
     public function __construct(private int $redCards, private int $yellowCards)
     {
-        NonNegativeNumber::check(func_get_args());
+        PositiveNumber::check(func_get_args());
 
         $this->validate();
     }

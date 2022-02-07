@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\FixturePlayerStatistic;
 
-use App\ValueObjects\NonNegativeNumber;
+use App\ValueObjects\PositiveNumber;
 
 final class Passes
 {
@@ -12,7 +12,7 @@ final class Passes
 
     public function __construct(private int $keyPasses, private int $total, private int $acuuracy)
     {
-        NonNegativeNumber::check(func_get_args());
+        PositiveNumber::check(func_get_args());
 
         if ($acuuracy > self::MAX_PASS_ACCURACY) {
             throw new \InvalidArgumentException('Pass accuracy cannot be greater than ' . self::MAX_PASS_ACCURACY);

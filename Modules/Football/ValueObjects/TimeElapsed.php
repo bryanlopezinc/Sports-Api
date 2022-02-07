@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Football\ValueObjects;
 
-use App\ValueObjects\NonNegativeNumber;
+use App\ValueObjects\PositiveNumber;
 
 /**
  * Time elapsed (in Minutes) in a fixture
@@ -18,7 +18,7 @@ final class TimeElapsed
 
     public function __construct(private int $elapsed)
     {
-        NonNegativeNumber::check($elapsed);
+        PositiveNumber::check($elapsed);
 
         if ($elapsed > self::END_AFTER_PEN) {
             throw new \InvalidArgumentException('Time elapsed must not exceed ' . self::END_AFTER_PEN);

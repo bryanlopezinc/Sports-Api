@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Football\ValueObjects;
 
 use LogicException;
-use App\ValueObjects\NonNegativeNumber;
+use App\ValueObjects\PositiveNumber;
 
 final class MatchGoals
 {
@@ -23,7 +23,7 @@ final class MatchGoals
 
     private function validate(): void
     {
-        NonNegativeNumber::check($this->goals);
+        PositiveNumber::check($this->goals);
 
         if ($this->goals > self::MAX) {
             throw new  LogicException('match goals should not be greater than ' . self::MAX);

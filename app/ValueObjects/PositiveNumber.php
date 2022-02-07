@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ValueObjects;
 
-final class NonNegativeNumber
+final class PositiveNumber
 {
     public function __construct(private int $number)
     {
