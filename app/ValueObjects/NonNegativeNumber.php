@@ -13,11 +13,6 @@ final class NonNegativeNumber
         }
     }
 
-    public static function fromInt(int $number): self
-    {
-        return new self($number);
-    }
-
     /**
      * Throw an exception if number is negative
      *
