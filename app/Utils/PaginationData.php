@@ -11,9 +11,6 @@ use Illuminate\Http\Request;
  */
 final class PaginationData
 {
-    /** Default items to be returned per page */
-    public const PER_PAGE = 14;
-
     /**
      * Default maximum items to be returned per page.
      * Restricts requesting large amount of data
@@ -21,14 +18,14 @@ final class PaginationData
     public const MAX_PER_PAGE = 30;
 
     /** Default minimum items that can be returned per page */
-    public const MIN_PER_PAGE = 10;
+    public const MIN_PER_PAGE = 15;
 
     /** Default maximum page that can be requested */
     public const MAX_PAGE = 5000;
 
     public function __construct(
         private int $page = 1,
-        private int $perPage = self::PER_PAGE,
+        private int $perPage = self::MAX_PER_PAGE,
         private int $maxItemsPerPage = self::MAX_PER_PAGE,
         private int $minItemsPerPage = self::MIN_PER_PAGE
     ) {
@@ -40,19 +37,21 @@ final class PaginationData
 
         return new static(
             (int) $request->input($pageKey, 1),
-            (int) $request->input($perPageKey, self::PER_PAGE)
+            (int) $request->input($perPageKey, self::MAX_PER_PAGE)
         );
     }
 
     public function getPerPage(): int
     {
-        $wantsTooMuchData = $this->perPage > $this->maxItemsPerPage;
-
-        if ($this->perPage < $this->minItemsPerPage) {
-            return self::PER_PAGE;
+        if ($this->perPage > $this->maxItemsPerPage) {
+            return $this->maxItemsPerPage;
         }
 
-        return $wantsTooMuchData ? self::PER_PAGE : $this->perPage;
+        if ($this->perPage < $this->minItemsPerPage) {
+            return $this->minItemsPerPage;
+        }
+
+        return $this->perPage;
     }
 
     public function getPage(): int

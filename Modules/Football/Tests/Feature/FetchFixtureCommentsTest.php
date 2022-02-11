@@ -75,7 +75,7 @@ class FetchFixtureCommentsTest extends TestCase
         $response = $this->getTestResponse([
             'page'     => 1,
             'id'       => $id,
-            'per_page' => PaginationData::PER_PAGE
+            'per_page' => PaginationData::MAX_PER_PAGE
         ])
             ->assertSuccessful()
             ->assertJsonCount(1, 'data')
