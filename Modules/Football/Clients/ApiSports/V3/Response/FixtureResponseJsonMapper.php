@@ -84,7 +84,7 @@ final class FixtureResponseJsonMapper
             ->build();
     }
 
-    private function convertFixtureStatus(array $data): int
+    public function convertFixtureStatus(array $data): int
     {
         return match ($data['fixture']['status']['short']) {
             'TBD'   => FixtureStatus::TBD,
@@ -156,7 +156,7 @@ final class FixtureResponseJsonMapper
         return new Venue(new VenueName($name), $city);
     }
 
-    private function getWinner(array $data): ?Team
+    public function getWinner(array $data): ?Team
     {
         $teams = $data['teams'];
 

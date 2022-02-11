@@ -14,12 +14,20 @@ use Module\Football\Prediction\Models\Prediction as PredictionModel;
 
 class PredictionsRepositoryTest extends TestCase
 {
+    private PredictionsRepository $repository;
+    
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->repository = new PredictionsRepository;
+    }
+
     public function test_store_prediction(): void
     {
-        $repository = new PredictionsRepository;
         $user = UserFactory::new()->create();
 
-        $this->assertTrue($repository->create(new FixtureId(23), new UserId($user->id), Prediction::AWAY_WIN));
+        $this->assertTrue($this->repository->create(new FixtureId(23), new UserId($user->id), Prediction::AWAY_WIN));
 
         $this->assertDatabaseHas(PredictionModel::class, [
             'fixture_id' => 23,
@@ -29,27 +37,25 @@ class PredictionsRepositoryTest extends TestCase
 
     public function test_user_has_predicted_fixture(): void
     {
-        $repository = new PredictionsRepository;
         $user = UserFactory::new()->create();
 
-        $repository->create(new FixtureId(215662), new UserId($user->id), Prediction::AWAY_WIN);
+        $this->repository->create(new FixtureId(215662), new UserId($user->id), Prediction::AWAY_WIN);
 
-        $this->assertTrue($repository->userHasPredictedFixture(new UserId($user->id), new FixtureId(215662)));
+        $this->assertTrue($this->repository->userHasPredictedFixture(new UserId($user->id), new FixtureId(215662)));
     }
 
     public function test_fetch_user_prediction(): void
     {
-        $repository = new PredictionsRepository;
         $userId = new UserId(UserFactory::new()->create()->id);
 
-        $repository->create(new FixtureId(12), $userId, Prediction::HOME_WIN);
-        $repository->create(new FixtureId(13), $userId, Prediction::AWAY_WIN);
-        $repository->create(new FixtureId(14), $userId, Prediction::DRAW);
+        $this->repository->create(new FixtureId(12), $userId, Prediction::HOME_WIN);
+        $this->repository->create(new FixtureId(13), $userId, Prediction::AWAY_WIN);
+        $this->repository->create(new FixtureId(14), $userId, Prediction::DRAW);
 
         [$homeToWin, $awayToWin, $draw] = [
-            $repository->fetchUserPrediction(new FixtureId(12), $userId),
-            $repository->fetchUserPrediction(new FixtureId(13), $userId),
-            $repository->fetchUserPrediction(new FixtureId(14), $userId)
+            $this->repository->fetchUserPrediction(new FixtureId(12), $userId),
+            $this->repository->fetchUserPrediction(new FixtureId(13), $userId),
+            $this->repository->fetchUserPrediction(new FixtureId(14), $userId)
         ];
 
         $this->assertTrue($homeToWin->isHomeToWin());

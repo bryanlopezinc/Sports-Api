@@ -12,5 +12,7 @@ final class RouteName
     public const PROFILE                  = 'user.profile';
     public const LOGIN                    = 'user.login';
     public const CREATE                   = 'user.create';
-    public const USER_FAVOURITES_FIXTURES = 'userFavouritesFixtures';
+    public const USER_FAVOURITES_FIXTURES = 'user.FavouritesFixtures';
+    public const USER_PREDICtions         = 'user.predictions';
+    public const AUTH_USER_PREDICtions    = 'auth.user.predictions';
 }

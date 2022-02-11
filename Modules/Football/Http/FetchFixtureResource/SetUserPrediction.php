@@ -12,7 +12,6 @@ use Module\Football\DTO\Fixture;
 use Module\Football\Http\Resources\FixtureJsonResourceInterface;
 use Module\Football\ValueObjects\FixtureId;
 use Module\Football\Prediction\Services\FetchFixturePredictionsService;
-use Module\User\Predictions\Football\Prediction;
 
 final class SetUserPrediction extends JsonResource implements FixtureJsonResourceInterface
 {
@@ -54,12 +53,12 @@ final class SetUserPrediction extends JsonResource implements FixtureJsonResourc
 
     private function transformPrediction(FixtureId $fixtureId): string
     {
-        $prediction = $this->service->fetchAuthUserHasPrediction($fixtureId);
+        $prediction = $this->service->fetchAuthUserPrediction($fixtureId);
 
         return match (true) {
             $prediction->isAwayToWin()  => 'away2win',
             $prediction->isHomeToWin()  => 'home2win',
-            $prediction->isDraw()      => 'draw'
+            $prediction->isDraw()       => 'draw'
         };
     }
 

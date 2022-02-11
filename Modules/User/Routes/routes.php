@@ -21,4 +21,9 @@ Route::middleware(Middleware\HandleDbTransactionsMiddleware::class)->group(funct
     Route::post('create', Controllers\CreateUserController::class)->name(RouteName::CREATE);
     Route::get('profile', [Controllers\UserProfileController::class, 'guest'])->name(RouteName::PROFILE);
     Route::get('favourites', [Favourites\FetchFavouritesController::class, 'forGuest'])->name(RouteName::FAVOURITES);
+
+    Route::get('predictions', [Controllers\FetchUserPredictionsController::class, 'guest'])->name(RouteName::USER_PREDICtions);
+    Route::get('auth/predictions', [Controllers\FetchUserPredictionsController::class, 'auth'])
+        ->middleware(Authenticate::user())
+        ->name(RouteName::AUTH_USER_PREDICtions);
 });

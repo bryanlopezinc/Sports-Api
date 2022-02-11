@@ -42,7 +42,7 @@ final class FetchFixturePredictionsService
         return  $this->repository->userHasPredictedFixture(new UserId($auth->id()), $fixtureId);
     }
 
-    public function fetchAuthUserHasPrediction(FixtureId $fixtureId): Prediction
+    public function fetchAuthUserPrediction(FixtureId $fixtureId): Prediction
     {
         return  $this->repository->fetchUserPrediction($fixtureId, UserId::fromAuthUser());
     }

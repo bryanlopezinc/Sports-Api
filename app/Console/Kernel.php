@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Module\Football\Clients\ApiSports\V3\Jobs\StoreFixturesResult;
 use Module\Football\Clients\ApiSports\V3\Jobs\StoreTodaysFixtures;
 
 class Kernel extends ConsoleKernel
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new StoreTodaysFixtures)->daily();
+        $schedule->job(new StoreFixturesResult)->dailyAt('06:00');
     }
 
     /**
