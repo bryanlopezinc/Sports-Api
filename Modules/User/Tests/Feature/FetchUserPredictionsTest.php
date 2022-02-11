@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Tests\Feature;
 
+use App\Utils\PaginationData;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 use Laravel\Passport\Passport;
@@ -40,7 +41,7 @@ class FetchUserPredictionsTest extends TestCase
         (new PredictionsRepository)->create(new FixtureId(710638), new UserId($id), $predictions[0]);
     }
 
-    private function getTestRespone(array $query = []): TestResponse
+    private function getTestResponse(array $query = []): TestResponse
     {
         return $this->getJson(route(RouteName::USER_PREDICtions, $query));
     }
@@ -49,17 +50,28 @@ class FetchUserPredictionsTest extends TestCase
     {
         $user = UserFactory::new()->private()->create();
 
-        $this->getTestRespone(['id' => $user->id])->assertForbidden();
+        $this->getTestResponse(['id' => $user->id])->assertForbidden();
     }
 
     public function test_returns_not_found_response_when_user_does_not_exists(): void
     {
-        $this->getTestRespone(['id' => UserFactory::new()->create()->id + 1])->assertNotFound(); // @phpstan-ignore-line
+        $this->getTestResponse(['id' => UserFactory::new()->create()->id + 1])->assertNotFound(); // @phpstan-ignore-line
     }
 
     public function test_must_have_required_attributes(): void
     {
-        $this->getTestRespone()->assertJsonValidationErrorFor('id');
+        $this->getTestResponse()->assertJsonValidationErrorFor('id');
+    }
+
+    public function test_query_attributes_must_be_valid(): void
+    {
+        $this->getTestResponse(['page' => -1])->assertJsonValidationErrorFor('page');
+        $this->getTestResponse(['page' => PaginationData::MAX_PAGE + 1])->assertJsonValidationErrorFor('page');
+        $this->getTestResponse(['page' => 'foo'])->assertJsonValidationErrorFor('page');
+
+        $this->getTestResponse(['per_page' => PaginationData::MIN_PER_PAGE - 1])->assertJsonValidationErrorFor('per_page');
+        $this->getTestResponse(['per_page' => PaginationData::MAX_PER_PAGE + 1])->assertJsonValidationErrorFor('per_page');
+        $this->getTestResponse(['per_page' => 'foo'])->assertJsonValidationErrorFor('per_page');
     }
 
     public function test_will_return_auth_user_predictions(): void
@@ -82,7 +94,7 @@ class FetchUserPredictionsTest extends TestCase
 
         $this->createPredictionForUser($userId);
 
-        $this->getTestRespone(['id' => $userId])->assertSuccessful()->assertJsonCount(1, 'data');
-        $this->getTestRespone(['id' => UserFactory::new()->create()->id])->assertSuccessful()->assertJsonCount(0, 'data');
+        $this->getTestResponse(['id' => $userId])->assertSuccessful()->assertJsonCount(1, 'data');
+        $this->getTestResponse(['id' => UserFactory::new()->create()->id])->assertSuccessful()->assertJsonCount(0, 'data');
     }
 }
