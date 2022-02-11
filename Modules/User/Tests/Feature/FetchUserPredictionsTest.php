@@ -11,8 +11,8 @@ use Laravel\Passport\Passport;
 use Module\User\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
-use Module\User\Factories\UserFactory;
 use Module\Football\Clients\ApiSports\V3\Jobs\StoreFixturesResult;
+use Module\User\Factories\UserFactory;
 use Module\Football\Prediction\PredictionsRepository;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueFixturesByDateResponse;
 use Module\Football\ValueObjects\FixtureId;
@@ -70,8 +70,9 @@ class FetchUserPredictionsTest extends TestCase
         $this->getTestResponse(['page' => 'foo'])->assertJsonValidationErrorFor('page');
 
         $this->getTestResponse(['per_page' => PaginationData::MIN_PER_PAGE - 1])->assertJsonValidationErrorFor('per_page');
-        $this->getTestResponse(['per_page' => PaginationData::MAX_PER_PAGE + 1])->assertJsonValidationErrorFor('per_page');
+        $this->getTestResponse(['per_page' => 50])->assertJsonMissingValidationErrors('per_page'); // can request up to fifty items
         $this->getTestResponse(['per_page' => 'foo'])->assertJsonValidationErrorFor('per_page');
+        $this->getTestResponse(['per_page' => 51])->assertJsonValidationErrorFor('per_page');
     }
 
     public function test_will_return_auth_user_predictions(): void

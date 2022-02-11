@@ -36,7 +36,7 @@ final class FetchUserPredictionsService
      */
     public function forAuthUser(FetchUserPredictionsRequest $request): Paginator
     {
-        return $this(UserId::fromAuthUser(), PaginationData::fromRequest($request));
+        return $this(UserId::fromAuthUser(), $this->getPaginationDataFrom($request));
     }
 
     /**
@@ -56,6 +56,15 @@ final class FetchUserPredictionsService
             throw new PrivateUserProfileHttpException;
         }
 
-        return $this($userId, PaginationData::fromRequest($request));
+        return $this($userId, $this->getPaginationDataFrom($request));
+    }
+
+    private function getPaginationDataFrom(FetchUserPredictionsRequest $request): PaginationData
+    {
+        return new PaginationData(
+            $request->input('page', 1),
+            $request->input('per_page', $request::MAX_PER_PAGE),
+            $request::MAX_PER_PAGE
+        );
     }
 }

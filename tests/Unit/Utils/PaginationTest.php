@@ -19,7 +19,6 @@ class PaginationTest extends TestCase
     public function test_returns_default_when_per_page_value_is_too_large(): void
     {
         $pagination = new Pagination(perPage: Pagination::MAX_PER_PAGE + 1);
-
         $this->assertEquals(Pagination::PER_PAGE, $pagination->getPerPage());
     }
 
