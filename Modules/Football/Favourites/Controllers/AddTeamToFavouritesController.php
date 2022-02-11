@@ -9,7 +9,7 @@ use Module\Football\Favourites\Services\AddTeamToFavouritesService;
 use Module\Football\ValueObjects\TeamId;
 use Module\User\ValueObjects\UserId;
 
-final class AddTeamTofavouritesController
+final class AddTeamToFavouritesController
 {
     public function __invoke(Request $request, AddTeamToFavouritesService $service): JsonResponse
     {

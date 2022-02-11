@@ -23,15 +23,6 @@ class FetchFixturesForUserFavouritesTest extends TestCase
 {
     use LazilyRefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Http::fake(fn() => Http::response(FetchFixtureByDateResponse::json()));
-         StoreTodaysFixtures::dispatch();
-         Http::clearResolvedInstances();
-    }
-
     private function getTestRespone(): TestResponse
     {
         return $this->getJson(route(RouteName::USER_FAVOURITES_FIXTURES));
@@ -40,8 +31,11 @@ class FetchFixturesForUserFavouritesTest extends TestCase
     public function test_success_response(): void
     {
         Http::fakeSequence()
+            ->push(FetchFixtureByDateResponse::json())
             ->push(FetchTeamResponse::json())
             ->push(FetchFixtureResponse::json());
+
+        StoreTodaysFixtures::dispatch();
 
         $user = UserFactory::new()->create();
 
