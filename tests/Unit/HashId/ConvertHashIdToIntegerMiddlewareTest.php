@@ -10,6 +10,15 @@ use App\Exceptions\Http\ResourceNotFoundHttpException;
 
 class ConvertHashIdToIntegerMiddlewareTest extends TestCase
 {
+    private ConvertHashedValuesToIntegerMiddleware $middleware;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->middleware = app(ConvertHashedValuesToIntegerMiddleware::class);
+    }
+
     public function test_will_convert_hashed_keys_to_integer(): void
     {
         request()->merge([
@@ -18,10 +27,7 @@ class ConvertHashIdToIntegerMiddlewareTest extends TestCase
             'baz'   => $this->hashId(400)
         ]);
 
-        /** @var ConvertHashedValuesToIntegerMiddleware */
-        $middleware = app(ConvertHashedValuesToIntegerMiddleware::class);
-
-        $middleware->handle(request(), function () {
+        $this->middleware->handle(request(), function () {
         }, 'foo', 'bar', 'baz');
 
         $this->assertEquals(200, request()->input('foo'));
@@ -35,10 +41,17 @@ class ConvertHashIdToIntegerMiddlewareTest extends TestCase
 
         request()->merge(['foo' => 'foobar']);
 
-        /** @var ConvertHashedValuesToIntegerMiddleware */
-        $middleware = app(ConvertHashedValuesToIntegerMiddleware::class);
+        $this->middleware->handle(request(), function () {
+        }, 'foo');
+    }
 
-        $middleware->handle(request(), function () {
+    public function test_id_must_be_a_string(): void
+    {
+        $this->expectExceptionMessage('The foo must be a string.');
+
+        $request = request()->merge(['foo' => 22]);
+
+        $this->middleware->handle($request, function () {
         }, 'foo');
     }
 }

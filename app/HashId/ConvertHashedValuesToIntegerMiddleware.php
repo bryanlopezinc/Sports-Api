@@ -33,6 +33,8 @@ final class ConvertHashedValuesToIntegerMiddleware
                 continue;
             }
 
+            $request->validate([$key => ['string']]);
+
             $decoded[$key] = $this->transform($request->input($key));
         }
 
