@@ -42,15 +42,12 @@ class FetchFixtureStatisticsTest extends TestCase
      */
     public function FetchFixtureStatistics_success_response(): void
     {
-        Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchFixtureStatisticsResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+        //The fetch fixture response includes the fixture statistics so no extra request
+        //is made to retrieve fixture statistics as statistics will be cached.
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
         $this->withoutExceptionHandling()
-            ->getTestResponse(34)
+            ->getTestResponse(215662)
             ->assertSuccessful()
             ->assertJsonCount(15, 'data.stats.0.stats')
             ->assertJsonCount(15, 'data.stats.1.stats')
@@ -69,17 +66,18 @@ class FetchFixtureStatisticsTest extends TestCase
         $this->getTestResponse(34)->assertStatus(403);
     }
 
-    public function test_will_return_statistics_for_only_one_team(): void
+    /**
+     * @dataProvider fixtureResponseWithoutStatistics
+     */
+    public function test_will_return_statistics_for_only_one_team(array $fixtureResponseWithoutStatistics): void
     {
         Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
+            ->push($fixtureResponseWithoutStatistics)
             ->push(FetchLeagueResponse::json())
-            ->push(FetchFixtureStatisticsResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchFixtureStatisticsResponse::json());
 
         $this->withoutExceptionHandling()
-            ->getTestResponse(215622, ['team' => $id = $this->hashId(458)])
+            ->getTestResponse(215662, ['team' => $id = $this->hashId(458)])
             ->assertSuccessful()
             ->assertJsonCount(1, 'data.stats')
             ->assertJson(function (AssertableJson $assertableJson) use ($id) {
@@ -89,27 +87,17 @@ class FetchFixtureStatisticsTest extends TestCase
 
     public function test_will_throw_exception_when_requested_team_is_not_a_team_in_fixture(): void
     {
-        Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchFixtureStatisticsResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
-        $this->getTestResponse(215622, ['team' => $this->hashId(45800)]) //the id is not in json stub
+        $this->getTestResponse(215662, ['team' => $this->hashId(45800)]) //the id is not in json stub
             ->assertStatus(400);
     }
 
     public function test_will_return_partial_resource(): void
     {
-        Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchFixtureStatisticsResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
-        $this->withoutExceptionHandling()->getTestResponse(215622, ['fields' => 'fouls,corners,shots'])
+        $this->withoutExceptionHandling()->getTestResponse(215662, ['fields' => 'fouls,corners,shots'])
             ->assertSuccessful()
             ->assertJsonCount(3, 'data.stats.0.stats')
             ->assertJsonCount(3, 'data.stats.1.stats')
@@ -137,46 +125,52 @@ class FetchFixtureStatisticsTest extends TestCase
 
     public function test_will_return_validation_error_when_partial_resource_field_is_invalid(): void
     {
-        Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
-        $this->getTestResponse(215622, ['fields' => 'fouls,corners,shots,foo'])
+        $this->getTestResponse(215662, ['fields' => 'fouls,corners,shots,foo'])
             ->assertStatus(422)
             ->assertJsonValidationErrorFor('fields');
     }
 
     public function test_will_return_validation_error_when_partial_resource_field_is_empty(): void
     {
-        Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
-        $this->getTestResponse(215622, ['fields'])
+        $this->getTestResponse(215662, ['fields'])
             ->assertStatus(422)
             ->assertJsonValidationErrorFor('fields');
     }
 
     public function test_will_return_validation_error_when_partial_resource_field_is_an_array(): void
     {
-        Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
 
         $this->getTestResponse(215622, ['fields[]=shots', 'fields[]=cards'])
             ->assertStatus(422)
             ->assertJsonValidationErrorFor('fields');
     }
 
-    public function test_empty_fixture_statistics_http_response(): void
+    /**
+     * @dataProvider fixtureResponseWithoutStatistics
+     */
+    public function test_empty_fixture_statistics_http_response(array $fixtureResponseWithoutStatistics): void
     {
         Http::fakeSequence()
-            ->push(FetchFixtureResponse::json())
+            ->push($fixtureResponseWithoutStatistics)
             ->push(FetchLeagueResponse::json())
-            ->push(FetchFixtureStatisticsResponse::noContent())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchFixtureStatisticsResponse::noContent());
 
-        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data.stats');
+        $this->getTestResponse(215662)->assertSuccessful()->assertJsonCount(0, 'data.stats');
+    }
+
+    public function fixtureResponseWithoutStatistics(): array
+    {
+        $json = json_decode(FetchFixtureResponse::json(), true);
+
+        unset($json['response'][0]['statistics']);
+
+        return [
+            [$json]
+        ];
     }
 }
