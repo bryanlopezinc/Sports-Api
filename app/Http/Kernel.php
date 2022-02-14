@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'convertId' => \App\HashId\ConvertHashedValuesToIntegerMiddleware::class,
+        'convertNestedValues' => \App\Http\Middleware\ConvertNestedValuesToArrayMiddleware::class,
         'ensureValidFixture' => \Module\Football\Http\Middleware\EnsureFixtureExistsMiddleware::class,
     ];
 }

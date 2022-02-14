@@ -8,6 +8,7 @@ use Module\Football\Http\Controllers;
 use Module\Football\Http\Middleware as MW;
 use App\HashId\ConvertHashedValuesToIntegerMiddleware as Convert;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\ConvertNestedValuesToArrayMiddleware;
 use Module\Football\Http\Middleware\ConvertLeagueStandingTeamsMiddleware;
 use App\Http\Middleware\HandleDbTransactionsMiddleware as TransactionMiddleware;
 use Module\Football\Favourites\Controllers as FC;
@@ -67,8 +68,12 @@ Route::prefix('fixtures')->group(function () {
     Route::get('date', Controllers\FetchFixturesByDateController::class)->name(RouteName::FIXTURES_BY_DATE);
 
     Route::get('players/statistics', Controllers\FetchFixturePlayersStatisticsController::class)
-        ->middleware([Convert::keys('id', 'team'), MW\EnsureCoversPlayerStatisticsMiddleware::class])
-        ->name(RouteName::FIXTURE_PLAYERS_STAT);
+        ->name(RouteName::FIXTURE_PLAYERS_STAT)
+        ->middleware([
+            Convert::keys('id', 'team'),
+            ConvertNestedValuesToArrayMiddleware::keys('filter'),
+            MW\EnsureCoversPlayerStatisticsMiddleware::class,
+        ]);
 
     Route::get('find', Controllers\FetchFixtureController::class)
         ->name(RouteName::FIND_FIXTURE)

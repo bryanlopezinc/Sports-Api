@@ -218,7 +218,7 @@ class PartialFixturePlayersStatisticsResourceTest extends TestCase
     private function buildTestReponse(array $filters, PlayerStatistics $playerStatistics): TestResponse
     {
         request()->merge([
-            'filter' => implode(',', $filters),
+            'filter' => $filters,
         ]);
 
         $resource = new PartialFixturePlayersStatisticsResource($playerStatistics);

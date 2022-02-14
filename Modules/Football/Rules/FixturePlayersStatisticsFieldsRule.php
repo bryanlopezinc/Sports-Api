@@ -9,8 +9,6 @@ use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
 final class FixturePlayersStatisticsFieldsRule implements Rule
 {
-    use RetrieveResourceField;
-
     private const ALLOWED = [
         'team',
         'rating',
@@ -49,7 +47,7 @@ final class FixturePlayersStatisticsFieldsRule implements Rule
     public function passes($attribute, $value)
     {
         try {
-            $this->validate(explode(',', $this->getValue($value)));
+            $this->validate($value);
 
             return true;
         } catch (InvalidPartialResourceFieldsException $e) {

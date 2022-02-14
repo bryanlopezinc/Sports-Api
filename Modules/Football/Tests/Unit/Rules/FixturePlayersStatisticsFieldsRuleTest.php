@@ -13,9 +13,9 @@ class FixturePlayersStatisticsFieldsRuleTest extends TestCase
     {
         $rule = new Rule;
 
-        $this->assertFalse($rule->passes('filter', 'foo'));
+        $this->assertFalse($rule->passes('filter', ['foo']));
         $this->assertEquals($rule->message(), "The given partial resource field foo is Invalid");
-        $this->assertFalse($rule->passes('filter', 'cards,bar'));
+        $this->assertFalse($rule->passes('filter', ['cards', 'bar']));
         $this->assertEquals($rule->message(), "The given partial resource field bar is Invalid");
     }
 
@@ -23,9 +23,9 @@ class FixturePlayersStatisticsFieldsRuleTest extends TestCase
     {
         $rule = new Rule;
 
-        $this->assertTrue($rule->passes('filter', 'cards.yellow'));
-        $this->assertTrue($rule->passes('filter', 'cards.yellow,cards.red,cards.total'));
-        $this->assertTrue($rule->passes('filter', 'cards'));
+        $this->assertTrue($rule->passes('filter', ['cards.yellow']));
+        $this->assertTrue($rule->passes('filter', ['cards.yellow', 'cards.red', 'cards.total']));
+        $this->assertTrue($rule->passes('filter', ['cards']));
     }
 
     public function test_cannot_request_parent_and_child_attribute(): void
@@ -42,7 +42,7 @@ class FixturePlayersStatisticsFieldsRuleTest extends TestCase
 
         foreach ($parentChildrenMap as $parent => $children) {
             foreach ($children as $child) {
-                $this->assertFalse($rule->passes('filter', implode(',', [$parent, $child])));
+                $this->assertFalse($rule->passes('filter', [$parent, $child]));
                 $this->assertEquals($rule->message(), $rule->errorMessageForParentChildRequest($parent, $child));
             }
         }
