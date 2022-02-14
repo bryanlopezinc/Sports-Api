@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Module\Football\Tests\Unit\Http\Resources;
 
 use Tests\TestCase;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Factories\FixtureFactory;
 use Module\Football\Http\Resources\FixtureResource;
 use Module\Football\Http\Resources\PartialFixtureResource;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Module\Football\Http\Resources\PartialLeagueResource;
 
 class PartialFixtureResourceTest extends TestCase
 {
@@ -409,23 +408,42 @@ class PartialFixtureResourceTest extends TestCase
             ]);
     }
 
+    public function test_will_return_only_requested_league_fields(): void
+    {
+        $this->getTestReponse([], ['name', 'country'])
+            ->assertJsonCount(2, 'data.attributes.league.attributes')
+            ->assertJsonStructure([
+                'data' => [
+                    'type',
+                    'attributes' => [
+                        'league' => [
+                            'attributes' => [
+                                'name',
+                                'country'
+                            ],
+                        ],
+                    ],
+                ]
+            ]);
+    }
+
     private function getTestReponse(array $filters, array $leagueFilters = []): TestResponse
     {
-        $request = new SymfonyRequest([
+        request()->merge([
             'filter' => $filters,
             'league_filter' => $leagueFilters
         ]);
-
-        $request->setMethod(SymfonyRequest::METHOD_GET);
 
         $resource = new PartialFixtureResource(
             new FixtureResource(FixtureFactory::new()->toDto())
         );
 
         $resource->setFilterInputName('filter');
+        $resource->setLeagueFilterInputName('league_filter');
+        $resource->leagueResource = PartialLeagueResource::class;
 
         return new TestResponse(new Response(
-            $resource->toResponse(Request::createFromBase($request))->content()
+            $resource->toResponse(request())->content()
         ));
     }
 }

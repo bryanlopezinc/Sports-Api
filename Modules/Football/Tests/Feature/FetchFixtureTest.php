@@ -113,6 +113,30 @@ class FetchFixtureTest extends TestCase
             ]);
     }
 
+    public function test_will_return_partial_league_response_when_needed(): void
+    {
+        $this->withoutExceptionHandling();
+
+        Http::fakeSequence()->push(FetchFixtureResponse::json())->push(FetchLeagueResponse::json());
+
+        $this->getTestResponse(34, ['league_filter' => 'name,country'])
+            ->assertSuccessful()
+            ->assertJsonCount(2, 'data.attributes.league.attributes')
+            ->assertJsonStructure([
+                'data' => [
+                    'type',
+                    'attributes' => [
+                        'league' => [
+                            'attributes' => [
+                                'name',
+                                'country'
+                            ],
+                        ],
+                    ],
+                ]
+            ]);
+    }
+
     public function test_will_return_not_found_status_code_when_fixture_does_not_exists()
     {
         Http::fake(fn () => Http::response(status: 404));

@@ -64,6 +64,8 @@ final class PartialFixtureResource extends JsonResource
         $partialResourceRequest = PartialFixtureRequest::fromRequest($request, $this->filterInputName);
 
         if ($partialResourceRequest->isEmpty()) {
+            Arr::set($original, 'attributes.league', $this->getLeagueResource($this->jsonResource->getFixture()->league()));
+
             return $original;
         }
 

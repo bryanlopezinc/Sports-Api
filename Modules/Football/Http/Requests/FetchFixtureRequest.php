@@ -18,7 +18,7 @@ final class FetchFixtureRequest extends FormRequest
             'id'            => ['required', new ResourceIdRule()],
             'timezone'      => ['sometimes', 'string', new TimeZoneRule],
             'filter'        => ['sometimes', 'filled', new FixtureFieldsRuleForFetchFixtureRequest],
-            'league_filter' => ['sometimes', 'filled', 'string', new LeagueFieldsRule]
+            'league_filter' => ['sometimes', 'filled', new LeagueFieldsRule]
         ];
     }
 }

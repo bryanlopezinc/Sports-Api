@@ -88,7 +88,7 @@ Route::prefix('fixtures')->group(function () {
         ->name(RouteName::FIND_FIXTURE)
         ->middleware([
             Convert::keys('id'),
-            ConvertNestedValuesToArrayMiddleware::keys('league_id', 'filter'),
+            ConvertNestedValuesToArrayMiddleware::keys('league_filter', 'filter'),
             MW\SetFindFixtureResponseHeadersMiddleware::class
         ]);
 
