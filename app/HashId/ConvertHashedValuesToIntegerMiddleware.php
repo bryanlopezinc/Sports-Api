@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\HashId;
 
 use App\Exceptions\Http\ResourceNotFoundHttpException;
+use Illuminate\Http\Request;
 
 /**
  * Convert any hashed ids in request back to their original values.
@@ -19,7 +20,6 @@ final class ConvertHashedValuesToIntegerMiddleware
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  array<string>  ...$keys The request keys to convert
      * @return mixed
      *
      * @throws ResourceNotFoundHttpException when a key cannot be converted
@@ -33,7 +33,7 @@ final class ConvertHashedValuesToIntegerMiddleware
                 continue;
             }
 
-            $request->validate([$key => ['string']]);
+            $this->validateAttribute($request, $key);
 
             $decoded[$key] = $this->transform($request->input($key));
         }
@@ -43,13 +43,22 @@ final class ConvertHashedValuesToIntegerMiddleware
         return $next($request);
     }
 
+    private function validateAttribute(Request $request, string $key): void
+    {
+        $attribute = is_array($request->input($key)) ? "$key.*" : $key;
+
+        $request->validate([$attribute => ['string']]);
+    }
+
     /**
      * @throws ResourceNotFoundHttpException
      */
-    public function transform(string $value): int
+    public function transform(string|array $value): int|array
     {
         try {
-            return $this->hashId->decode($value);
+            $result = array_map(fn (string $id) => $this->hashId->decode($id), (array) $value);
+
+            return is_array($value) ? $result : $result[0];
         } catch (CannotDecodeHashIdException) {
             throw new ResourceNotFoundHttpException();
         }

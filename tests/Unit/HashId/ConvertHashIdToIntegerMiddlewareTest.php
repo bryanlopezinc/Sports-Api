@@ -35,6 +35,30 @@ class ConvertHashIdToIntegerMiddlewareTest extends TestCase
         $this->assertEquals(400, request()->input('baz'));
     }
 
+    public function test_will_convert_all_hashed_values_in_array(): void
+    {
+        request()->merge([
+            'foo' => [$this->hashId(200), $this->hashId(150), $this->hashId(400)],
+        ]);
+
+        $this->middleware->handle(request(), function () {
+        }, 'foo', 'bar', 'baz');
+
+        $this->assertEquals([200, 150, 400], request()->input('foo'));
+    }
+
+    public function test_will_throw_exception_when_array_contains_invalid_item(): void
+    {
+        $this->expectExceptionMessage('The foo.2 must be a string.');
+
+        request()->merge([
+            'foo' => [$this->hashId(200), $this->hashId(350), 99],
+        ]);
+
+        $this->middleware->handle(request(), function () {
+        }, 'foo');
+    }
+
     public function test_throws_not_found_exception_when_ids_are_invalid(): void
     {
         $this->expectException(ResourceNotFoundHttpException::class);
