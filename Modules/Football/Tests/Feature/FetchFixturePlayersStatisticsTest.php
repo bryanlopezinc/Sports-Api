@@ -35,12 +35,10 @@ class FetchFixturePlayersStatisticsTest extends TestCase
         Http::fakeSequence()
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json())
-            ->push(FetchFixturePlayersStatisticsResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchFixturePlayersStatisticsResponse::json());
 
         $this->withoutExceptionHandling()
-            ->getTestResponse(34)
+            ->getTestResponse(215662)
             ->assertSuccessful()
             ->assertJsonCount(40, 'data');
     }
@@ -50,11 +48,9 @@ class FetchFixturePlayersStatisticsTest extends TestCase
         Http::fakeSequence()
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json())
-            ->push(FetchFixturePlayersStatisticsResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchFixturePlayersStatisticsResponse::json());
 
-        $response = $this->getTestResponse(34, ['team' => $teamId = $this->hashId(157)]) //any team in json stub
+        $response = $this->getTestResponse(215662, ['team' => $teamId = $this->hashId(157)]) //any team in json stub
             ->assertSuccessful()
             ->assertJsonCount(20, 'data');
 
@@ -68,11 +64,9 @@ class FetchFixturePlayersStatisticsTest extends TestCase
         Http::fakeSequence()
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json())
-            ->push(FetchFixturePlayersStatisticsResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchFixturePlayersStatisticsResponse::json());
 
-        $this->getTestResponse(34, ['team' => $this->hashId(1999)]) // team id that is not in json stub
+        $this->getTestResponse(215662, ['team' => $this->hashId(1999)]) // team id that is not in json stub
             ->assertStatus(400);
     }
 
@@ -81,11 +75,9 @@ class FetchFixturePlayersStatisticsTest extends TestCase
         Http::fakeSequence()
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json())
-            ->push(FetchFixturePlayersStatisticsResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchFixturePlayersStatisticsResponse::json());
 
-        $response = $this->getTestResponse(34, ['filter' => 'cards'])->assertSuccessful();
+        $response = $this->getTestResponse(215662, ['filter' => 'cards'])->assertSuccessful();
 
         foreach ($response->json('data') as $data) {
             (new TestResponse(new Response($data)))
@@ -128,10 +120,8 @@ class FetchFixturePlayersStatisticsTest extends TestCase
         Http::fakeSequence()
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json())
-            ->push(FetchFixturePlayersStatisticsResponse::noContent())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchFixturePlayersStatisticsResponse::noContent());
 
-        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data');
+        $this->getTestResponse(215662)->assertSuccessful()->assertJsonCount(0, 'data');
     }
 }
