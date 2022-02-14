@@ -7,6 +7,7 @@ namespace Module\User\Tests\Unit\Favourites;
 use Tests\TestCase;
 use App\ValueObjects\Uid;
 use App\Utils\PaginationData;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Module\Football\Favourites\Models\Favourite;
 use Module\User\ValueObjects\UserId;
 use Module\Football\ValueObjects\TeamId;
@@ -17,12 +18,7 @@ use Module\User\Favourites\ResourceAddedToFavouritesEvent;
 
 class FavouritesRepositoryTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Favourite::truncate();
-    }
+    use LazilyRefreshDatabase;
 
     public function test_will_return_correct_data(): void
     {
