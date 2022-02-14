@@ -46,12 +46,10 @@ class FetchFixtureLineUpTest extends TestCase
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json())
             ->push(FetchFixtureLineUpResponse::json())
-            ->push(FetchInjuriesResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchInjuriesResponse::json());
 
         $this->withoutExceptionHandling()
-            ->getTestResponse(34)
+            ->getTestResponse(215662)
             ->assertSuccessful()
             ->assertJsonStructure([
                 'data'  => [
@@ -95,11 +93,9 @@ class FetchFixtureLineUpTest extends TestCase
             ->push(FetchFixtureResponse::json())
             ->push(FetchLeagueResponse::json())
             ->push($json)
-            ->push(FetchInjuriesResponse::json())
-            ->push(FetchFixtureResponse::json())
-            ->push(FetchLeagueResponse::json());
+            ->push(FetchInjuriesResponse::json());
 
-        $this->getTestResponse(34)->assertSuccessful()->assertJsonCount(0, 'data.line_up');
+        $this->getTestResponse(215662)->assertSuccessful()->assertJsonCount(0, 'data.line_up');
     }
 
     public function test_will_return_403_status_code_when_fixture_lineup_is_not_supported()
