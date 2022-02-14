@@ -31,7 +31,7 @@ final class PartialLeagueStandingRequest
             return new self([]);
         }
 
-        return new self(explode(',', $request->input($key)));
+        return new self($request->input($key));
     }
 
     /**

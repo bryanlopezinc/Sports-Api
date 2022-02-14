@@ -9,8 +9,6 @@ use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
 final class LeagueStandingFieldsRule implements Rule
 {
-    use RetrieveResourceField;
-
     private const ALLOWED = [
         'points',
         'position',
@@ -38,7 +36,7 @@ final class LeagueStandingFieldsRule implements Rule
     public function passes($attribute, $value)
     {
         try {
-            $this->validate(explode(',', $this->getValue($value)));
+            $this->validate($value);
 
             return true;
         } catch (InvalidPartialResourceFieldsException $e) {

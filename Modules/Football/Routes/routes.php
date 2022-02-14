@@ -9,9 +9,9 @@ use Module\Football\Http\Middleware as MW;
 use App\HashId\ConvertHashedValuesToIntegerMiddleware as Convert;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\ConvertNestedValuesToArrayMiddleware;
-use Module\Football\Http\Middleware\ConvertLeagueStandingTeamsMiddleware;
 use App\Http\Middleware\HandleDbTransactionsMiddleware as TransactionMiddleware;
 use Module\Football\Favourites\Controllers as FC;
+use Module\Football\Http\Middleware\ConvertLeagueStandingTeamsMiddleware;
 use Module\Football\Prediction\Controllers as PC;
 use Module\Football\Prediction\Middleware as PCM;
 use Module\Football\Http\Middleware\EnsureFixtureExistsMiddleware;
@@ -53,8 +53,8 @@ Route::prefix('leagues')->group(function () {
     Route::get('standing', Controllers\FetchLeagueStandingController::class)
         ->name(RouteName::LEAGUE_STANDING)
         ->middleware([
+            ConvertNestedValuesToArrayMiddleware::keys('league_fields', 'fields', 'teams'),
             Convert::keys('league_id'),
-            ConvertNestedValuesToArrayMiddleware::keys('league_fields'),
             ConvertLeagueStandingTeamsMiddleware::class,
             Mw\EnsureLeagueHasStandingCoverageMiddleware::class
         ]);

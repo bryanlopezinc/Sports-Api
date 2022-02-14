@@ -269,6 +269,10 @@ class PartialLeagueStandingResourceTest extends TestCase
 
     private function getTestReponse(array $query, LeagueTable $table = null): TestResponse
     {
+        if (isset($query['filter'])) {
+            $query['filter'] = explode(',', $query['filter']);
+        }
+
         request()->merge($query);
 
         $table = $table ?: $this->generateTable();

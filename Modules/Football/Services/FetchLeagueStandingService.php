@@ -55,8 +55,7 @@ final class FetchLeagueStandingService
     {
         $teamids = $leagueTable->teams()->pluckIds();
 
-        $requestedTeams = (new Stringable($request->input('teams')))
-            ->explode(',')
+        $requestedTeams = collect($request->input('teams'))
             ->map(fn (string $id) => new TeamId((int) $id))
             ->each(fn (TeamId $id) => abort_if(!$teamids->has($id), 400, sprintf('Team with id %s could not be found in league table', $id->asHashedId())))
             ->pipe(fn (Collection $collection) => new TeamIdsCollection($collection->all()));

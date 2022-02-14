@@ -13,7 +13,7 @@ class LeagueStandingFieldsRuleTest extends TestCase
     {
         $rule = new LeagueStandingFieldsRule;
 
-        $this->assertFalse($rule->passes('filter', 'team'));
+        $this->assertFalse($rule->passes('filter', ['team']));
         $this->assertEquals($rule->message(), 'Only team field cannot be requested');
     }
 
@@ -21,7 +21,7 @@ class LeagueStandingFieldsRuleTest extends TestCase
     {
         $rule = new LeagueStandingFieldsRule;
 
-        $this->assertFalse($rule->passes('filter', 'foo,bar'));
+        $this->assertFalse($rule->passes('filter', ['foo','bar']));
         $this->assertEquals($rule->message(), 'The given partial resource fields are Invalid');
     }
 }

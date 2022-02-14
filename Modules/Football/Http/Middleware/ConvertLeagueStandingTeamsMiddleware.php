@@ -30,8 +30,6 @@ final class ConvertLeagueStandingTeamsMiddleware
             return $next($request);
         }
 
-        $request->validate(['teams' => ['string']]);
-
         $callback = function (string $id, int $index): int {
             try {
                 return $this->middleware->transform($id);
@@ -43,7 +41,7 @@ final class ConvertLeagueStandingTeamsMiddleware
         };
 
         $request->merge([
-            'teams' => collect(explode(',', $request->input('teams')))->map($callback)->implode(',')
+            'teams' => collect($request->input('teams'))->map($callback)->all()
         ]);
 
         return $next($request);

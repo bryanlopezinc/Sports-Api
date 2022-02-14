@@ -18,19 +18,8 @@ final class FetchLeagueStandingRequest extends FormRequest
             'league_id' => ['required', new ResourceIdRule()],
             'teams.*'   => ['sometimes', new ResourceIdRule()],
             'season'    => ['required', new SeasonRule],
-            'fields'    => ['sometimes', 'filled', 'string', new LeagueStandingFieldsRule]
+            'fields'    => ['sometimes', 'filled', new LeagueStandingFieldsRule]
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        if (!$this->filled('teams')) {
-            return;
-        }
-
-        $this->merge([
-            'teams' => explode(',', $this->input('teams'))
-        ]);
     }
 
     /**
@@ -46,12 +35,6 @@ final class FetchLeagueStandingRequest extends FormRequest
             if (collect($this->input('teams'))->duplicatesStrict()->isNotEmpty()) {
                 $validator->errors()->add('teams', 'Duplicate team ids in request');
             }
-        });
-
-        $validator->after(function (): void {
-            $this->merge([
-                'teams' => implode(',', $this->input('teams'))
-            ]);
         });
     }
 }
