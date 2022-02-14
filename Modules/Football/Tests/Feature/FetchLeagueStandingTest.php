@@ -10,7 +10,6 @@ use Module\Football\Routes\RouteName;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueResponse;
-use Module\Football\Tests\Stubs\ApiSports\V3\FetchFixtureByDateResponse;
 use Module\Football\Tests\Stubs\ApiSports\V3\FetchLeagueStandingResponse;
 
 class FetchLeagueStandingTest extends TestCase
@@ -29,13 +28,9 @@ class FetchLeagueStandingTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        Http::fakeSequence()
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchLeagueStandingResponse::json())
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchFixtureByDateResponse::json());
+        Http::fakeSequence()->push(FetchLeagueResponse::json())->push(FetchLeagueStandingResponse::json());
 
-        $this->getTestResponse(400, 2018)->assertSuccessful()->assertJsonCount(20, 'data.standings');
+        $this->getTestResponse(39, 2018)->assertSuccessful()->assertJsonCount(20, 'data.standings');
     }
 
     public function test_will_return_404_status_code_when_league_id_does_not_exists(): void
@@ -68,14 +63,10 @@ class FetchLeagueStandingTest extends TestCase
 
     public function test_will_return_validation_error_if_a_requested_team_id_does_not_exists_in_league_table()
     {
-        Http::fakeSequence()
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchLeagueStandingResponse::json())
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchFixtureByDateResponse::json());
+        Http::fakeSequence()->push(FetchLeagueResponse::json()) ->push(FetchLeagueStandingResponse::json());
 
-        $this->getTestResponse(400, 2018, [
-            'teams'         => $this->hashId(4063), // team id does not exists in leagueTable.json stub
+        $this->getTestResponse(39, 2018, [
+            'teams' => $this->hashId(4063), // team id does not exists in leagueTable.json stub
         ])->assertStatus(400);
     }
 
@@ -96,13 +87,9 @@ class FetchLeagueStandingTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        Http::fakeSequence()
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchLeagueStandingResponse::json())
-            ->push(FetchLeagueResponse::json())
-            ->push(FetchFixtureByDateResponse::json());
+        Http::fakeSequence()->push(FetchLeagueResponse::json())->push(FetchLeagueStandingResponse::json());
 
-        $response = $this->getTestResponse(400, 2018, [
+        $response = $this->getTestResponse(39, 2018, [
             'teams'         => collect([40, 63])->map(fn (int $num) => $this->hashId($num))->implode(','), // team ids from leagueTable.json stub
             'fields'        => 'league,position,points',
             'league_fields' => 'name'

@@ -7,7 +7,6 @@ namespace Module\Football\Services;
 use App\Utils\TimeToLive;
 use App\ValueObjects\Date;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Stringable;
 use Module\Football\Cache\LeagueStandingCacheRepository;
 use Module\Football\DTO\League;
 use Module\Football\ValueObjects\Season;
