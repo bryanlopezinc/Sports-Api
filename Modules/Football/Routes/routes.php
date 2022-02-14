@@ -98,7 +98,11 @@ Route::prefix('fixtures')->group(function () {
 
     Route::get('stats', Controllers\FetchFixtureStatisticsController::class)
         ->name(RouteName::FIXTURE_STATS)
-        ->middleware([Convert::keys('id', 'team'), MW\CheckCoversFixtureStatisticsMiddleware::class]);
+        ->middleware([
+            Convert::keys('id', 'team'),
+            ConvertNestedValuesToArrayMiddleware::keys('fields'),
+            MW\CheckCoversFixtureStatisticsMiddleware::class
+        ]);
 
     Route::get('events', Controllers\FetchFixtureEventsController::class)
         ->name(RouteName::FIXTURE_EVENTS)

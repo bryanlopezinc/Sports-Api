@@ -30,7 +30,7 @@ final class PartialFixtureStaticsResource extends JsonResource
             return $original;
         }
 
-        $requestedFields = explode(',', $request->input('fields'));
+        $requestedFields = $request->input('fields');
 
         $callback = function (array $statistics) use ($requestedFields): array {
             $statistics['stats'] = array_intersect_key($statistics['stats'], array_flip($requestedFields));
