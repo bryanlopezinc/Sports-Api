@@ -44,7 +44,7 @@ class SetUserHasPredictionFixtureTest extends TestCase
 
     private function getTestReponse(array $filters): TestResponse
     {
-        request()->merge(['filter' => implode(',', $filters)]);
+        request()->merge(['filter' => $filters]);
 
         $resource = new SetUserHasPredictionFixture($this->getBaseResourceInstance());
 

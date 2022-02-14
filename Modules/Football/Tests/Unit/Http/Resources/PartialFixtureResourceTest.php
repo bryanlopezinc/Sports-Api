@@ -412,8 +412,8 @@ class PartialFixtureResourceTest extends TestCase
     private function getTestReponse(array $filters, array $leagueFilters = []): TestResponse
     {
         $request = new SymfonyRequest([
-            'filter' => implode(',', $filters),
-            'league_filter' => implode(',', $leagueFilters)
+            'filter' => $filters,
+            'league_filter' => $leagueFilters
         ]);
 
         $request->setMethod(SymfonyRequest::METHOD_GET);

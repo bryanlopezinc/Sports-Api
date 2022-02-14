@@ -404,7 +404,7 @@ class PartialLeagueResourceTest extends TestCase
     private function getTestReponse(array $filters): TestResponse
     {
         $request = new SymfonyRequest([
-            'filter' => implode(',', $filters),
+            'filter' => $filters,
         ]);
 
         $request->setMethod(SymfonyRequest::METHOD_GET);

@@ -16,7 +16,7 @@ final class FetchLeagueRequest extends FormRequest
         return [
             'id'       => ['required', new ResourceIdRule()],
             'season'   => ['nullable', new SeasonRule],
-            'filter'   => ['sometimes', 'filled', 'string', new LeagueFieldsRule]
+            'filter'   => ['sometimes', 'filled', new LeagueFieldsRule]
         ];
     }
 }

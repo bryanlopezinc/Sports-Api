@@ -253,7 +253,7 @@ class PartialLeagueStandingResourceTest extends TestCase
 
     public function test_will_apply_league_filters(): void
     {
-        $testResponse = $this->getTestReponse(['league_filter' => 'name', 'filter' => 'league']);
+        $testResponse = $this->getTestReponse(['league_filter' => ['name'], 'filter' => 'league']);
 
         $assert = new AssertableJsonString($testResponse->json('data.league'));
 

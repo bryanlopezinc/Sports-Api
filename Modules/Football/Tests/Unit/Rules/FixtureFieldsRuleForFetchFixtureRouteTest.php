@@ -17,7 +17,7 @@ class FixtureFieldsRuleForFetchFixtureRouteTest extends TestCase
             'user.has_predicted',
             'user.prediction',
         ] as $field) {
-            $this->assertTrue($rule->passes('filter', $field));
+            $this->assertTrue($rule->passes('filter', [$field]));
         }
     }
 }

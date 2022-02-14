@@ -13,7 +13,7 @@ class FixtureResourceFieldsRuleTest extends TestCase
     {
         $rule = new FixtureFieldsRule;
 
-        $this->assertFalse($rule->passes('filter', 'id'));
+        $this->assertFalse($rule->passes('filter', ['id']));
         $this->assertEquals($rule->code, 100);
     }
 
@@ -21,7 +21,7 @@ class FixtureResourceFieldsRuleTest extends TestCase
     {
         $rule = new FixtureFieldsRule;
 
-        $this->assertFalse($rule->passes('filter', 'foo,bar'));
+        $this->assertFalse($rule->passes('filter', ['foo', 'bar']));
         $this->assertEquals($rule->code, 101);
     }
 
@@ -35,7 +35,7 @@ class FixtureResourceFieldsRuleTest extends TestCase
             'period_goals.extra_time',
             'period_goals.penalty'
         ] as $value) {
-            $this->assertFalse($rule->passes('filter', "period_goals,$value"));
+            $this->assertFalse($rule->passes('filter', ['period_goals', $value]));
             $this->assertEquals($rule->code, 102);
         }
     }
@@ -48,7 +48,7 @@ class FixtureResourceFieldsRuleTest extends TestCase
             'user.has_predicted',
             'user.prediction',
         ] as $field) {
-            $this->assertFalse($rule->passes('filter', $field));
+            $this->assertFalse($rule->passes('filter', [$field]));
             $this->assertEquals($rule->code, 101);
         }
     }

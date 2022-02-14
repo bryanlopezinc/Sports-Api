@@ -9,8 +9,6 @@ use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
 final class FixtureFieldsRule implements Rule
 {
-    use RetrieveResourceField;
-
     private array $allowed = [
         'id',
         'referee',
@@ -41,7 +39,7 @@ final class FixtureFieldsRule implements Rule
     public function passes($attribute, $value)
     {
         try {
-            $this->validate(explode(',', $this->getValue($value)));
+            $this->validate($value);
 
             return true;
         } catch (InvalidPartialResourceFieldsException $e) {

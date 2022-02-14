@@ -13,7 +13,7 @@ class LeagueResourceFieldsRuleTest extends TestCase
     {
         $rule = new LeagueFieldsRule;
 
-        $this->assertFalse($rule->passes('filter', 'id'));
+        $this->assertFalse($rule->passes('filter', ['id']));
         $this->assertEquals($rule->code, 2000);
     }
 
@@ -21,10 +21,10 @@ class LeagueResourceFieldsRuleTest extends TestCase
     {
         $rule = new LeagueFieldsRule;
 
-        $this->assertFalse($rule->passes('filter', 'foo,bar'));
+        $this->assertFalse($rule->passes('filter', ['foo','bar']));
         $this->assertEquals($rule->code, 2001);
 
-        $this->assertFalse($rule->passes('filter', 'name,foo'));
+        $this->assertFalse($rule->passes('filter', ['name','foo']));
         $this->assertEquals($rule->code, 2001);
     }
 
@@ -50,7 +50,7 @@ class LeagueResourceFieldsRuleTest extends TestCase
 
         foreach ($parentChildrenMap as $parent => $children) {
             foreach ($children as $child) {
-                $this->assertFalse($rule->passes('filter', implode(',', [$parent, $child])));
+                $this->assertFalse($rule->passes('filter', [$parent, $child]));
                 $this->assertEquals($rule->code, 2002);
             }
         }

@@ -9,8 +9,6 @@ use Module\Football\Exceptions\InvalidPartialResourceFieldsException;
 
 final class LeagueFieldsRule implements Rule
 {
-    use RetrieveResourceField;
-
     private const ALLOWED = [
         'logo_url',
         'name',
@@ -41,7 +39,7 @@ final class LeagueFieldsRule implements Rule
     public function passes($attribute, $value)
     {
         try {
-            $this->validate(explode(',', $this->getValue($value)));
+            $this->validate($value);
 
             return true;
         } catch (InvalidPartialResourceFieldsException $e) {

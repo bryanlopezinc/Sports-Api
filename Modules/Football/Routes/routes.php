@@ -29,23 +29,32 @@ Route::prefix('teams')->group(function () {
 
     Route::get('head_to_head', Controllers\FetchTeamsHeadToHeadController::class)
         ->name(RouteName::TEAMS_H2H)
-        ->middleware([Convert::keys('team_id_1', 'team_id_2'), SetTeamsHeadToHeadMaxAgeMiddleware::class]);
+        ->middleware([
+            Convert::keys('team_id_1', 'team_id_2'),
+            ConvertNestedValuesToArrayMiddleware::keys('fields'),
+            SetTeamsHeadToHeadMaxAgeMiddleware::class
+        ]);
 });
 
 //Leagues Routes
 Route::prefix('leagues')->group(function () {
     Route::get('fixtures/date', Controllers\FetchLeagueFixturesByDateController::class)
-        ->middleware(Convert::keys('league_id'))
+        ->middleware(Convert::keys('league_id'), ConvertNestedValuesToArrayMiddleware::keys('filter'))
         ->name(RouteName::LEAGUE_FIXTURE_BY_DATE);
 
     Route::get('find', Controllers\FetchLeagueController::class)
         ->name(RouteName::FIND_LEAGUE)
-        ->middleware(Convert::keys('id'), 'cache.headers:max_age=1800');
+        ->middleware([
+            Convert::keys('id'),
+            ConvertNestedValuesToArrayMiddleware::keys('filter'),
+            'cache.headers:max_age=1800'
+        ]);
 
     Route::get('standing', Controllers\FetchLeagueStandingController::class)
         ->name(RouteName::LEAGUE_STANDING)
         ->middleware([
             Convert::keys('league_id'),
+            ConvertNestedValuesToArrayMiddleware::keys('league_fields'),
             ConvertLeagueStandingTeamsMiddleware::class,
             Mw\EnsureLeagueHasStandingCoverageMiddleware::class
         ]);
@@ -63,7 +72,7 @@ Route::prefix('leagues')->group(function () {
 Route::prefix('fixtures')->group(function () {
     Route::get('live', Controllers\FetchLiveFixturesController::class)
         ->name(RouteName::LIVE_FIXTURES)
-        ->middleware('cache.headers:max_age=60');
+        ->middleware(ConvertNestedValuesToArrayMiddleware::keys('filter'), 'cache.headers:max_age=60');
 
     Route::get('date', Controllers\FetchFixturesByDateController::class)->name(RouteName::FIXTURES_BY_DATE);
 
@@ -77,7 +86,11 @@ Route::prefix('fixtures')->group(function () {
 
     Route::get('find', Controllers\FetchFixtureController::class)
         ->name(RouteName::FIND_FIXTURE)
-        ->middleware([Convert::keys('id'), MW\SetFindFixtureResponseHeadersMiddleware::class]);
+        ->middleware([
+            Convert::keys('id'),
+            ConvertNestedValuesToArrayMiddleware::keys('league_id', 'filter'),
+            MW\SetFindFixtureResponseHeadersMiddleware::class
+        ]);
 
     Route::get('lineup', Controllers\FetchFixtureLineUpController::class)
         ->name(RouteName::FIXTURE_LINEUP)
